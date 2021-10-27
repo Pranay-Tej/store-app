@@ -1,0 +1,6 @@
+.productGrid {
+  /* padding: 2rem; */
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}

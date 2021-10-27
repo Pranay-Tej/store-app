@@ -1,44 +1,31 @@
-import { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import '@//App.css';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+// components
+import NavBar from '@/components/NavBar';
+
+// lazy load
+const Home = lazy(() => import('@/pages/Home'));
+const Register = lazy(() => import('@/pages/accounts/Register'));
+const Login = lazy(() => import('@/pages/accounts/Login'));
+const Cart = lazy(() => import('@/pages/Cart'));
+const ProductView = lazy(() => import('@/pages/ProductView'));
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount(count => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <Router>
+      <NavBar />
+      <Suspense fallback={<div>Loading</div>}>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/accounts/login" component={Login} />
+          <Route path="/accounts/register" component={Register} />
+          <Route path="/cart" component={Cart} />
+          <Route path="/product/:id" component={ProductView} />
+        </Switch>
+      </Suspense>
+    </Router>
   );
 }
 
