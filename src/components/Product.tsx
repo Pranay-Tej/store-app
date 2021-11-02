@@ -1,7 +1,9 @@
 import { ProductModel } from '@/models/product.model';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '@/components/Product.module.css';
-import { Tooltip } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
+import { useCartStore } from '@/store/cart.store';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Product: React.FC<ProductModel> = ({
   id,
@@ -12,6 +14,15 @@ const Product: React.FC<ProductModel> = ({
   image,
   rating
 }) => {
+  const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
+    useCartStore();
+  const [cartQuantity, setCartQuantity] = useState<any>(null);
+
+  useEffect(() => {
+    setCartQuantity(findById(id)?.quantity);
+    return () => {};
+  }, [cart]);
+
   return (
     <div
       className={`${styles.product} grid min-h-full transition-shadow duration-300 rounded-sm shadow-sm hover:shadow-lg bg-white`}
@@ -30,6 +41,40 @@ const Product: React.FC<ProductModel> = ({
           </p>
         </Tooltip>
         <p className="font-semibold text-gray-700">{price}</p>
+        {cartQuantity ? (
+          <>
+            <Button
+              variant="text"
+              onClick={event => {
+                event.preventDefault();
+                decreaseQuantity(id, price);
+              }}
+            >
+              -
+            </Button>
+            {cartQuantity}
+            <Button
+              variant="text"
+              onClick={event => {
+                event.preventDefault();
+                increaseQuantity(id, price);
+              }}
+            >
+              +
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant="text"
+            endIcon={<ShoppingCartIcon />}
+            onClick={event => {
+              event.preventDefault();
+              addToCart({ itemId: id, title, price, image, quantity: 1 });
+            }}
+          >
+            Add to Cart
+          </Button>
+        )}
       </div>
     </div>
   );
