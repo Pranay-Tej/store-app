@@ -18,6 +18,7 @@ interface CartState {
   increaseQuantity: (itemId: number, price: number) => void;
   decreaseQuantity: (itemId: number, price: number) => void;
   subTotal: () => number;
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>(
@@ -70,6 +71,9 @@ export const useCartStore = create<CartState>(
         set({
           cart: get().cart.filter(cartItem => cartItem.quantity !== 0)
         });
+      },
+      clearCart: () => {
+        set({ cart: [] });
       }
     }),
     { name: 'cart-store' }

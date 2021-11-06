@@ -11,6 +11,7 @@ const Register = lazy(() => import('@/pages/accounts/Register'));
 const Login = lazy(() => import('@/pages/accounts/Login'));
 const Cart = lazy(() => import('@/pages/Cart'));
 const ProductView = lazy(() => import('@/pages/ProductView'));
+const Addresses = lazy(() => import('@/pages/profile/Addresses'));
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/accounts/register" component={Register} />
           <Route path="/cart" component={Cart} />
           <Route path="/product/:id" component={ProductView} />
+          <Route path="/profile/addresses" component={Addresses} />
         </Switch>
       </Suspense>
     </Router>

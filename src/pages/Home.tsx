@@ -1,35 +1,38 @@
 import Product from '@/components/Product';
 import useAxios from '@/hooks/useAxios';
 import { ProductModel } from '@/models/product.model';
-import { useEffect } from 'react';
 import styles from '@/pages/Home.module.css';
-import { Link } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const {
-    execute,
+    execute: fetchAllProducts,
     isLoading,
     data,
     errorMessage
   }: {
     data: ProductModel[];
-    execute: () => void;
+    execute: (options: { url: string }) => void;
     isLoading: boolean;
-    errorMessage: string | null;
-  } = useAxios(`https://fakestoreapi.com/products`);
+    errorMessage: string | undefined;
+  } = useAxios();
 
   useEffect(() => {
-    execute();
+    fetchAllProducts({ url: `https://fakestoreapi.com/products` });
     return () => {};
   }, []);
+
   if (isLoading)
     return (
       <div className="grid min-h-screen place-items-center">
         <CircularProgress />
       </div>
     );
+
   if (errorMessage) return <div>Error</div>;
+
   return (
     <div
       className={`${styles.productGrid} max-w-5xl px-3 mx-auto pt-8 bg-white`}

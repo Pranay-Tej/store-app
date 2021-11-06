@@ -1,9 +1,13 @@
-import { ProductModel } from '@/models/product.model';
-import React, { useEffect, useState } from 'react';
 import styles from '@/components/Product.module.css';
-import { Button, Tooltip } from '@mui/material';
+import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import React, { useEffect, useState } from 'react';
 
 const Product: React.FC<ProductModel> = ({
   id,
@@ -42,27 +46,27 @@ const Product: React.FC<ProductModel> = ({
         </Tooltip>
         <p className="font-semibold text-gray-700">{price}</p>
         {cartQuantity ? (
-          <>
-            <Button
-              variant="text"
+          <div className="flex items-center justify-center gap-3">
+            <IconButton
+              aria-label="decrease"
               onClick={event => {
                 event.preventDefault();
                 decreaseQuantity(id, price);
               }}
             >
-              -
-            </Button>
+              <RemoveIcon />
+            </IconButton>
             {cartQuantity}
-            <Button
-              variant="text"
+            <IconButton
+              aria-label="increase"
               onClick={event => {
                 event.preventDefault();
                 increaseQuantity(id, price);
               }}
             >
-              +
-            </Button>
-          </>
+              <AddIcon />
+            </IconButton>
+          </div>
         ) : (
           <Button
             variant="text"

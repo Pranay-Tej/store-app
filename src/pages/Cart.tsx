@@ -1,6 +1,8 @@
 import { useCartStore } from '@/store/cart.store';
-import { Button } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import RemoveIcon from '@mui/icons-material/Remove';
+import IconButton from '@mui/material/IconButton';
 
 const Cart = () => {
   const { cart, increaseQuantity, decreaseQuantity, subTotal, removeFromCart } =
@@ -11,25 +13,26 @@ const Cart = () => {
         <div key={itemId}>
           {title}
           {price}
-          <Button
-            variant="text"
+          <IconButton
+            aria-label="decrease"
             onClick={() => decreaseQuantity(itemId, price)}
           >
-            -
-          </Button>
+            <RemoveIcon />
+          </IconButton>
           {quantity}
-          <Button
-            variant="text"
+          <IconButton
+            aria-label="increase"
             onClick={() => increaseQuantity(itemId, price)}
           >
-            +
-          </Button>
-          <Button
-            variant="text"
+            <AddIcon />
+          </IconButton>
+          <IconButton
+            color="error"
+            aria-label="remove"
             onClick={() => removeFromCart(itemId, price, quantity)}
           >
-            X
-          </Button>
+            <CloseIcon />
+          </IconButton>
         </div>
       ))}
       {subTotal()}
