@@ -13,12 +13,7 @@ const Addresses = () => {
     data: addressList,
     errorMessage,
     isLoading
-  }: {
-    execute: (options: { url: string }) => void;
-    data: Address[];
-    errorMessage: string | undefined;
-    isLoading: boolean;
-  } = useAxios();
+  } = useAxios<Address[]>();
 
   const [addressId, setAddressId] = useState<number | null>(null);
 

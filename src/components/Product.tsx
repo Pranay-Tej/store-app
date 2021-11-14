@@ -3,7 +3,7 @@ import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -38,7 +38,7 @@ const Product: React.FC<ProductModel> = ({
       <div className="flex justify-center">
         <img src={image} alt={title} className="object-contain h-full" />
       </div>
-      <div className={`${styles.productInfo} p-3 grid gap-2`}>
+      <div className="grid gap-2 p-3">
         <Tooltip title={title}>
           <p className="overflow-hidden text-sm whitespace-nowrap overflow-ellipsis">
             {title}
@@ -70,13 +70,13 @@ const Product: React.FC<ProductModel> = ({
         ) : (
           <Button
             variant="text"
-            endIcon={<ShoppingCartIcon />}
+            endIcon={<LocalMallIcon />}
             onClick={event => {
               event.preventDefault();
               addToCart({ itemId: id, title, price, image, quantity: 1 });
             }}
           >
-            Add to Cart
+            Add to bag
           </Button>
         )}
       </div>

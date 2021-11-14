@@ -3,7 +3,7 @@ import { useCartStore } from '@/store/cart.store';
 import HomeIcon from '@mui/icons-material/Home';
 import Logout from '@mui/icons-material/Logout';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
@@ -104,7 +104,7 @@ const NavBar = () => {
                 <Tooltip title="Cart">
                   <IconButton aria-label="delete">
                     <Badge badgeContent={cart.length} color="primary">
-                      <ShoppingCartIcon />
+                      <LocalMallIcon />
                     </Badge>
                   </IconButton>
                 </Tooltip>

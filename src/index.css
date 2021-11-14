@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: Poppins, sans-serif, -apple-system, BlinkMacSystemFont,
@@ -12,6 +23,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: hsl(216, 22%, 96%);
+}
+
+#root {
+  height: 100%;
 }
 
 code {

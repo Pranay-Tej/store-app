@@ -43,7 +43,7 @@ const TheAddressModal: React.FC<{
     isLoading: fetchAddressByIdLoading,
     errorMessage: fetchAddressByIdError,
     reset: resetFetchAddressById
-  } = useAxios();
+  } = useAxios<Address>();
 
   const {
     execute: saveAddress,
@@ -51,7 +51,7 @@ const TheAddressModal: React.FC<{
     isLoading: saveAddressLoading,
     errorMessage: saveAddressError,
     reset: resetSaveAddress
-  } = useAxios();
+  } = useAxios<Address>();
 
   const {
     execute: updateAddress,
@@ -59,7 +59,7 @@ const TheAddressModal: React.FC<{
     isLoading: updatedAddressLoading,
     errorMessage: updatedAddressError,
     reset: resetUpdateAddress
-  } = useAxios();
+  } = useAxios<Address>();
 
   useEffect(() => {
     if (addressId) {

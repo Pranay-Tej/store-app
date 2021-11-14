@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useState } from 'react';
 
-export default function useAxios() {
-  const [data, setData] = useState<any>(null);
+export default function useAxios<T>() {
+  const [data, setData] = useState<T | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
@@ -39,7 +39,7 @@ export default function useAxios() {
   };
 
   const reset = () => {
-    setData(null);
+    setData(undefined);
     setErrorMessage(undefined);
     setIsLoading(false);
   };

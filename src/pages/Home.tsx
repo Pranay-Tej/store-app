@@ -12,12 +12,7 @@ const Home = () => {
     isLoading,
     data,
     errorMessage
-  }: {
-    data: ProductModel[];
-    execute: (options: { url: string }) => void;
-    isLoading: boolean;
-    errorMessage: string | undefined;
-  } = useAxios();
+  } = useAxios<ProductModel[]>();
 
   useEffect(() => {
     fetchAllProducts({ url: `https://fakestoreapi.com/products` });
@@ -35,7 +30,7 @@ const Home = () => {
 
   return (
     <div
-      className={`${styles.productGrid} max-w-5xl px-3 mx-auto pt-8 bg-white`}
+      className={`${styles.productGrid} max-w-5xl px-3 my-5 mx-auto pt-8 bg-white`}
     >
       {data &&
         data.map(
