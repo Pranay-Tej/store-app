@@ -35,11 +35,12 @@ const ProductView = () => {
         <CircularProgress />
       </div>
     );
+
   if (errorMessage)
     return (
       <div className="grid min-h-screen place-items-center">{errorMessage}</div>
     );
-  // const { image, title, price } = data;
+
   return (
     <div className="max-w-5xl min-h-full px-3 pt-10 mx-auto bg-white">
       {data && (
@@ -54,7 +55,7 @@ const ProductView = () => {
           <div className="pt-4">
             <div className="my-4 ">
               {cartQuantity ? (
-                <div className="inline-flex items-center justify-center gap-3">
+                <div className="inline-flex items-center justify-center gap-3 border-2 rounded-sm border-gray-50">
                   <IconButton
                     aria-label="decrease"
                     onClick={event => {
