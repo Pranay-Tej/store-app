@@ -1,5 +1,11 @@
-import { BASE_URL } from '@/constants/app.constants';
-import useAxios from '@/hooks/useAxios';
+import { API_URL } from '@/constants/app.constants';
+import {
+  MAX_LENGTH_MESSAGE,
+  MIN_LENGTH_MESSAGE,
+  REQUIRED_FIELD_MESSAGE
+} from '@/constants/validation.constants';
+import useApiCallStatus from '@/hooks/useApiCallStatus';
+import { Address } from '@/models/address.model';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
@@ -7,14 +13,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import axios, { AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Address } from '@/models/address.model';
-import {
-  MAX_LENGTH_MESSAGE,
-  MIN_LENGTH_MESSAGE,
-  REQUIRED_FIELD_MESSAGE
-} from '@/constants/validation.constants';
 
 export interface AddressForm {
   name: string;
@@ -37,44 +38,16 @@ const TheAddressModal: React.FC<{
   addressId,
   handleAddressModalClose
 }) => {
-  const {
-    execute: fetchAddressById,
-    data: address,
-    isLoading: fetchAddressByIdLoading,
-    errorMessage: fetchAddressByIdError,
-    reset: resetFetchAddressById
-  } = useAxios<Address>();
-
-  const {
-    execute: saveAddress,
-    data: savedAddress,
-    isLoading: saveAddressLoading,
-    errorMessage: saveAddressError,
-    reset: resetSaveAddress
-  } = useAxios<Address>();
-
-  const {
-    execute: updateAddress,
-    data: updatedAddress,
-    isLoading: updatedAddressLoading,
-    errorMessage: updatedAddressError,
-    reset: resetUpdateAddress
-  } = useAxios<Address>();
-
   useEffect(() => {
     if (addressId) {
-      fetchAddressById({
-        url: `${BASE_URL}/addresses/${addressId}`,
-        successCallback: (data: Address) => setFormValues(data)
-      });
+      fetchAddressById();
     }
     return () => {
       // cleanup
-      reset();
+      resetAddressForm();
       resetFetchAddressById();
       resetSaveAddress();
       resetUpdateAddress();
-      addressId = null;
     };
   }, [addressId]);
 
@@ -84,7 +57,7 @@ const TheAddressModal: React.FC<{
     handleSubmit,
     setValue,
     formState: { errors },
-    reset
+    reset: resetAddressForm
   } = useForm<AddressForm>({
     defaultValues: {
       name: '',
@@ -115,34 +88,92 @@ const TheAddressModal: React.FC<{
     setValue('zip', zip);
   };
 
+  const {
+    data: address,
+    isLoading: isFetchAddressByIdLoading,
+    setIsLoading: setIsFetchAddressByIdLoading,
+    errorMessage: fetchAddressByIdError,
+    setErrorMessage: setFetchAddressByIdError,
+    reset: resetFetchAddressById
+  } = useApiCallStatus<Address>();
+
+  const fetchAddressById = async () => {
+    try {
+      setIsFetchAddressByIdLoading(true);
+      const response: AxiosResponse<Address> = await axios.get(
+        `${API_URL}/addresses/${addressId}`
+      );
+
+      setFormValues(response.data);
+    } catch (error: any) {
+      setFetchAddressByIdError(error.message);
+    } finally {
+      setIsFetchAddressByIdLoading(false);
+    }
+  };
+
+  // handle address form submit
+  const handleAddressFormSubmit = (addressData: AddressForm) => {
+    if (addressId) {
+      updateAddress(addressData);
+    } else {
+      saveAddress(addressData);
+    }
+  };
+
+  const {
+    isLoading: isSaveAddressLoading,
+    setIsLoading: setIsSaveAddressLoading,
+    errorMessage: saveAddressError,
+    setErrorMessage: setSaveAddressError,
+    reset: resetSaveAddress
+  } = useApiCallStatus<Address>();
+
+  // Save address
+  const saveAddress = async (addressData: AddressForm) => {
+    try {
+      setIsSaveAddressLoading(true);
+      const response: AxiosResponse<Address> = await axios.post(
+        `${API_URL}/addresses`,
+        addressData
+      );
+      handleClose(true);
+    } catch (error: any) {
+      console.error(error);
+      setSaveAddressError(error.message);
+    } finally {
+      setIsSaveAddressLoading(false);
+    }
+  };
+
+  // Update address
+  const {
+    isLoading: isUpdateAddressLoading,
+    setIsLoading: setIsUpdateAddressLoading,
+    errorMessage: updateAddressError,
+    setErrorMessage: setUpdateAddressError,
+    reset: resetUpdateAddress
+  } = useApiCallStatus<Address>();
+
+  const updateAddress = async (addressData: AddressForm) => {
+    try {
+      setIsUpdateAddressLoading(true);
+      const response: AxiosResponse<Address> = await axios.post(
+        `${API_URL}/addresses`,
+        addressData
+      );
+      handleClose(true);
+    } catch (error: any) {
+      console.error(error);
+      setUpdateAddressError(error.message);
+    } finally {
+      setIsUpdateAddressLoading(false);
+    }
+  };
+
   const handleClose = (shouldRefresh: boolean = false) => {
     handleAddressModalClose(shouldRefresh);
     toggleAddressModal();
-  };
-
-  const handleSaveAddress = (data: AddressForm) => {
-    // save address
-    // post address with axios
-
-    if (addressId) {
-      updateAddress({
-        url: `${BASE_URL}/addresses/${addressId}`,
-        axiosConfig: {
-          method: 'PUT',
-          data: data
-        },
-        successCallback: () => handleClose(true)
-      });
-    } else {
-      saveAddress({
-        url: `${BASE_URL}/addresses`,
-        axiosConfig: {
-          method: 'POST',
-          data: data
-        },
-        successCallback: () => handleClose(true)
-      });
-    }
   };
 
   return (
@@ -158,7 +189,7 @@ const TheAddressModal: React.FC<{
         <DialogTitle>
           {addressId ? 'Update Address' : 'Save address'}
         </DialogTitle>
-        {fetchAddressByIdLoading ? (
+        {isFetchAddressByIdLoading ? (
           <DialogContent>
             <div className="grid min-h-full place-items-center">
               <CircularProgress />
@@ -172,7 +203,7 @@ const TheAddressModal: React.FC<{
           <>
             <form
               onSubmit={handleSubmit(
-                data => handleSaveAddress(data),
+                data => handleAddressFormSubmit(data),
                 e => console.log(e)
               )}
             >
@@ -335,22 +366,22 @@ const TheAddressModal: React.FC<{
                 </div>
 
                 {saveAddressError && <p>{saveAddressError}</p>}
-                {updatedAddressError && <p>{updatedAddressError}</p>}
+                {updateAddressError && <p>{updateAddressError}</p>}
               </DialogContent>
 
               <DialogActions>
                 <LoadingButton
                   onClick={() => handleClose(false)}
                   loading={
-                    fetchAddressByIdLoading ||
-                    saveAddressLoading ||
-                    updatedAddressLoading
+                    isFetchAddressByIdLoading ||
+                    isSaveAddressLoading ||
+                    isUpdateAddressLoading
                   }
                   disabled={
                     fetchAddressByIdError !== undefined ||
-                    fetchAddressByIdLoading ||
-                    saveAddressLoading ||
-                    updatedAddressLoading
+                    isFetchAddressByIdLoading ||
+                    isSaveAddressLoading ||
+                    isUpdateAddressLoading
                   }
                   variant="text"
                 >
@@ -358,17 +389,16 @@ const TheAddressModal: React.FC<{
                 </LoadingButton>
                 <LoadingButton
                   type="submit"
-                  // onClick={handleSaveAddress}
                   loading={
-                    fetchAddressByIdLoading ||
-                    saveAddressLoading ||
-                    updatedAddressLoading
+                    isFetchAddressByIdLoading ||
+                    isSaveAddressLoading ||
+                    isUpdateAddressLoading
                   }
                   disabled={
                     fetchAddressByIdError !== undefined ||
-                    fetchAddressByIdLoading ||
-                    saveAddressLoading ||
-                    updatedAddressLoading
+                    isFetchAddressByIdLoading ||
+                    isSaveAddressLoading ||
+                    isUpdateAddressLoading
                   }
                   variant="contained"
                 >

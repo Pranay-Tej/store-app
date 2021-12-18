@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/constants/app.constants';
+import { API_URL } from '@/constants/app.constants';
 import useAxios from '@/hooks/useAxios';
 import useToggle from '@/hooks/useToggle';
 import { Address } from '@/models/address.model';
@@ -21,12 +21,12 @@ const Addresses = () => {
     useToggle(false);
 
   useEffect(() => {
-    fetchAddresses({ url: `${BASE_URL}/addresses` });
+    fetchAddresses({ url: `${API_URL}/addresses` });
   }, []);
 
   const handleAddressModalClose = (shouldRefresh: boolean = false) => {
     if (shouldRefresh) {
-      fetchAddresses({ url: `${BASE_URL}/addresses` });
+      fetchAddresses({ url: `${API_URL}/addresses` });
     }
     setAddressId(null);
   };
@@ -58,7 +58,7 @@ const Addresses = () => {
             <div>{address.name}</div>
           </div>
         ))}
-      <Button onClick={toggleAddressModal}>Open modal</Button>
+      <Button onClick={toggleAddressModal}>New Address</Button>
 
       <TheAddressModal
         isAddressModalOpen={isAddressModalOpen}
