@@ -42,12 +42,12 @@ const ProductView = () => {
     );
 
   return (
-    <div className="max-w-5xl min-h-full px-3 pt-10 mx-auto bg-white">
+    <div className="mx-auto min-h-full max-w-5xl bg-white px-3 pt-10">
       {data && (
         <div className="p-3 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
-          <div className="w-full h-96">
+          <div className="h-96 w-full">
             <img
-              className="object-contain h-full mx-auto"
+              className="mx-auto h-full object-contain"
               src={data.image}
               alt={data.title}
             />
@@ -55,7 +55,7 @@ const ProductView = () => {
           <div className="pt-4">
             <div className="my-4 ">
               {cartQuantity ? (
-                <div className="inline-flex items-center justify-center gap-3 border-2 rounded-sm border-gray-50">
+                <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
                   <IconButton
                     aria-label="decrease"
                     onClick={event => {

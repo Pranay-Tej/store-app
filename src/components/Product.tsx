@@ -29,18 +29,18 @@ const Product: React.FC<ProductModel> = ({
 
   return (
     <div
-      className={`${styles.product} grid min-h-full transition-shadow duration-300 rounded-sm shadow-sm hover:shadow-lg bg-white`}
+      className={`${styles.product} grid min-h-full rounded-sm bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg`}
     >
       {/* <div
         className={`${styles.productImage}`}
         style={{ backgroundImage: `url(${image})` }}
       > */}
       <div className="flex justify-center">
-        <img src={image} alt={title} className="object-contain h-full" />
+        <img src={image} alt={title} className="h-full object-contain" />
       </div>
       <div className="grid gap-2 p-3">
         <Tooltip title={title}>
-          <p className="overflow-hidden text-sm whitespace-nowrap overflow-ellipsis">
+          <p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-sm">
             {title}
           </p>
         </Tooltip>

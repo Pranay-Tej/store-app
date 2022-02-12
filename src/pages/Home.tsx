@@ -30,7 +30,7 @@ const Home = () => {
 
   return (
     <div
-      className={`${styles.productGrid} max-w-5xl px-3 my-5 mx-auto pt-8 bg-white`}
+      className={`${styles.productGrid} my-5 mx-auto max-w-5xl bg-white px-3 pt-8`}
     >
       {data &&
         data.map(

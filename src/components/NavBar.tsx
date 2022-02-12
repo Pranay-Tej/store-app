@@ -44,7 +44,7 @@ const NavBar = () => {
 
   return (
     <nav className="sticky top-0 w-full bg-white shadow-md">
-      <div className="flex justify-between max-w-5xl p-3 mx-auto align-middle">
+      <div className="mx-auto flex max-w-5xl justify-between p-3 align-middle">
         <div>
           <Link to="/">
             <IconButton aria-label="delete">

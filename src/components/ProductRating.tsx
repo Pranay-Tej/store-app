@@ -9,9 +9,9 @@ const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
     return <div className="inline-flex">No ratings yet</div>;
   }
   return (
-    <div className="inline-flex items-center gap-2 mb-4">
+    <div className="mb-4 inline-flex items-center gap-2">
       <span
-        className={`inline-flex gap-1 items-center text-base rounded-md py-1 px-2 ${
+        className={`inline-flex items-center gap-1 rounded-md py-1 px-2 text-base ${
           rating > 3 ? 'bg-green-200 text-green-900' : 'bg-red-200 text-red-900'
         }`}
       >

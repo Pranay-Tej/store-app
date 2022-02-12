@@ -14,7 +14,7 @@ const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="grid max-w-md gap-5 mx-auto mt-20 justify-items-center">
+      <div className="mx-auto mt-20 grid max-w-md justify-items-center gap-5">
         <p className="text-2xl">Your cart is empty</p>
         <Link to="/">
           <Button variant="contained" endIcon={<LocalMallIcon />}>
@@ -26,15 +26,15 @@ const Cart = () => {
   }
 
   return (
-    <div className="max-w-5xl min-h-full px-10 pt-10 mx-auto bg-white">
+    <div className="mx-auto min-h-full max-w-5xl bg-white px-10 pt-10">
       {cart.map(({ itemId, price, quantity, title, image }) => (
         <div
           key={itemId}
-          className={`grid items-center mb-8 pb-4 border-b-2 border-gray-100 ${styles.cartGrid}`}
+          className={`mb-8 grid items-center border-b-2 border-gray-100 pb-4 ${styles.cartGrid}`}
         >
-          <div className="w-full h-32">
+          <div className="h-32 w-full">
             <Link to={`/product/${itemId}`}>
-              <img className="object-contain h-full" src={image} alt={title} />
+              <img className="h-full object-contain" src={image} alt={title} />
             </Link>
           </div>
           <div className="grid gap-4">
@@ -50,7 +50,7 @@ const Cart = () => {
               </IconButton>
             </p>
 
-            <div className="inline-flex items-center gap-3 border-2 rounded-sm border-gray-50 justify-self-start">
+            <div className="inline-flex items-center gap-3 justify-self-start rounded-sm border-2 border-gray-50">
               <IconButton
                 aria-label="decrease"
                 onClick={() => decreaseQuantity(itemId, price)}

@@ -15,6 +15,8 @@ An E-commerce app built with React ecosystem
 - Tailwind CSS
 - Vite
 - Prettier
+- prettier-plugin-tailwindcss
+- Fake Store API
 
 ---
 
