@@ -55,11 +55,12 @@ const NavBar = () => {
         <div className="flex gap-4">
           {!isAuthenticated && (
             <>
-              {/* <Link to="/accounts/register">Signup</Link> */}
-              {/* <Link to="/accounts/login">Login</Link> */}
-              <Button variant="contained" onClick={() => login()}>
-                Login
-              </Button>
+              <Link to="/accounts/register">
+                <Button variant="text">Signup</Button>
+              </Link>
+              <Link to="/accounts/login">
+                <Button variant="contained">Login</Button>
+              </Link>
             </>
           )}
           {isAuthenticated && (

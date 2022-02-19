@@ -7,10 +7,23 @@ import styles from './Cart.module.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import { useEffect } from 'react';
+import { protectedAxiosInstance } from '@/utils/axios-protected-instance';
 
 const Cart = () => {
   const { cart, increaseQuantity, decreaseQuantity, subTotal, removeFromCart } =
     useCartStore();
+
+  // useEffect((): void => {
+  //   protectedAxiosInstance
+  //     .post('http://localhost:3000/user/login', {
+  //       identity: 'a',
+  //       password: 'b'
+  //     })
+  //     .then(res => {
+  //       console.log(res.data);
+  //     });
+  // }, []);
 
   if (cart.length === 0) {
     return (
