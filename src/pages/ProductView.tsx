@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
+import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
 
 const ProductView = () => {
   const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
@@ -22,7 +23,7 @@ const ProductView = () => {
     useAxiosGet<ProductModel>();
 
   useEffect(() => {
-    fetchData({ url: `https://fakestoreapi.com/products/${id}` });
+    fetchData({ url: `${FAKE_STORE_API_BASE_URL}/products/${id}` });
     return () => {};
   }, []);
 

@@ -1,4 +1,5 @@
 import Product from '@/components/Product';
+import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { ProductModel } from '@/models/product.model';
 import styles from '@/pages/Home.module.css';
@@ -16,7 +17,8 @@ const Home = () => {
 
   useEffect(() => {
     fetchAllProducts({
-      url: `https://fakestoreapi.com/products`
+      url: `${FAKE_STORE_API_BASE_URL}/products`,
+      isProtected: true
     });
     return () => {};
   }, []);
