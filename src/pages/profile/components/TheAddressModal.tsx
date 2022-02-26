@@ -1,4 +1,3 @@
-import { API_URL } from '@/constants/app.constants';
 import {
   MAX_LENGTH_MESSAGE,
   MIN_LENGTH_MESSAGE,
@@ -6,6 +5,7 @@ import {
 } from '@/constants/validation.constants';
 import useApiCallStatus from '@/hooks/useApiCallStatus';
 import { Address } from '@/models/address.model';
+import { axiosInstance } from '@/utils/axios-instance';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
@@ -13,7 +13,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -100,8 +100,8 @@ const TheAddressModal: React.FC<{
   const fetchAddressById = async () => {
     try {
       setIsFetchAddressByIdLoading(true);
-      const response: AxiosResponse<Address> = await axios.get(
-        `${API_URL}/addresses/${addressId}`
+      const response: AxiosResponse<Address> = await axiosInstance.get(
+        `/addresses/${addressId}`
       );
 
       setFormValues(response.data);
@@ -133,8 +133,8 @@ const TheAddressModal: React.FC<{
   const saveAddress = async (addressData: AddressForm) => {
     try {
       setIsSaveAddressLoading(true);
-      const response: AxiosResponse<Address> = await axios.post(
-        `${API_URL}/addresses`,
+      const response: AxiosResponse<Address> = await axiosInstance.post(
+        '/addresses',
         addressData
       );
       handleClose(true);
@@ -158,8 +158,8 @@ const TheAddressModal: React.FC<{
   const updateAddress = async (addressData: AddressForm) => {
     try {
       setIsUpdateAddressLoading(true);
-      const response: AxiosResponse<Address> = await axios.post(
-        `${API_URL}/addresses`,
+      const response: AxiosResponse<Address> = await axiosInstance.put(
+        `/addresses/${addressId}`,
         addressData
       );
       handleClose(true);

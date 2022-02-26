@@ -1,5 +1,4 @@
-import { API_URL } from '@/constants/app.constants';
-import useAxios from '@/hooks/useAxios';
+import useAxiosGet from '@/hooks/useAxiosGet';
 import useToggle from '@/hooks/useToggle';
 import { Address } from '@/models/address.model';
 import TheAddressModal from '@/pages/profile/components/TheAddressModal';
@@ -9,11 +8,11 @@ import React, { useEffect, useState } from 'react';
 
 const Addresses = () => {
   const {
-    execute: fetchAddresses,
+    fetchData: fetchAddresses,
     data: addressList,
     errorMessage,
     isLoading
-  } = useAxios<Address[]>();
+  } = useAxiosGet<Address[]>();
 
   const [addressId, setAddressId] = useState<number | null>(null);
 
@@ -21,12 +20,12 @@ const Addresses = () => {
     useToggle(false);
 
   useEffect(() => {
-    fetchAddresses({ url: `${API_URL}/addresses` });
+    fetchAddresses({ url: '/addresses' });
   }, []);
 
   const handleAddressModalClose = (shouldRefresh: boolean = false) => {
     if (shouldRefresh) {
-      fetchAddresses({ url: `${API_URL}/addresses` });
+      fetchAddresses({ url: '/addresses' });
     }
     setAddressId(null);
   };

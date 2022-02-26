@@ -1,5 +1,5 @@
 import ProductRating from '@/components/ProductRating';
-import useAxios from '@/hooks/useAxios';
+import useAxiosGet from '@/hooks/useAxiosGet';
 import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
 import AddIcon from '@mui/icons-material/Add';
@@ -18,10 +18,11 @@ const ProductView = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const { execute, isLoading, data, errorMessage } = useAxios<ProductModel>();
+  const { fetchData, isLoading, data, errorMessage } =
+    useAxiosGet<ProductModel>();
 
   useEffect(() => {
-    execute({ url: `https://fakestoreapi.com/products/${id}` });
+    fetchData({ url: `https://fakestoreapi.com/products/${id}` });
     return () => {};
   }, []);
 

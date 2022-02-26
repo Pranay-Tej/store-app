@@ -1,5 +1,5 @@
 import Product from '@/components/Product';
-import useAxios from '@/hooks/useAxios';
+import useAxiosGet from '@/hooks/useAxiosGet';
 import { ProductModel } from '@/models/product.model';
 import styles from '@/pages/Home.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,14 +8,16 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   const {
-    execute: fetchAllProducts,
+    fetchData: fetchAllProducts,
     isLoading,
     data,
     errorMessage
-  } = useAxios<ProductModel[]>();
+  } = useAxiosGet<ProductModel[]>();
 
   useEffect(() => {
-    fetchAllProducts({ url: `https://fakestoreapi.com/products` });
+    fetchAllProducts({
+      url: `https://fakestoreapi.com/products`
+    });
     return () => {};
   }, []);
 
