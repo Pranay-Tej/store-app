@@ -1,4 +1,8 @@
 import ProductRating from '@/components/ProductRating';
+import {
+  FAKE_STORE_API_BASE_URL,
+  LOCAL_STORAGE_ITEM_IS_AUTHENTICATED
+} from '@/constants/app.constants';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
@@ -6,13 +10,15 @@ import AddIcon from '@mui/icons-material/Add';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import CircularProgress from '@mui/material/CircularProgress';
-import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
+import { useHistory } from 'react-router-dom';
 
 const ProductView = () => {
+  const history = useHistory();
+
   const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
     useCartStore();
   const [cartQuantity, setCartQuantity] = useState<any>(null);
@@ -56,45 +62,55 @@ const ProductView = () => {
           </div>
           <div className="pt-4">
             <div className="my-4 ">
-              {cartQuantity ? (
-                <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
-                  <IconButton
-                    aria-label="decrease"
+              {localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
+              'true' ? (
+                cartQuantity ? (
+                  <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
+                    <IconButton
+                      aria-label="decrease"
+                      onClick={event => {
+                        event.preventDefault();
+                        decreaseQuantity(data.id, data.price);
+                      }}
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+                    <p className="text-lg font-semibold">{cartQuantity}</p>
+                    <IconButton
+                      aria-label="increase"
+                      onClick={event => {
+                        increaseQuantity(data.id, data.price);
+                      }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </div>
+                ) : (
+                  <Button
+                    size="large"
+                    variant="contained"
+                    endIcon={<LocalMallIcon />}
                     onClick={event => {
-                      event.preventDefault();
-                      decreaseQuantity(data.id, data.price);
+                      addToCart({
+                        itemId: data.id,
+                        title: data.title,
+                        price: data.price,
+                        image: data.image,
+                        quantity: 1
+                      });
                     }}
                   >
-                    <RemoveIcon />
-                  </IconButton>
-                  <p className="text-lg font-semibold">{cartQuantity}</p>
-                  <IconButton
-                    aria-label="increase"
-                    onClick={event => {
-                      event.preventDefault();
-                      increaseQuantity(data.id, data.price);
-                    }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </div>
+                    Add to bag
+                  </Button>
+                )
               ) : (
                 <Button
-                  size="large"
-                  variant="contained"
-                  endIcon={<LocalMallIcon />}
+                  variant="text"
                   onClick={event => {
-                    event.preventDefault();
-                    addToCart({
-                      itemId: data.id,
-                      title: data.title,
-                      price: data.price,
-                      image: data.image,
-                      quantity: 1
-                    });
+                    history.push('/accounts/login');
                   }}
                 >
-                  Add to bag
+                  Login
                 </Button>
               )}
             </div>

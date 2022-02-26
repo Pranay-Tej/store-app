@@ -9,16 +9,19 @@ import Button from '@mui/material/Button';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useEffect } from 'react';
 import { protectedAxiosInstance } from '@/utils/axios-protected-instance';
+import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
 
 const Cart = () => {
   const { cart, increaseQuantity, decreaseQuantity, subTotal, removeFromCart } =
     useCartStore();
 
+  // to test protectedAxiosInstance
+  // this will always respond with 401 error
   // useEffect((): void => {
   //   protectedAxiosInstance
-  //     .post('http://localhost:3000/user/login', {
-  //       identity: 'a',
-  //       password: 'b'
+  //     .post(`${FAKE_STORE_API_BASE_URL}/auth/login`, {
+  //       username: 'wrong',
+  //       password: 'wrong'
   //     })
   //     .then(res => {
   //       console.log(res.data);

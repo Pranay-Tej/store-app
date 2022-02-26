@@ -1,13 +1,15 @@
 import styles from '@/components/Product.module.css';
+import { LOCAL_STORAGE_ITEM_IS_AUTHENTICATED } from '@/constants/app.constants';
 import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import RemoveIcon from '@mui/icons-material/Remove';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Product: React.FC<ProductModel> = ({
   id,
@@ -18,6 +20,8 @@ const Product: React.FC<ProductModel> = ({
   image,
   rating
 }) => {
+  const history = useHistory();
+
   const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
     useCartStore();
   const [cartQuantity, setCartQuantity] = useState<any>(null);
@@ -45,38 +49,55 @@ const Product: React.FC<ProductModel> = ({
           </p>
         </Tooltip>
         <p className="font-semibold text-gray-700">{price}</p>
-        {cartQuantity ? (
-          <div className="flex items-center justify-center gap-3">
-            <IconButton
-              aria-label="decrease"
+        {localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
+        'true' ? (
+          cartQuantity > 0 ? (
+            <div className="flex items-center justify-center gap-3">
+              <IconButton
+                aria-label="decrease"
+                onClick={event => {
+                  event.preventDefault();
+                  decreaseQuantity(id, price);
+                }}
+              >
+                <RemoveIcon />
+              </IconButton>
+              {cartQuantity}
+              <IconButton
+                aria-label="increase"
+                onClick={event => {
+                  event.preventDefault();
+                  increaseQuantity(id, price);
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </div>
+          ) : (
+            <Button
+              variant="text"
+              endIcon={<LocalMallIcon />}
               onClick={event => {
                 event.preventDefault();
-                decreaseQuantity(id, price);
+                addToCart({ itemId: id, title, price, image, quantity: 1 });
               }}
+              disabled={
+                localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
+                'false'
+              }
             >
-              <RemoveIcon />
-            </IconButton>
-            {cartQuantity}
-            <IconButton
-              aria-label="increase"
-              onClick={event => {
-                event.preventDefault();
-                increaseQuantity(id, price);
-              }}
-            >
-              <AddIcon />
-            </IconButton>
-          </div>
+              Add to bag
+            </Button>
+          )
         ) : (
           <Button
             variant="text"
-            endIcon={<LocalMallIcon />}
             onClick={event => {
               event.preventDefault();
-              addToCart({ itemId: id, title, price, image, quantity: 1 });
+              history.push('/accounts/login');
             }}
           >
-            Add to bag
+            Login
           </Button>
         )}
       </div>

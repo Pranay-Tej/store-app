@@ -1,6 +1,7 @@
 import {
   API_URL,
-  LOCAL_STORAGE_ITEM_API_TOKEN
+  LOCAL_STORAGE_ITEM_API_TOKEN,
+  LOCAL_STORAGE_ITEM_IS_AUTHENTICATED
 } from '@/constants/app.constants';
 import axios, { AxiosRequestConfig } from 'axios';
 import { history } from '@/utils/history';
@@ -42,6 +43,7 @@ protectedAxiosInstance.interceptors.response.use(
 
     if (status === 401) {
       localStorage.removeItem(LOCAL_STORAGE_ITEM_API_TOKEN);
+      localStorage.setItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED, 'false');
       // window.location.href = '/accounts/login';
       history.push('/accounts/login');
     }

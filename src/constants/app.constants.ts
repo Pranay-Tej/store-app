@@ -3,4 +3,6 @@ export const API_URL: string =
 
 export const LOCAL_STORAGE_ITEM_API_TOKEN = 'api-token';
 
+export const LOCAL_STORAGE_ITEM_IS_AUTHENTICATED = 'is-authenticated';
+
 export const FAKE_STORE_API_BASE_URL = 'https://fakestoreapi.com';

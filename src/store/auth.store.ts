@@ -1,6 +1,7 @@
 import {
   FAKE_STORE_API_BASE_URL,
-  LOCAL_STORAGE_ITEM_API_TOKEN
+  LOCAL_STORAGE_ITEM_API_TOKEN,
+  LOCAL_STORAGE_ITEM_IS_AUTHENTICATED
 } from '@/constants/app.constants';
 import { axiosInstance } from '@/utils/axios-instance';
 import create from 'zustand';
@@ -10,8 +11,6 @@ interface AuthState {
   isAuthenticated: boolean;
   login: () => void;
   logout: () => void;
-  user: null | string;
-  setUser: (user: string) => void;
   token: null | string;
   setToken: (token: string) => void;
 }
@@ -31,6 +30,7 @@ export const useAuthStore = create<AuthState>(
           );
           set({ isAuthenticated: true, token: res.data.token });
           localStorage.setItem(LOCAL_STORAGE_ITEM_API_TOKEN, res.data.token);
+          localStorage.setItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED, 'true');
         } catch (error) {
           console.error(error);
         }
@@ -38,10 +38,7 @@ export const useAuthStore = create<AuthState>(
       logout: () => {
         set({ isAuthenticated: false, token: null });
         localStorage.removeItem(LOCAL_STORAGE_ITEM_API_TOKEN);
-      },
-      user: null,
-      setUser: (user: string) => {
-        set({ user });
+        localStorage.setItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED, 'false');
       },
       token: null,
       setToken: (token: string) => {

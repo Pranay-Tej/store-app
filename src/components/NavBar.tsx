@@ -1,9 +1,9 @@
 import { useAuthStore } from '@/store/auth.store';
 import { useCartStore } from '@/store/cart.store';
 import HomeIcon from '@mui/icons-material/Home';
-import Logout from '@mui/icons-material/Logout';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import Logout from '@mui/icons-material/Logout';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
@@ -19,8 +19,6 @@ const NavBar = () => {
   const history = useHistory();
 
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-  const user = useAuthStore(state => state.user);
-  const login = useAuthStore(state => state.login);
   const logout = useAuthStore(state => state.logout);
 
   const { cart, clearCart } = useCartStore();
@@ -96,11 +94,6 @@ const NavBar = () => {
                   Logout
                 </MenuItem>
               </Menu>
-
-              {/* <Button variant="text" onClick={() => logout()}>
-                Logout
-              </Button> */}
-
               <Link to="/cart">
                 <Tooltip title="Cart">
                   <IconButton aria-label="delete">
