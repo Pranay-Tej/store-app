@@ -1,9 +1,10 @@
-import { axiosInstance } from '@/utils/axios-instance';
-import { protectedAxiosInstance } from '@/utils/axios-protected-instance';
 import useAPiCallStatus from './useApiCallStatus';
 import { AxiosResponse } from 'axios';
+import { useAxiosInstance } from '@/context/axios.context';
 
 export default function useAxiosGet<T>() {
+  const { axiosInstance, protectedAxiosInstance } = useAxiosInstance();
+
   const {
     data: data,
     setData: setData,

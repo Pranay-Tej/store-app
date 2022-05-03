@@ -1,9 +1,10 @@
 import { LOCAL_STORAGE_ITEM_API_TOKEN } from '@/constants/app.constants';
+import { useAxiosInstance } from '@/context/axios.context';
 import { User } from '@/models/user.model';
-import { axiosInstance } from '@/utils/axios-instance';
 import { useState } from 'react';
 
 export function useUser() {
+  const { axiosInstance } = useAxiosInstance();
   const [user, setUser] = useState<User | null>(null);
 
   const login = () => {

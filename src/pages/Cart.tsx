@@ -8,10 +8,12 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useEffect } from 'react';
-import { protectedAxiosInstance } from '@/utils/axios-protected-instance';
 import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
+import { useAxiosInstance } from '@/context/axios.context';
 
 const Cart = () => {
+  const { axiosInstance, protectedAxiosInstance } = useAxiosInstance();
+
   const { cart, increaseQuantity, decreaseQuantity, subTotal, removeFromCart } =
     useCartStore();
 
