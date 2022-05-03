@@ -1,4 +1,4 @@
-import { useCartStore } from '@/store/cart.store';
+import { useCartContext } from '@/context/cart.context';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -15,7 +15,7 @@ const Cart = () => {
   const { axiosInstance, protectedAxiosInstance } = useAxiosInstance();
 
   const { cart, increaseQuantity, decreaseQuantity, subTotal, removeFromCart } =
-    useCartStore();
+    useCartContext();
 
   // to test protectedAxiosInstance
   // this will always respond with 401 error
@@ -45,24 +45,24 @@ const Cart = () => {
 
   return (
     <div className="mx-auto min-h-full max-w-5xl bg-white px-10 pt-10">
-      {cart.map(({ itemId, price, quantity, title, image }) => (
+      {cart.map(({ id, price, quantity, name, image }) => (
         <div
-          key={itemId}
+          key={id}
           className={`mb-8 grid items-center border-b-2 border-gray-100 pb-4 ${styles.cartGrid}`}
         >
           <div className="h-32 w-full">
-            <Link to={`/product/${itemId}`}>
-              <img className="h-full object-contain" src={image} alt={title} />
+            <Link to={`/product/${id}`}>
+              <img className="h-full object-contain" src={image} alt={name} />
             </Link>
           </div>
           <div className="grid gap-4">
             <p>
-              <Link to={`/product/${itemId}`}>{title}</Link>
+              <Link to={`/product/${id}`}>{name}</Link>
               <span className="mx-4 font-semibold text-gray-500">{price}</span>
               <IconButton
                 color="error"
                 aria-label="remove"
-                onClick={() => removeFromCart(itemId, price, quantity)}
+                onClick={() => removeFromCart(id)}
               >
                 <CloseIcon />
               </IconButton>
@@ -71,14 +71,14 @@ const Cart = () => {
             <div className="inline-flex items-center gap-3 justify-self-start rounded-sm border-2 border-gray-50">
               <IconButton
                 aria-label="decrease"
-                onClick={() => decreaseQuantity(itemId, price)}
+                onClick={() => decreaseQuantity(id)}
               >
                 <RemoveIcon />
               </IconButton>
               {quantity}
               <IconButton
                 aria-label="increase"
-                onClick={() => increaseQuantity(itemId, price)}
+                onClick={() => increaseQuantity(id)}
               >
                 <AddIcon />
               </IconButton>
@@ -91,7 +91,7 @@ const Cart = () => {
       ))}
       <div className="mt-10 text-lg text-gray-700">
         Total Amount:
-        <span className="pl-5 text-xl font-semibold">{subTotal()}</span>
+        <span className="pl-5 text-xl font-semibold">{subTotal}</span>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useAuthContext } from '@/context/auth.context';
-import { useCartStore } from '@/store/cart.store';
+import { useCartContext } from '@/context/cart.context';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -20,7 +20,7 @@ const NavBar = () => {
 
   const { isAuthenticated, logout } = useAuthContext();
 
-  const { cart, clearCart } = useCartStore();
+  const { cart, clearCart } = useCartContext();
 
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const isMenuOpen = Boolean(anchorEl);

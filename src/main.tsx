@@ -5,13 +5,16 @@ import App from '@/App';
 import { AxiosProvider } from './context/axios.context';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/auth.context';
+import { CartProvider } from './context/cart.context';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <AxiosProvider>
-          <App />
+          <CartProvider>
+            <App />
+          </CartProvider>
         </AxiosProvider>
       </AuthProvider>
     </BrowserRouter>

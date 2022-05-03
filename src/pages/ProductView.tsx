@@ -3,7 +3,7 @@ import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
 import { useAuthContext } from '@/context/auth.context';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { ProductModel } from '@/models/product.model';
-import { useCartStore } from '@/store/cart.store';
+import { useCartContext } from '@/context/cart.context';
 import AddIcon from '@mui/icons-material/Add';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -19,7 +19,7 @@ const ProductView = () => {
   const { isAuthenticated } = useAuthContext();
 
   const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
-    useCartStore();
+    useCartContext();
   const [cartQuantity, setCartQuantity] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
@@ -68,7 +68,7 @@ const ProductView = () => {
                       aria-label="decrease"
                       onClick={event => {
                         event.preventDefault();
-                        decreaseQuantity(data.id, data.price);
+                        decreaseQuantity(data.id);
                       }}
                     >
                       <RemoveIcon />
@@ -77,7 +77,7 @@ const ProductView = () => {
                     <IconButton
                       aria-label="increase"
                       onClick={event => {
-                        increaseQuantity(data.id, data.price);
+                        increaseQuantity(data.id);
                       }}
                     >
                       <AddIcon />
@@ -90,8 +90,8 @@ const ProductView = () => {
                     endIcon={<LocalMallIcon />}
                     onClick={event => {
                       addToCart({
-                        itemId: data.id,
-                        title: data.title,
+                        id: data.id,
+                        name: data.title,
                         price: data.price,
                         image: data.image,
                         quantity: 1
