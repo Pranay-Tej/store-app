@@ -1,8 +1,6 @@
 import ProductRating from '@/components/ProductRating';
-import {
-  FAKE_STORE_API_BASE_URL,
-  LOCAL_STORAGE_ITEM_IS_AUTHENTICATED
-} from '@/constants/app.constants';
+import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
+import { useAuthContext } from '@/context/auth.context';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
@@ -18,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 
 const ProductView = () => {
   const history = useHistory();
+  const { isAuthenticated } = useAuthContext();
 
   const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
     useCartStore();
@@ -62,8 +61,7 @@ const ProductView = () => {
           </div>
           <div className="pt-4">
             <div className="my-4 ">
-              {localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
-              'true' ? (
+              {isAuthenticated ? (
                 cartQuantity ? (
                   <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
                     <IconButton

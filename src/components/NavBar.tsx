@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/auth.store';
+import { useAuthContext } from '@/context/auth.context';
 import { useCartStore } from '@/store/cart.store';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -18,8 +18,7 @@ import { Link, useHistory } from 'react-router-dom';
 const NavBar = () => {
   const history = useHistory();
 
-  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-  const logout = useAuthStore(state => state.logout);
+  const { isAuthenticated, logout } = useAuthContext();
 
   const { cart, clearCart } = useCartStore();
 
@@ -51,7 +50,7 @@ const NavBar = () => {
           </Link>
         </div>
         <div className="flex gap-4">
-          {!isAuthenticated && (
+          {isAuthenticated === false && (
             <>
               <Link to="/accounts/register">
                 <Button variant="text">Signup</Button>

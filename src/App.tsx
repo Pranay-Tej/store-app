@@ -1,9 +1,7 @@
 import '@//App.css';
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
-// components
 import NavBar from '@/components/NavBar';
+import { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 // lazy load
@@ -16,7 +14,7 @@ const Addresses = lazy(() => import('@/pages/profile/Addresses'));
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <NavBar />
       <Suspense fallback={<div>Loading</div>}>
         <Switch>
@@ -30,7 +28,7 @@ function App() {
           <Route path="/profile/addresses" component={Addresses} />
         </Switch>
       </Suspense>
-    </BrowserRouter>
+    </>
   );
 }
 

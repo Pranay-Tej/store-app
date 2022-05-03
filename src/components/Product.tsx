@@ -1,5 +1,6 @@
 import styles from '@/components/Product.module.css';
 import { LOCAL_STORAGE_ITEM_IS_AUTHENTICATED } from '@/constants/app.constants';
+import { useAuthContext } from '@/context/auth.context';
 import { ProductModel } from '@/models/product.model';
 import { useCartStore } from '@/store/cart.store';
 import AddIcon from '@mui/icons-material/Add';
@@ -21,6 +22,7 @@ const Product: React.FC<ProductModel> = ({
   rating
 }) => {
   const history = useHistory();
+  const { isAuthenticated } = useAuthContext();
 
   const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
     useCartStore();
@@ -49,8 +51,7 @@ const Product: React.FC<ProductModel> = ({
           </p>
         </Tooltip>
         <p className="font-semibold text-gray-700">{price}</p>
-        {localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
-        'true' ? (
+        {isAuthenticated ? (
           cartQuantity > 0 ? (
             <div className="flex items-center justify-center gap-3">
               <IconButton
@@ -81,10 +82,6 @@ const Product: React.FC<ProductModel> = ({
                 event.preventDefault();
                 addToCart({ itemId: id, title, price, image, quantity: 1 });
               }}
-              disabled={
-                localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
-                'false'
-              }
             >
               Add to bag
             </Button>

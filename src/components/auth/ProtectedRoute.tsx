@@ -1,9 +1,8 @@
-import { useUser } from '@/hooks/useUser';
-import { useAuthStore } from '@/store/auth.store';
+import { useAuthContext } from '@/context/auth.context';
 import { Redirect, Route } from 'react-router-dom';
 
 export function ProtectedRoute({ children, ...rest }: any) {
-  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const { isAuthenticated } = useAuthContext();
 
   return (
     <Route
