@@ -1,11 +1,8 @@
 import '@//App.css';
-import { lazy, Suspense } from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
-
-// components
 import NavBar from '@/components/NavBar';
+import { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
-import { history } from '@/utils/history';
 
 // lazy load
 const Home = lazy(() => import('@/pages/Home'));
@@ -17,7 +14,7 @@ const Addresses = lazy(() => import('@/pages/profile/Addresses'));
 
 function App() {
   return (
-    <Router history={history}>
+    <>
       <NavBar />
       <Suspense fallback={<div>Loading</div>}>
         <Switch>
@@ -31,7 +28,7 @@ function App() {
           <Route path="/profile/addresses" component={Addresses} />
         </Switch>
       </Suspense>
-    </Router>
+    </>
   );
 }
 

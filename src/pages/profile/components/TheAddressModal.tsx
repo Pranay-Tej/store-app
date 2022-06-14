@@ -3,9 +3,10 @@ import {
   MIN_LENGTH_MESSAGE,
   REQUIRED_FIELD_MESSAGE
 } from '@/constants/validation.constants';
+import { useAxiosInstance } from '@/context/axios.context';
 import useApiCallStatus from '@/hooks/useApiCallStatus';
 import { Address } from '@/models/address.model';
-import { axiosInstance } from '@/utils/axios-instance';
+// import { axiosInstance } from '@/utils/axios-instance';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
@@ -38,6 +39,8 @@ const TheAddressModal: React.FC<{
   addressId,
   handleAddressModalClose
 }) => {
+  const { axiosInstance } = useAxiosInstance();
+
   useEffect(() => {
     if (addressId) {
       fetchAddressById();

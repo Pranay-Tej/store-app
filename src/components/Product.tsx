@@ -1,7 +1,8 @@
 import styles from '@/components/Product.module.css';
 import { LOCAL_STORAGE_ITEM_IS_AUTHENTICATED } from '@/constants/app.constants';
+import { useAuthContext } from '@/context/auth.context';
 import { ProductModel } from '@/models/product.model';
-import { useCartStore } from '@/store/cart.store';
+import { useCartContext } from '@/context/cart.context';
 import AddIcon from '@mui/icons-material/Add';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -21,9 +22,11 @@ const Product: React.FC<ProductModel> = ({
   rating
 }) => {
   const history = useHistory();
+  const { isAuthenticated } = useAuthContext();
 
-  const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
-    useCartStore();
+  const { findById, cart, increaseQuantity, decreaseQuantity, addToCart } =
+    useCartContext();
+
   const [cartQuantity, setCartQuantity] = useState<any>(null);
 
   useEffect(() => {
@@ -49,15 +52,14 @@ const Product: React.FC<ProductModel> = ({
           </p>
         </Tooltip>
         <p className="font-semibold text-gray-700">{price}</p>
-        {localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
-        'true' ? (
+        {isAuthenticated ? (
           cartQuantity > 0 ? (
             <div className="flex items-center justify-center gap-3">
               <IconButton
                 aria-label="decrease"
                 onClick={event => {
                   event.preventDefault();
-                  decreaseQuantity(id, price);
+                  decreaseQuantity(id);
                 }}
               >
                 <RemoveIcon />
@@ -67,7 +69,7 @@ const Product: React.FC<ProductModel> = ({
                 aria-label="increase"
                 onClick={event => {
                   event.preventDefault();
-                  increaseQuantity(id, price);
+                  increaseQuantity(id);
                 }}
               >
                 <AddIcon />
@@ -79,12 +81,8 @@ const Product: React.FC<ProductModel> = ({
               endIcon={<LocalMallIcon />}
               onClick={event => {
                 event.preventDefault();
-                addToCart({ itemId: id, title, price, image, quantity: 1 });
+                addToCart({ id, name: title, price, image, quantity: 1 });
               }}
-              disabled={
-                localStorage.getItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED) ===
-                'false'
-              }
             >
               Add to bag
             </Button>
