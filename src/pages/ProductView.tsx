@@ -11,8 +11,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const ProductView = () => {
   const history = useHistory();
@@ -54,6 +53,7 @@ const ProductView = () => {
         <div className="p-3 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
           <div className="h-96 w-full">
             <img
+              loading="lazy"
               className="mx-auto h-full object-contain"
               src={data.image}
               alt={data.title}

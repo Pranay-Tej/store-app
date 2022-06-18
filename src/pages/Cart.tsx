@@ -52,7 +52,12 @@ const Cart = () => {
         >
           <div className="h-32 w-full">
             <Link to={`/product/${id}`}>
-              <img className="h-full object-contain" src={image} alt={name} />
+              <img
+                loading="lazy"
+                className="h-full object-contain"
+                src={image}
+                alt={name}
+              />
             </Link>
           </div>
           <div className="grid gap-4">
