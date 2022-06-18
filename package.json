@@ -6,7 +6,12 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "api": "json-server --watch db.json --port 3001",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "netlify-functions:serve": "netlify functions:serve",
+    "localtunnel": "lt --port 9999 --subdomain store-hasura",
+    "netlify-dev": "netlify dev",
+    "netlify-dev:live": "netlify dev --live",
+    "netlify-env:import": "netlify env:import .env.local"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",
@@ -14,7 +19,10 @@
     "@mui/icons-material": "^5.0.4",
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.4",
+    "@netlify/functions": "^1.0.0",
     "axios": "^0.23.0",
+    "graphql": "^16.5.0",
+    "graphql-request": "^4.3.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-hook-form": "^7.18.1",
@@ -22,6 +30,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/node": "^18.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.3.1",
