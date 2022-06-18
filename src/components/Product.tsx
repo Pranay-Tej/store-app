@@ -43,7 +43,12 @@ const Product: React.FC<ProductModel> = ({
         style={{ backgroundImage: `url(${image})` }}
       > */}
       <div className="flex justify-center">
-        <img src={image} alt={title} className="h-full object-contain" />
+        <img
+          loading="lazy"
+          src={image}
+          alt={title}
+          className="h-full object-contain"
+        />
       </div>
       <div className="grid gap-2 p-3">
         <Tooltip title={title}>
