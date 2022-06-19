@@ -21,14 +21,18 @@ const REGISTER_USER_MUTATION = gql`
   }
 `;
 
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+};
+
 const handler: Handler = async (event, context) => {
   try {
-    if (event.httpMethod !== 'POST') {
+    if (event.httpMethod === 'OPTIONS') {
       return {
-        statusCode: STATUS_CODES.METHOD_NOT_ALLOWED,
-        body: JSON.stringify({
-          message: 'Method not allowed'
-        })
+        statusCode: 200,
+        headers
       };
     }
 

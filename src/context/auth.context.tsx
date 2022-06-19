@@ -1,15 +1,12 @@
-import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
 import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys.constants';
-import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const AuthContext = createContext({
   isAuthenticated: false,
   user: null,
-  login: () => Promise.resolve(),
+  setAuthState: (jwt: string) => {},
   logout: () => {}
-  //   register: () => Promise.resolve()
 });
 
 export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
@@ -25,21 +22,10 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
     }
   }, []);
 
-  const login = async () => {
-    try {
-      const res = await axios.post<{ token: string }>(
-        `${FAKE_STORE_API_BASE_URL}/auth/login`,
-        {
-          username: 'mor_2314',
-          password: '83r5^_'
-        }
-      );
-      localStorage.setItem(LOCAL_STORAGE_KEYS.API_TOKEN, res.data.token);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.IS_AUTHENTICATED, 'true');
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error(error);
-    }
+  const setAuthState = async (jwt: string) => {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.API_TOKEN, jwt);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.IS_AUTHENTICATED, 'true');
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
@@ -55,7 +41,7 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
       value={{
         user,
         isAuthenticated,
-        login,
+        setAuthState,
         logout
       }}
     >
