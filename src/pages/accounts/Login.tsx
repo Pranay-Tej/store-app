@@ -1,7 +1,3 @@
-import {
-  LOCAL_STORAGE_ITEM_API_TOKEN,
-  LOCAL_STORAGE_ITEM_IS_AUTHENTICATED
-} from '@/constants/app.constants';
 import { useAuthContext } from '@/context/auth.context';
 import Button from '@mui/material/Button';
 import { useEffect } from 'react';

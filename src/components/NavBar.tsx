@@ -36,7 +36,6 @@ const NavBar = () => {
   const handleLogout = () => {
     clearCart();
     logout();
-    history.push('/');
   };
 
   return (

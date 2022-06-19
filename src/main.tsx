@@ -8,6 +8,7 @@ import { AuthProvider } from './context/auth.context';
 import { CartProvider } from './context/cart.context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { GraphqlClientProvider } from './context/graphql-client.context';
 
 const queryClient = new QueryClient();
 
@@ -16,12 +17,14 @@ ReactDOM.render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <AxiosProvider>
-            <CartProvider>
-              <App />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </CartProvider>
-          </AxiosProvider>
+          <GraphqlClientProvider>
+            <AxiosProvider>
+              <CartProvider>
+                <App />
+                <ReactQueryDevtools initialIsOpen={false} />
+              </CartProvider>
+            </AxiosProvider>
+          </GraphqlClientProvider>
         </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>

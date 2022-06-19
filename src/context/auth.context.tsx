@@ -1,25 +1,12 @@
-import {
-  FAKE_STORE_API_BASE_URL,
-  LOCAL_STORAGE_ITEM_API_TOKEN,
-  LOCAL_STORAGE_ITEM_IS_AUTHENTICATED
-} from '@/constants/app.constants';
+import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
+import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys.constants';
 import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-interface IAuthContext {
-  isAuthenticated: boolean;
-  user: any;
-  //   token: string;
-  login: () => Promise<any>;
-  logout: () => void;
-  //   register(user: any): Promise<any>;
-}
-
-const AuthContext = createContext<IAuthContext>({
+const AuthContext = createContext({
   isAuthenticated: false,
   user: null,
-  //   token: '',
   login: () => Promise.resolve(),
   logout: () => {}
   //   register: () => Promise.resolve()
@@ -30,13 +17,11 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem(LOCAL_STORAGE_ITEM_API_TOKEN);
+    const token = localStorage.getItem(LOCAL_STORAGE_KEYS.API_TOKEN);
     if (token) {
       setIsAuthenticated(true);
-      setToken(token);
     }
   }, []);
 
@@ -49,21 +34,19 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
           password: '83r5^_'
         }
       );
+      localStorage.setItem(LOCAL_STORAGE_KEYS.API_TOKEN, res.data.token);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.IS_AUTHENTICATED, 'true');
       setIsAuthenticated(true);
-      setToken(res.data.token);
-      localStorage.setItem(LOCAL_STORAGE_ITEM_API_TOKEN, res.data.token);
-      localStorage.setItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED, 'true');
     } catch (error) {
       console.error(error);
     }
   };
 
   const logout = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.API_TOKEN);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.IS_AUTHENTICATED, 'false');
     setIsAuthenticated(false);
     setUser(null);
-    setToken('');
-    localStorage.removeItem(LOCAL_STORAGE_ITEM_API_TOKEN);
-    localStorage.setItem(LOCAL_STORAGE_ITEM_IS_AUTHENTICATED, 'false');
     history.push('/accounts/login');
   };
 

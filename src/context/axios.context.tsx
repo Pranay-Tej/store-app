@@ -1,7 +1,5 @@
-import {
-  API_URL,
-  LOCAL_STORAGE_ITEM_API_TOKEN
-} from '@/constants/app.constants';
+import { API_URL } from '@/constants/app.constants';
+import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys.constants';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import React, { createContext, useContext } from 'react';
 import { useAuthContext } from './auth.context';
@@ -31,7 +29,7 @@ export const AxiosProvider: React.FC<React.ReactNode> = ({ children }) => {
   // Add request authentication interceptor as it can change at any time
   protectedAxiosInstance.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      const token = localStorage.getItem(LOCAL_STORAGE_ITEM_API_TOKEN);
+      const token = localStorage.getItem(LOCAL_STORAGE_KEYS.API_TOKEN);
       if (token) {
         config = {
           ...config,
