@@ -1,5 +1,4 @@
 import styles from '@/components/Product.module.css';
-import { LOCAL_STORAGE_ITEM_IS_AUTHENTICATED } from '@/constants/app.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { ProductModel } from '@/models/product.model';
 import { useCartContext } from '@/context/cart.context';

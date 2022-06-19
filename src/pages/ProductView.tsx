@@ -1,16 +1,17 @@
 import ProductRating from '@/components/ProductRating';
-import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
+import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
-import useAxiosGet from '@/hooks/useAxiosGet';
-import { ProductModel } from '@/models/product.model';
 import { useCartContext } from '@/context/cart.context';
+import { useGraphqlClient } from '@/context/graphql-client.context';
+import { GET_PRODUCT_BY_PK } from '@/graphql/products';
 import AddIcon from '@mui/icons-material/Add';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
 
 const ProductView = () => {
@@ -23,13 +24,24 @@ const ProductView = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const { fetchData, isLoading, data, errorMessage } =
-    useAxiosGet<ProductModel>();
+  const { graphQlClient } = useGraphqlClient();
 
-  useEffect(() => {
-    fetchData({ url: `${FAKE_STORE_API_BASE_URL}/products/${id}` });
-    return () => {};
-  }, []);
+  const {
+    data: data,
+    isLoading,
+    error
+  } = useQuery(
+    [REACT_QUERY_KEYS.GET_PRODUCT_BY_PK, id],
+    async () => {
+      const res = await graphQlClient.request(GET_PRODUCT_BY_PK, {
+        id
+      });
+      return res?.products_by_pk;
+    },
+    {
+      enabled: id !== undefined
+    }
+  );
 
   useEffect(() => {
     setCartQuantity(findById(Number(id))?.quantity);
@@ -42,9 +54,11 @@ const ProductView = () => {
       </div>
     );
 
-  if (errorMessage)
+  if (error)
     return (
-      <div className="grid min-h-screen place-items-center">{errorMessage}</div>
+      <div className="grid min-h-screen place-items-center">
+        {JSON.stringify(error)}
+      </div>
     );
 
   return (
