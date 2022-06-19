@@ -1,5 +1,5 @@
 import { useAuthContext } from '@/context/auth.context';
-import Button from '@mui/material/Button';
+import { Button } from '@mantine/core';
 import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -26,7 +26,6 @@ const Login = () => {
   return (
     <div>
       <Button
-        variant="contained"
         onClick={() => {
           login();
         }}

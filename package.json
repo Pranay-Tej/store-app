@@ -14,11 +14,8 @@
     "netlify-env:import": "netlify env:import .env.local"
   },
   "dependencies": {
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
-    "@mui/icons-material": "^5.0.4",
-    "@mui/lab": "^5.0.0-alpha.53",
-    "@mui/material": "^5.0.4",
+    "@mantine/core": "^4.2.9",
+    "@mantine/hooks": "^4.2.9",
     "@netlify/functions": "^1.0.0",
     "axios": "^0.23.0",
     "graphql": "^16.5.0",
@@ -27,7 +24,8 @@
     "react-dom": "^17.0.0",
     "react-hook-form": "^7.18.1",
     "react-query": "^3.39.1",
-    "react-router-dom": "^5.3.0"
+    "react-router-dom": "^5.3.0",
+    "tabler-icons-react": "^1.49.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

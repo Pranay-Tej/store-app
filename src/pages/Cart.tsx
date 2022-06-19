@@ -1,15 +1,9 @@
-import { useCartContext } from '@/context/cart.context';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import RemoveIcon from '@mui/icons-material/Remove';
-import IconButton from '@mui/material/IconButton';
-import styles from './Cart.module.css';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
-import { useEffect } from 'react';
-import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
 import { useAxiosInstance } from '@/context/axios.context';
+import { useCartContext } from '@/context/cart.context';
+import { ActionIcon, Button } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { Minus, Plus, ShoppingCart, Trash } from 'tabler-icons-react';
+import styles from './Cart.module.css';
 
 const Cart = () => {
   const { axiosInstance, protectedAxiosInstance } = useAxiosInstance();
@@ -35,9 +29,7 @@ const Cart = () => {
       <div className="mx-auto mt-20 grid max-w-md justify-items-center gap-5">
         <p className="text-2xl">Your cart is empty</p>
         <Link to="/">
-          <Button variant="contained" endIcon={<LocalMallIcon />}>
-            Shop now!
-          </Button>
+          <Button leftIcon={<ShoppingCart />}>Shop now!</Button>
         </Link>
       </div>
     );
@@ -64,29 +56,29 @@ const Cart = () => {
             <p>
               <Link to={`/product/${id}`}>{name}</Link>
               <span className="mx-4 font-semibold text-gray-500">{price}</span>
-              <IconButton
+              <ActionIcon
                 color="error"
                 aria-label="remove"
                 onClick={() => removeFromCart(id)}
               >
-                <CloseIcon />
-              </IconButton>
+                <Trash />
+              </ActionIcon>
             </p>
 
             <div className="inline-flex items-center gap-3 justify-self-start rounded-sm border-2 border-gray-50">
-              <IconButton
+              <ActionIcon
                 aria-label="decrease"
                 onClick={() => decreaseQuantity(id)}
               >
-                <RemoveIcon />
-              </IconButton>
+                <Minus />
+              </ActionIcon>
               {quantity}
-              <IconButton
+              <ActionIcon
                 aria-label="increase"
                 onClick={() => increaseQuantity(id)}
               >
-                <AddIcon />
-              </IconButton>
+                <Plus />
+              </ActionIcon>
             </div>
             <p className="font-semibold text-gray-800">
               {Math.round(price * quantity * 100) / 100}
