@@ -4,15 +4,11 @@ import { useAuthContext } from '@/context/auth.context';
 import { useCartContext } from '@/context/cart.context';
 import { useGraphqlClient } from '@/context/graphql-client.context';
 import { GET_PRODUCT_BY_PK } from '@/graphql/products';
-import AddIcon from '@mui/icons-material/Add';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
-import RemoveIcon from '@mui/icons-material/Remove';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from '@mui/material/IconButton';
+import { ActionIcon, Button, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
+import { Minus, Plus, ShoppingCartPlus } from 'tabler-icons-react';
 
 const ProductView = () => {
   const history = useHistory();
@@ -44,13 +40,13 @@ const ProductView = () => {
   );
 
   useEffect(() => {
-    setCartQuantity(findById(Number(id))?.quantity);
+    setCartQuantity(findById(id)?.quantity);
   }, [cart]);
 
   if (isLoading)
     return (
       <div className="grid min-h-screen place-items-center">
-        <CircularProgress />
+        <Loader variant="bars" />
       </div>
     );
 
@@ -76,33 +72,30 @@ const ProductView = () => {
           <div className="pt-4">
             <div className="my-4 ">
               {isAuthenticated ? (
-                cartQuantity ? (
+                cartQuantity > 0 ? (
                   <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
-                    <IconButton
+                    <ActionIcon
                       aria-label="decrease"
-                      onClick={event => {
-                        event.preventDefault();
+                      onClick={() => {
                         decreaseQuantity(data.id);
                       }}
                     >
-                      <RemoveIcon />
-                    </IconButton>
+                      <Minus />
+                    </ActionIcon>
                     <p className="text-lg font-semibold">{cartQuantity}</p>
-                    <IconButton
+                    <ActionIcon
                       aria-label="increase"
-                      onClick={event => {
+                      onClick={() => {
                         increaseQuantity(data.id);
                       }}
                     >
-                      <AddIcon />
-                    </IconButton>
+                      <Plus />
+                    </ActionIcon>
                   </div>
                 ) : (
                   <Button
-                    size="large"
-                    variant="contained"
-                    endIcon={<LocalMallIcon />}
-                    onClick={event => {
+                    leftIcon={<ShoppingCartPlus />}
+                    onClick={() => {
                       addToCart({
                         id: data.id,
                         name: data.title,
@@ -117,8 +110,7 @@ const ProductView = () => {
                 )
               ) : (
                 <Button
-                  variant="text"
-                  onClick={event => {
+                  onClick={() => {
                     history.push('/accounts/login');
                   }}
                 >

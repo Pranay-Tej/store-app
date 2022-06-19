@@ -1,5 +1,5 @@
 import React from 'react';
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import { Star } from 'tabler-icons-react';
 
 const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
   rating,
@@ -16,7 +16,7 @@ const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
         }`}
       >
         {rating}
-        <StarOutlineIcon fontSize="small" />
+        <Star />
       </span>
       <span className="">({count})</span>
     </div>

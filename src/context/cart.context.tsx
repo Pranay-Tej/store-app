@@ -1,7 +1,7 @@
 import React, { createContext, useMemo } from 'react';
 
 interface CartItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   quantity: number;
@@ -10,12 +10,12 @@ interface CartItem {
 
 interface ICartContext {
   cart: CartItem[];
-  findById(id: number): CartItem | undefined;
+  findById(id: string): CartItem | undefined;
   subTotal: number;
   addToCart: (item: CartItem) => void;
-  increaseQuantity: (id: number) => void;
-  decreaseQuantity: (id: number) => void;
-  removeFromCart: (id: number) => void;
+  increaseQuantity: (id: string) => void;
+  decreaseQuantity: (id: string) => void;
+  removeFromCart: (id: string) => void;
   clearCart: () => void;
 }
 
@@ -39,7 +39,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     }, 0);
   }, [cart]);
 
-  const findById = (id: number) => {
+  const findById = (id: string) => {
     return cart.find(item => item.id === id);
   };
 
@@ -48,7 +48,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     setCart([...cart, { id, name, price, quantity: 1, image }]);
   };
 
-  const increaseQuantity = (id: number) => {
+  const increaseQuantity = (id: string) => {
     setCart(
       cart.map(cartItem =>
         cartItem.id === id
@@ -58,7 +58,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     );
   };
 
-  const decreaseQuantity = (id: number) => {
+  const decreaseQuantity = (id: string) => {
     setCart(prev =>
       prev.map(cartItem =>
         cartItem.id === id
@@ -69,7 +69,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     setCart(prev => prev.filter(cartItem => cartItem.quantity !== 0));
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCart(cart.filter(cartItem => cartItem.id !== id));
   };
 

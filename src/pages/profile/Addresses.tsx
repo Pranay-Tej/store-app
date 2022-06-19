@@ -2,9 +2,8 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import useToggle from '@/hooks/useToggle';
 import { Address } from '@/models/address.model';
 import TheAddressModal from '@/pages/profile/components/TheAddressModal';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import React, { useEffect, useState } from 'react';
+import { Button, Loader } from '@mantine/core';
+import { useEffect, useState } from 'react';
 
 const Addresses = () => {
   const {
@@ -37,7 +36,7 @@ const Addresses = () => {
   if (isLoading) {
     return (
       <div className="grid min-h-screen place-items-center">
-        <CircularProgress />
+        <Loader variant="bars" />
       </div>
     );
   }

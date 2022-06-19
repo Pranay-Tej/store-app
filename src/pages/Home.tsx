@@ -4,7 +4,7 @@ import { useGraphqlClient } from '@/context/graphql-client.context';
 import { GET_PRODUCTS } from '@/graphql/products';
 import { ProductModel } from '@/models/product.model';
 import styles from '@/pages/Home.module.css';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Loader } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const Home = () => {
   if (isLoading)
     return (
       <div className="grid min-h-screen place-items-center">
-        <CircularProgress />
+        <Loader variant="bars" />
       </div>
     );
 
