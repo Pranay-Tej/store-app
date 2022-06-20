@@ -16,10 +16,9 @@ const NavBar = () => {
 
   const { isAuthenticated, logout } = useAuthContext();
 
-  const { cart, clearCart } = useCartContext();
+  const { cart } = useCartContext();
 
   const handleLogout = () => {
-    clearCart();
     logout();
   };
 
@@ -28,7 +27,7 @@ const NavBar = () => {
       <div className="mx-auto flex max-w-5xl justify-between p-3 align-middle">
         <div>
           <Link to="/">
-            <ActionIcon aria-label="delete">
+            <ActionIcon size="lg" aria-label="delete">
               <SmartHome />
             </ActionIcon>
           </Link>
@@ -50,7 +49,7 @@ const NavBar = () => {
                 withArrow
                 control={
                   <Tooltip label="Account settings">
-                    <ActionIcon>
+                    <ActionIcon size="lg">
                       <Avatar alt="no image here" color="indigo">
                         SP
                       </Avatar>
@@ -70,7 +69,7 @@ const NavBar = () => {
               </Menu>
               <Link to="/cart">
                 <Tooltip label="Cart">
-                  <ActionIcon aria-label="delete">
+                  <ActionIcon size="lg" aria-label="delete">
                     <Indicator label={cart.length}>
                       <ShoppingCart />
                     </Indicator>

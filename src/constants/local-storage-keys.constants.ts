@@ -1,4 +1,6 @@
 export enum LOCAL_STORAGE_KEYS {
-  API_TOKEN = 'api-token',
-  IS_AUTHENTICATED = 'is-authenticated'
+  API_TOKEN = 'API-TOKEN',
+  IS_AUTHENTICATED = 'IS-AUTHENTICATED',
+  USER_ID = 'USER_ID',
+  USERNAME = 'USERNAME'
 }

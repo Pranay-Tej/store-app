@@ -14,8 +14,13 @@ const ProductView = () => {
   const history = useHistory();
   const { isAuthenticated } = useAuthContext();
 
-  const { findById, cart, addToCart, increaseQuantity, decreaseQuantity } =
-    useCartContext();
+  const {
+    cart,
+    addToCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart
+  } = useCartContext();
   const [cartQuantity, setCartQuantity] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
@@ -40,7 +45,7 @@ const ProductView = () => {
   );
 
   useEffect(() => {
-    setCartQuantity(findById(id)?.quantity);
+    setCartQuantity(cart.find(item => item.product.id === id)?.quantity ?? 0);
   }, [cart]);
 
   if (isLoading)
@@ -75,18 +80,30 @@ const ProductView = () => {
                 cartQuantity > 0 ? (
                   <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
                     <ActionIcon
+                      size="lg"
                       aria-label="decrease"
                       onClick={() => {
-                        decreaseQuantity(data.id);
+                        if (cartQuantity > 1) {
+                          decreaseQuantity({
+                            product_id: data.id,
+                            quantity: cartQuantity
+                          });
+                        } else {
+                          removeFromCart.mutate(data.id);
+                        }
                       }}
                     >
                       <Minus />
                     </ActionIcon>
                     <p className="text-lg font-semibold">{cartQuantity}</p>
                     <ActionIcon
+                      size="lg"
                       aria-label="increase"
                       onClick={() => {
-                        increaseQuantity(data.id);
+                        increaseQuantity({
+                          product_id: data.id,
+                          quantity: cartQuantity
+                        });
                       }}
                     >
                       <Plus />
@@ -96,13 +113,7 @@ const ProductView = () => {
                   <Button
                     leftIcon={<ShoppingCartPlus />}
                     onClick={() => {
-                      addToCart({
-                        id: data.id,
-                        name: data.title,
-                        price: data.price,
-                        image: data.image,
-                        quantity: 1
-                      });
+                      addToCart.mutate(data.id);
                     }}
                   >
                     Add to bag

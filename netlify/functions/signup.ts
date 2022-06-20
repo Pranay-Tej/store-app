@@ -14,10 +14,6 @@ const REGISTER_USER_MUTATION = gql`
       id
       hasura_id
     }
-    insert_carts_one(object: {}) {
-      customer_id
-      id
-    }
   }
 `;
 
