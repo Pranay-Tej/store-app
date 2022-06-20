@@ -18,7 +18,7 @@ export interface RegisterForm {
 }
 
 const Register = () => {
-  const { setAuthState, isAuthenticated } = useAuthContext();
+  const { verifyUser, isAuthenticated } = useAuthContext();
   const history = useHistory();
   const { state } = useLocation<LocationState>();
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
@@ -55,7 +55,7 @@ const Register = () => {
         `${NETLIFY_FUNCTIONS_BASE_URL}/signup`,
         registerData
       );
-      setAuthState(data?.jwt);
+      verifyUser(data?.jwt);
       resetRegisterForm();
     } catch (error: any) {
       setRegisterError(error?.response?.data?.message);

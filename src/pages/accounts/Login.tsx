@@ -19,7 +19,7 @@ export interface LoginForm {
 }
 
 const Login = () => {
-  const { setAuthState, isAuthenticated } = useAuthContext();
+  const { verifyUser, isAuthenticated } = useAuthContext();
   const history = useHistory();
   const { state } = useLocation<LocationState>();
   const [isLoginLoading, setIsLoginLoading] = useState(false);
@@ -59,7 +59,7 @@ const Login = () => {
           app_id: SHIRUDO_APP_ID
         }
       );
-      setAuthState(data?.jwt);
+      verifyUser(data?.jwt);
       resetLoginForm();
     } catch (error: any) {
       setLoginError(error?.response?.data?.message);

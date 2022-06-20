@@ -1,6 +1,7 @@
 import { useAxiosInstance } from '@/context/axios.context';
 import { useCartContext } from '@/context/cart.context';
 import { ActionIcon, Button } from '@mantine/core';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, ShoppingCart, Trash } from 'tabler-icons-react';
 import styles from './Cart.module.css';
@@ -8,8 +9,14 @@ import styles from './Cart.module.css';
 const Cart = () => {
   const { axiosInstance, protectedAxiosInstance } = useAxiosInstance();
 
-  const { cart, increaseQuantity, decreaseQuantity, subTotal, removeFromCart } =
-    useCartContext();
+  const {
+    cart,
+    increaseQuantity,
+    decreaseQuantity,
+    subTotal,
+    removeFromCart,
+    fetchUserCart
+  } = useCartContext();
 
   // to test protectedAxiosInstance
   // this will always respond with 401 error
@@ -24,6 +31,10 @@ const Cart = () => {
   //     });
   // }, []);
 
+  useEffect(() => {
+    fetchUserCart();
+  }, []);
+
   if (cart.length === 0) {
     return (
       <div className="mx-auto mt-20 grid max-w-md justify-items-center gap-5">
@@ -37,7 +48,7 @@ const Cart = () => {
 
   return (
     <div className="mx-auto min-h-full max-w-5xl bg-white px-10 pt-10">
-      {cart.map(({ id, price, quantity, name, image }) => (
+      {cart.map(({ product: { id, price, image, title }, quantity }) => (
         <div
           key={id}
           className={`mb-8 grid items-center border-b-2 border-gray-100 pb-4 ${styles.cartGrid}`}
@@ -48,18 +59,19 @@ const Cart = () => {
                 loading="lazy"
                 className="h-full object-contain"
                 src={image}
-                alt={name}
+                alt={title}
               />
             </Link>
           </div>
           <div className="grid gap-4">
             <p>
-              <Link to={`/product/${id}`}>{name}</Link>
+              <Link to={`/product/${id}`}>{title}</Link>
               <span className="mx-4 font-semibold text-gray-500">{price}</span>
               <ActionIcon
+                size="lg"
                 color="error"
                 aria-label="remove"
-                onClick={() => removeFromCart(id)}
+                onClick={() => removeFromCart.mutate(id)}
               >
                 <Trash />
               </ActionIcon>
@@ -67,15 +79,26 @@ const Cart = () => {
 
             <div className="inline-flex items-center gap-3 justify-self-start rounded-sm border-2 border-gray-50">
               <ActionIcon
+                size="lg"
                 aria-label="decrease"
-                onClick={() => decreaseQuantity(id)}
+                onClick={() => {
+                  if (quantity > 1) {
+                    decreaseQuantity({
+                      product_id: id,
+                      quantity
+                    });
+                  } else {
+                    removeFromCart.mutate(id);
+                  }
+                }}
               >
                 <Minus />
               </ActionIcon>
               {quantity}
               <ActionIcon
+                size="lg"
                 aria-label="increase"
-                onClick={() => increaseQuantity(id)}
+                onClick={() => increaseQuantity({ product_id: id, quantity })}
               >
                 <Plus />
               </ActionIcon>
