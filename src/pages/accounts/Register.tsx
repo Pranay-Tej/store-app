@@ -56,7 +56,6 @@ const Register = () => {
         registerData
       );
       verifyUser(data?.jwt);
-      resetRegisterForm();
     } catch (error: any) {
       setRegisterError(error?.response?.data?.message);
     } finally {

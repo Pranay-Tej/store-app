@@ -39,16 +39,20 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const verifyUser = async (jwt: string) => {
-    const {
-      data: userData
-    }: AxiosResponse<{ user: { _id: string; username: string } }> =
-      await axios.get(`${SHIRUDO_BASE_URL}/users/verify`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          ShirudoAppId: SHIRUDO_APP_ID
-        }
-      });
-    setAuthState(jwt, userData?.user?._id, userData?.user?.username);
+    try {
+      const {
+        data: userData
+      }: AxiosResponse<{ user: { _id: string; username: string } }> =
+        await axios.get(`${SHIRUDO_BASE_URL}/users/verify`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+            ShirudoAppId: SHIRUDO_APP_ID
+          }
+        });
+      setAuthState(jwt, userData?.user?._id, userData?.user?.username);
+    } catch (error) {
+      logout();
+    }
   };
   const setAuthState = async (
     jwt: string,
@@ -66,6 +70,8 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.API_TOKEN);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.USER_ID);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.USERNAME);
     localStorage.setItem(LOCAL_STORAGE_KEYS.IS_AUTHENTICATED, 'false');
     setUserId(undefined);
     setUsername(undefined);

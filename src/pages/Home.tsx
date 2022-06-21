@@ -1,21 +1,20 @@
 import Product from '@/components/Product';
 import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
-import { useGraphqlClient } from '@/context/graphql-client.context';
 import { GET_PRODUCTS } from '@/graphql/products';
 import { ProductModel } from '@/models/product.model';
 import styles from '@/pages/Home.module.css';
+import { graphqlClient } from '@/utils/graphql-instance';
 import { Loader } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const { graphQlClient } = useGraphqlClient();
   const {
     data: productList,
     isLoading,
     error
   } = useQuery(REACT_QUERY_KEYS.GET_PRODUCTS, async () => {
-    const res = await graphQlClient.request(GET_PRODUCTS);
+    const res = await graphqlClient.request(GET_PRODUCTS);
     return res?.products;
   });
 
@@ -30,7 +29,7 @@ const Home = () => {
 
   return (
     <div
-      className={`${styles.productGrid} my-5 mx-auto max-w-5xl bg-white px-3 pt-8`}
+      className={`${styles.productGrid} my-5 mx-auto max-w-7xl bg-white px-3 pt-8`}
     >
       {productList &&
         productList.map(

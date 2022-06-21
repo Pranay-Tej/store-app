@@ -2,8 +2,8 @@ import ProductRating from '@/components/ProductRating';
 import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { useCartContext } from '@/context/cart.context';
-import { useGraphqlClient } from '@/context/graphql-client.context';
 import { GET_PRODUCT_BY_PK } from '@/graphql/products';
+import { graphqlClient } from '@/utils/graphql-instance';
 import { ActionIcon, Button, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -25,8 +25,6 @@ const ProductView = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const { graphQlClient } = useGraphqlClient();
-
   const {
     data: data,
     isLoading,
@@ -34,7 +32,7 @@ const ProductView = () => {
   } = useQuery(
     [REACT_QUERY_KEYS.GET_PRODUCT_BY_PK, id],
     async () => {
-      const res = await graphQlClient.request(GET_PRODUCT_BY_PK, {
+      const res = await graphqlClient.request(GET_PRODUCT_BY_PK, {
         id
       });
       return res?.products_by_pk;
@@ -63,7 +61,7 @@ const ProductView = () => {
     );
 
   return (
-    <div className="mx-auto min-h-full max-w-5xl bg-white px-3 pt-10">
+    <div className="mx-auto min-h-full max-w-7xl bg-white px-3 pt-10">
       {data && (
         <div className="p-3 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
           <div className="h-96 w-full">
@@ -93,7 +91,7 @@ const ProductView = () => {
                         }
                       }}
                     >
-                      <Minus />
+                      <Minus strokeWidth={1.5} />
                     </ActionIcon>
                     <p className="text-lg font-semibold">{cartQuantity}</p>
                     <ActionIcon
@@ -106,12 +104,12 @@ const ProductView = () => {
                         });
                       }}
                     >
-                      <Plus />
+                      <Plus strokeWidth={1.5} />
                     </ActionIcon>
                   </div>
                 ) : (
                   <Button
-                    leftIcon={<ShoppingCartPlus />}
+                    leftIcon={<ShoppingCartPlus strokeWidth={1.5} />}
                     onClick={() => {
                       addToCart.mutate(data.id);
                     }}
