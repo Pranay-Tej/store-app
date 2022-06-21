@@ -47,7 +47,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="mx-auto min-h-full max-w-5xl bg-white px-10 pt-10">
+    <div className="mx-auto min-h-full max-w-7xl bg-white px-10 pt-10">
       {cart.map(({ product: { id, price, image, title }, quantity }) => (
         <div
           key={id}
@@ -73,7 +73,7 @@ const Cart = () => {
                 aria-label="remove"
                 onClick={() => removeFromCart.mutate(id)}
               >
-                <Trash />
+                <Trash strokeWidth={1.5} />
               </ActionIcon>
             </p>
 
@@ -92,7 +92,7 @@ const Cart = () => {
                   }
                 }}
               >
-                <Minus />
+                <Minus strokeWidth={1.5} />
               </ActionIcon>
               {quantity}
               <ActionIcon
@@ -100,7 +100,7 @@ const Cart = () => {
                 aria-label="increase"
                 onClick={() => increaseQuantity({ product_id: id, quantity })}
               >
-                <Plus />
+                <Plus strokeWidth={1.5} />
               </ActionIcon>
             </div>
             <p className="font-semibold text-gray-800">

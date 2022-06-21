@@ -1,13 +1,12 @@
 import { SHIRUDO_APP_ID, SHIRUDO_BASE_URL } from '@/constants/app.constants';
 import { REQUIRED_FIELD_MESSAGE } from '@/constants/validation.constants';
 import { useAuthContext } from '@/context/auth.context';
-import { Button, TextInput, PasswordInput } from '@mantine/core';
+import { Button, PasswordInput, TextInput } from '@mantine/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Lock } from 'tabler-icons-react';
-import { User } from 'tabler-icons-react';
+import { Lock, User } from 'tabler-icons-react';
 
 interface LocationState {
   from: string;
@@ -60,7 +59,6 @@ const Login = () => {
         }
       );
       verifyUser(data?.jwt);
-      resetLoginForm();
     } catch (error: any) {
       setLoginError(error?.response?.data?.message);
     } finally {

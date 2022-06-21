@@ -1,15 +1,15 @@
 import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import {
+  CLEAR_CART,
   DELETE_CART_ITEM,
-  INSERT_CART_ITEMS_ONE,
   GET_CART_ITEMS,
-  UPDATE_CART_ITEM,
-  CLEAR_CART
+  INSERT_CART_ITEMS_ONE,
+  UPDATE_CART_ITEM
 } from '@/graphql/carts';
+import { createProtectedGraphQlClient } from '@/utils/graphql-instance';
 import React, { createContext, useEffect, useMemo } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useAuthContext } from './auth.context';
-import { useGraphqlClient } from './graphql-client.context';
 
 // interface CartItem {
 //   id: string;
@@ -45,13 +45,11 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [cart, setCart] = React.useState<any[]>([]);
 
   const { userId } = useAuthContext();
-  const { protectedGraphQlClient } = useGraphqlClient();
-  const queryClient = useQueryClient();
 
   const { refetch: fetchUserCart } = useQuery(
     REACT_QUERY_KEYS.GET_USER_CART_ITEMS,
     async () => {
-      const res = await protectedGraphQlClient.request(GET_CART_ITEMS, {
+      const res = await createProtectedGraphQlClient().request(GET_CART_ITEMS, {
         customer_id: userId
       });
       return res?.cart_items;
@@ -81,10 +79,13 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const addToCart = useMutation(
     async (product_id: string) => {
-      const res = await protectedGraphQlClient.request(INSERT_CART_ITEMS_ONE, {
-        product_id,
-        quantity: 1
-      });
+      const res = await createProtectedGraphQlClient().request(
+        INSERT_CART_ITEMS_ONE,
+        {
+          product_id,
+          quantity: 1
+        }
+      );
       return res?.insert_cart_items_one;
     },
     {
@@ -100,11 +101,14 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const updateCartQuantity = useMutation<any, any, any>(
     async ({ product_id, quantity }) => {
-      const res = await protectedGraphQlClient.request(UPDATE_CART_ITEM, {
-        product_id,
-        quantity,
-        customer_id: userId
-      });
+      const res = await createProtectedGraphQlClient().request(
+        UPDATE_CART_ITEM,
+        {
+          product_id,
+          quantity,
+          customer_id: userId
+        }
+      );
       return res?.update_cart_items;
     },
     {
@@ -140,10 +144,13 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const removeFromCart = useMutation(
     async product_id => {
-      const res = await protectedGraphQlClient.request(DELETE_CART_ITEM, {
-        product_id,
-        customer_id: userId
-      });
+      const res = await createProtectedGraphQlClient().request(
+        DELETE_CART_ITEM,
+        {
+          product_id,
+          customer_id: userId
+        }
+      );
       return res?.delete_cart_items;
     },
     {
@@ -159,7 +166,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const clearCart = useMutation(
     async () => {
-      const res = await protectedGraphQlClient.request(CLEAR_CART, {
+      const res = await createProtectedGraphQlClient().request(CLEAR_CART, {
         customer_id: userId
       });
       return res?.delete_cart_items;

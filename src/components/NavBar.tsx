@@ -9,7 +9,12 @@ import {
   Tooltip
 } from '@mantine/core';
 import { Link, useHistory } from 'react-router-dom';
-import { Location, Logout, ShoppingCart, SmartHome } from 'tabler-icons-react';
+import {
+  MapPin,
+  Logout,
+  ShoppingCart,
+  BuildingStore
+} from 'tabler-icons-react';
 
 const NavBar = () => {
   const history = useHistory();
@@ -24,11 +29,11 @@ const NavBar = () => {
 
   return (
     <nav className="sticky top-0 w-full bg-white shadow-md">
-      <div className="mx-auto flex max-w-5xl justify-between p-3 align-middle">
+      <div className="mx-auto flex max-w-7xl justify-between p-3 align-middle">
         <div>
           <Link to="/">
             <ActionIcon size="lg" aria-label="delete">
-              <SmartHome />
+              <BuildingStore strokeWidth={1.5} />
             </ActionIcon>
           </Link>
         </div>
@@ -59,11 +64,14 @@ const NavBar = () => {
               >
                 <Menu.Item
                   onClick={() => history.push('/profile/addresses')}
-                  icon={<Location />}
+                  icon={<MapPin strokeWidth={1.5} />}
                 >
                   My Addresses
                 </Menu.Item>
-                <Menu.Item onClick={handleLogout} icon={<Logout />}>
+                <Menu.Item
+                  onClick={handleLogout}
+                  icon={<Logout strokeWidth={1.5} />}
+                >
                   Logout
                 </Menu.Item>
               </Menu>
@@ -71,7 +79,7 @@ const NavBar = () => {
                 <Tooltip label="Cart">
                   <ActionIcon size="lg" aria-label="delete">
                     <Indicator label={cart.length}>
-                      <ShoppingCart />
+                      <ShoppingCart strokeWidth={1.5} />
                     </Indicator>
                   </ActionIcon>
                 </Tooltip>
