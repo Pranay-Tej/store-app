@@ -1,51 +1,50 @@
+import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import {
   MAX_LENGTH_MESSAGE,
   MIN_LENGTH_MESSAGE,
   REQUIRED_FIELD_MESSAGE
 } from '@/constants/validation.constants';
-import { useAxiosInstance } from '@/context/axios.context';
-import useApiCallStatus from '@/hooks/useApiCallStatus';
+import {
+  GET_ADDRESS_BY_PK,
+  INSERT_ADDRESS,
+  UPDATE_ADDRESS_BY_PK
+} from '@/graphql/addresses';
 import { Address } from '@/models/address.model';
-import { Button, Loader, Modal, TextInput } from '@mantine/core';
-import { AxiosResponse } from 'axios';
-import React, { useEffect } from 'react';
+import { createProtectedGraphQlClient } from '@/utils/graphql-instance';
+import {
+  Button,
+  Divider,
+  Loader,
+  LoadingOverlay,
+  Modal,
+  TextInput
+} from '@mantine/core';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface AddressForm {
   name: string;
   mobile: string;
-  houseNumber: string;
+  house: string;
   street: string;
   landmark: string;
   city: string;
-  zip: string;
+  pincode: string;
 }
 
 const TheAddressModal: React.FC<{
   isAddressModalOpen: boolean;
   toggleAddressModal: () => void;
-  addressId: number | null;
-  handleAddressModalClose: (shouldRefresh?: boolean) => void;
+  selectedAddressId: string | undefined;
+  onClose: () => void;
 }> = ({
   isAddressModalOpen,
   toggleAddressModal,
-  addressId,
-  handleAddressModalClose
+  selectedAddressId,
+  onClose
 }) => {
-  const { axiosInstance } = useAxiosInstance();
-
-  useEffect(() => {
-    if (addressId) {
-      fetchAddressById();
-    }
-    return () => {
-      // cleanup
-      resetAddressForm();
-      resetFetchAddressById();
-      resetSaveAddress();
-      resetUpdateAddress();
-    };
-  }, [addressId]);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -58,135 +57,139 @@ const TheAddressModal: React.FC<{
     defaultValues: {
       name: '',
       mobile: '',
-      houseNumber: '',
+      house: '',
       street: '',
       landmark: '',
       city: '',
-      zip: ''
+      pincode: ''
     }
   });
+
+  const {
+    isFetching: isFetchAddressByPkLoading,
+    isError: fetchAddressByPkError
+  } = useQuery<Address>(
+    REACT_QUERY_KEYS.GET_ADDRESS_BY_PK,
+    async () => {
+      const res = await createProtectedGraphQlClient().request(
+        GET_ADDRESS_BY_PK,
+        {
+          id: selectedAddressId
+        }
+      );
+      return res?.addresses_by_pk;
+    },
+    {
+      enabled: isAddressModalOpen && selectedAddressId !== undefined,
+      onSuccess: data => {
+        setFormValues(data);
+      }
+    }
+  );
 
   const setFormValues = ({
     name,
     mobile,
-    houseNumber,
+    house,
     street,
     landmark,
     city,
-    zip
+    pincode
   }: Address) => {
     setValue('name', name);
     setValue('mobile', mobile);
-    setValue('houseNumber', houseNumber);
+    setValue('house', house);
     setValue('street', street);
     setValue('landmark', landmark);
     setValue('city', city);
-    setValue('zip', zip);
-  };
-
-  const {
-    data: address,
-    isLoading: isFetchAddressByIdLoading,
-    setIsLoading: setIsFetchAddressByIdLoading,
-    errorMessage: fetchAddressByIdError,
-    setErrorMessage: setFetchAddressByIdError,
-    reset: resetFetchAddressById
-  } = useApiCallStatus<Address>();
-
-  const fetchAddressById = async () => {
-    try {
-      setIsFetchAddressByIdLoading(true);
-      const response: AxiosResponse<Address> = await axiosInstance.get(
-        `/addresses/${addressId}`
-      );
-
-      setFormValues(response.data);
-    } catch (error: any) {
-      setFetchAddressByIdError(error.message);
-    } finally {
-      setIsFetchAddressByIdLoading(false);
-    }
+    setValue('pincode', pincode);
   };
 
   // handle address form submit
   const handleAddressFormSubmit = (addressData: AddressForm) => {
-    if (addressId) {
-      updateAddress(addressData);
+    if (selectedAddressId) {
+      updateAddressByPk.mutate(addressData);
     } else {
-      saveAddress(addressData);
+      addAddress.mutate(addressData);
     }
   };
-
-  const {
-    isLoading: isSaveAddressLoading,
-    setIsLoading: setIsSaveAddressLoading,
-    errorMessage: saveAddressError,
-    setErrorMessage: setSaveAddressError,
-    reset: resetSaveAddress
-  } = useApiCallStatus<Address>();
 
   // Save address
-  const saveAddress = async (addressData: AddressForm) => {
-    try {
-      setIsSaveAddressLoading(true);
-      const response: AxiosResponse<Address> = await axiosInstance.post(
-        '/addresses',
-        addressData
-      );
-      handleClose(true);
-    } catch (error: any) {
-      console.error(error);
-      setSaveAddressError(error.message);
-    } finally {
-      setIsSaveAddressLoading(false);
+  const addAddress = useMutation<any, any, AddressForm>(
+    async addressData => {
+      const res = await createProtectedGraphQlClient().request(INSERT_ADDRESS, {
+        address_input: {
+          ...addressData
+        }
+      });
+      return res?.insert_addresses_one;
+    },
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(REACT_QUERY_KEYS.GET_ADDRESSES);
+        handleClose();
+      },
+      onError: err => {
+        console.error(err);
+      }
     }
-  };
+  );
 
   // Update address
-  const {
-    isLoading: isUpdateAddressLoading,
-    setIsLoading: setIsUpdateAddressLoading,
-    errorMessage: updateAddressError,
-    setErrorMessage: setUpdateAddressError,
-    reset: resetUpdateAddress
-  } = useApiCallStatus<Address>();
-
-  const updateAddress = async (addressData: AddressForm) => {
-    try {
-      setIsUpdateAddressLoading(true);
-      const response: AxiosResponse<Address> = await axiosInstance.put(
-        `/addresses/${addressId}`,
-        addressData
+  const updateAddressByPk = useMutation<any, any, AddressForm>(
+    async addressData => {
+      const res = await createProtectedGraphQlClient().request(
+        UPDATE_ADDRESS_BY_PK,
+        {
+          id: selectedAddressId,
+          address_input: {
+            ...addressData
+          }
+        }
       );
-      handleClose(true);
-    } catch (error: any) {
-      console.error(error);
-      setUpdateAddressError(error.message);
-    } finally {
-      setIsUpdateAddressLoading(false);
+      return res?.update_addresses_by_pk;
+    },
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(REACT_QUERY_KEYS.GET_ADDRESSES);
+        handleClose();
+      },
+      onError: err => {
+        console.error(err);
+      }
     }
-  };
+  );
 
-  const handleClose = (shouldRefresh: boolean = false) => {
-    handleAddressModalClose(shouldRefresh);
+  const handleClose = () => {
+    queryClient.cancelQueries(REACT_QUERY_KEYS.GET_ADDRESS_BY_PK);
+    resetAddressForm();
     toggleAddressModal();
+    onClose();
   };
 
   return (
     <>
       <Modal
+        overflow="inside"
         opened={isAddressModalOpen}
-        onClose={() => handleClose(false)}
-        title={addressId ? 'Update Address' : 'Save address'}
+        onClose={() => handleClose()}
+        title={selectedAddressId ? 'Update Address' : 'Save address'}
       >
-        {isFetchAddressByIdLoading ? (
-          <div className="grid min-h-full place-items-center">
-            <Loader variant="bars" />
-          </div>
-        ) : fetchAddressByIdError ? (
-          <p>{fetchAddressByIdError}</p>
+        {fetchAddressByPkError ? (
+          <p>{JSON.stringify(fetchAddressByPkError)}</p>
         ) : (
-          <>
+          <div className="relative">
+            <LoadingOverlay
+              loader={<Loader variant="bars" />}
+              visible={
+                isFetchAddressByPkLoading ||
+                // isSaveAddressLoading ||
+                addAddress.isLoading ||
+                // isUpdateAddressLoading
+                updateAddressByPk.isLoading
+              }
+            />
+
             <form
               onSubmit={handleSubmit(
                 data => handleAddressFormSubmit(data),
@@ -194,6 +197,11 @@ const TheAddressModal: React.FC<{
               )}
             >
               <div className="grid gap-y-4">
+                <Divider
+                  variant="dashed"
+                  label="Customer Details"
+                  labelPosition="center"
+                />
                 <Controller
                   name="name"
                   control={control}
@@ -234,15 +242,20 @@ const TheAddressModal: React.FC<{
                     minLength: { value: 10, message: MIN_LENGTH_MESSAGE(10) }
                   }}
                 />
+                <Divider
+                  variant="dashed"
+                  label="Location Details"
+                  labelPosition="center"
+                />
                 <Controller
-                  name="houseNumber"
+                  name="house"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
                     <TextInput
                       {...field}
                       label="House Number"
-                      error={errors?.houseNumber?.message}
+                      error={errors?.house?.message}
                     />
                   )}
                   rules={{
@@ -315,14 +328,14 @@ const TheAddressModal: React.FC<{
                   }}
                 />
                 <Controller
-                  name="zip"
+                  name="pincode"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
                     <TextInput
                       {...field}
                       label="Zip"
-                      error={errors?.zip?.message}
+                      error={errors?.pincode?.message}
                     />
                   )}
                   rules={{
@@ -336,43 +349,21 @@ const TheAddressModal: React.FC<{
                 />
               </div>
 
-              {saveAddressError && <p>{saveAddressError}</p>}
-              {updateAddressError && <p>{updateAddressError}</p>}
+              {addAddress.isError && <p>{JSON.stringify(addAddress.error)}</p>}
+              {/* {saveAddressError && <p>{saveAddressError}</p>} */}
+              {/* {updateAddressError && <p>{updateAddressError}</p>} */}
+              {updateAddressByPk.isError && (
+                <p>{JSON.stringify(updateAddressByPk.error)}</p>
+              )}
 
-              <Button
-                onClick={() => handleClose(false)}
-                loading={
-                  isFetchAddressByIdLoading ||
-                  isSaveAddressLoading ||
-                  isUpdateAddressLoading
-                }
-                disabled={
-                  fetchAddressByIdError !== undefined ||
-                  isFetchAddressByIdLoading ||
-                  isSaveAddressLoading ||
-                  isUpdateAddressLoading
-                }
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                loading={
-                  isFetchAddressByIdLoading ||
-                  isSaveAddressLoading ||
-                  isUpdateAddressLoading
-                }
-                disabled={
-                  fetchAddressByIdError !== undefined ||
-                  isFetchAddressByIdLoading ||
-                  isSaveAddressLoading ||
-                  isUpdateAddressLoading
-                }
-              >
-                Save
-              </Button>
+              <div className="flex justify-end gap-4">
+                <Button variant="white" onClick={() => handleClose()}>
+                  Cancel
+                </Button>
+                <Button type="submit">Save</Button>
+              </div>
             </form>
-          </>
+          </div>
         )}
       </Modal>
     </>

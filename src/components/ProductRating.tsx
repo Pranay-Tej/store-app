@@ -16,7 +16,7 @@ const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
         }`}
       >
         {rating}
-        <Star />
+        <Star strokeWidth={1.5} size={18} />
       </span>
       <span className="">({count})</span>
     </div>
