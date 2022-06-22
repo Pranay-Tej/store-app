@@ -1,34 +1,38 @@
 # React Store
 
-An E-commerce app built with React ecosystem
+An E-commerce app built with React ecosystem and Hasura (Nhost)
 
 ---
 
 ## Tech Stack
 
+- <a href="https://github.com/Pranay-Tej/shirudo" target="_blank">Shirudo</a>
+  (Authentication)
 - React
 - TypeScript
+- GraphQL
 - React Router
-- Zustand
+- React Query
 - React Hook Form
-- MUI
+- Mantine UI
+- React Context
 - Tailwind CSS
 - Vite
 - Prettier
 - prettier-plugin-tailwindcss
-- Fake Store API
 
 ---
 
 ## Hosting
 
-- Vercel
+- Netlify (Serverless functions)
+- Nhost (Hasura API and database)
 
 ---
 
 ## CI/CD
 
-- Vercel Auto-deploy
+- Netlify Auto-deploy
 
 ---
 

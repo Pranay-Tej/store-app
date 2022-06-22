@@ -28,7 +28,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="sticky top-0 w-full bg-white shadow-md">
+    <nav className="sticky top-0 w-full bg-white shadow-md z-10">
       <div className="mx-auto flex max-w-7xl justify-between p-3 align-middle">
         <div>
           <Link to="/">
