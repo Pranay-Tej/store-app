@@ -4,6 +4,7 @@ specifiers:
   '@mantine/core': ^4.2.10
   '@mantine/hooks': ^4.2.10
   '@netlify/functions': ^1.0.0
+  '@tailwindcss/line-clamp': ^0.4.0
   '@types/axios': ^0.14.0
   '@types/node': ^18.0.0
   '@types/react': ^17.0.0
@@ -42,6 +43,7 @@ dependencies:
   tabler-icons-react: 1.50.0_react@17.0.2
 
 devDependencies:
+  '@tailwindcss/line-clamp': 0.4.0_tailwindcss@2.2.19
   '@types/axios': 0.14.0
   '@types/node': 18.0.0
   '@types/react': 17.0.45
@@ -813,6 +815,17 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@tailwindcss/line-clamp/0.4.0_tailwindcss@2.2.19:
+    resolution:
+      {
+        integrity: sha512-HQZo6gfx1D0+DU3nWlNLD5iA6Ef4JAXh0LeD8lOGrJwEDBwwJNKQza6WoXhhY1uQrxOuU8ROxV7CqiQV4CoiLw==
+      }
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 2.2.19_ugi4xkrfysqkt4c4y6hkyfj344
     dev: true
 
   /@types/axios/0.14.0:

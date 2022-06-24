@@ -64,8 +64,8 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20">
-      <h1 className="text-lg my-5">Register</h1>
+    <div className="mx-auto mt-20 max-w-md rounded-sm border-t-4 border-solid border-blue-500 bg-white p-5 py-8">
+      <h1 className="mb-5 text-lg">Register</h1>
       <form
         onSubmit={handleSubmit(
           data => handleRegister(data),
@@ -85,9 +85,10 @@ const Register = () => {
             render={({ field }) => (
               <TextInput
                 {...field}
+                size="md"
                 label="Username or Email"
                 error={errors?.username?.message}
-                icon={<User size={16} />}
+                icon={<User size={18} />}
               />
             )}
           />
@@ -103,9 +104,10 @@ const Register = () => {
             render={({ field }) => (
               <PasswordInput
                 {...field}
+                size="md"
                 label="Password"
                 error={errors?.password?.message}
-                icon={<Lock size={16} />}
+                icon={<Lock size={18} />}
               />
             )}
           />
@@ -120,7 +122,7 @@ const Register = () => {
         </div>
       </form>
       {registerError && (
-        <p className="text-red-600 text-sm my-5">{registerError}</p>
+        <p className="my-5 text-sm text-red-600">{registerError}</p>
       )}
     </div>
   );

@@ -1,32 +1,27 @@
+import ManageCartItem from '@/components/ManageCartItem';
 import ProductRating from '@/components/ProductRating';
 import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { useCartContext } from '@/context/cart.context';
 import { GET_PRODUCT_BY_PK } from '@/graphql/products';
 import { graphqlClient } from '@/utils/graphql-instance';
-import { ActionIcon, Button, Loader } from '@mantine/core';
+import { Button, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
-import { Minus, Plus, ShoppingCartPlus } from 'tabler-icons-react';
+import { ShoppingCartPlus } from 'tabler-icons-react';
 
 const ProductView = () => {
   const history = useHistory();
   const { isAuthenticated } = useAuthContext();
 
-  const {
-    cart,
-    addToCart,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart
-  } = useCartContext();
+  const { cart, addToCart } = useCartContext();
   const [cartQuantity, setCartQuantity] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
 
   const {
-    data: data,
+    data: product,
     isLoading,
     error
   } = useQuery(
@@ -61,57 +56,30 @@ const ProductView = () => {
     );
 
   return (
-    <div className="mx-auto min-h-full max-w-7xl bg-white px-3 pt-10">
-      {data && (
+    <div className="px-50 mx-auto my-5 min-h-full max-w-7xl bg-white py-10">
+      {product && (
         <div className="p-3 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
-          <div className="h-96 w-full">
+          <div className="flex h-96 w-full justify-center">
             <img
               loading="lazy"
-              className="mx-auto h-full object-contain"
-              src={data.image}
-              alt={data.title}
+              className="h-full object-cover"
+              src={product.image}
+              alt={product.title}
             />
           </div>
           <div className="pt-4">
             <div className="my-4 ">
               {isAuthenticated ? (
                 cartQuantity > 0 ? (
-                  <div className="inline-flex items-center justify-center gap-3 rounded-sm border-2 border-gray-50">
-                    <ActionIcon
-                      size="lg"
-                      aria-label="decrease"
-                      onClick={() => {
-                        if (cartQuantity > 1) {
-                          decreaseQuantity({
-                            product_id: data.id,
-                            quantity: cartQuantity
-                          });
-                        } else {
-                          removeFromCart.mutate(data.id);
-                        }
-                      }}
-                    >
-                      <Minus strokeWidth={1.5} />
-                    </ActionIcon>
-                    <p className="text-lg font-semibold">{cartQuantity}</p>
-                    <ActionIcon
-                      size="lg"
-                      aria-label="increase"
-                      onClick={() => {
-                        increaseQuantity({
-                          product_id: data.id,
-                          quantity: cartQuantity
-                        });
-                      }}
-                    >
-                      <Plus strokeWidth={1.5} />
-                    </ActionIcon>
-                  </div>
+                  <ManageCartItem
+                    productId={product.id}
+                    quantity={cartQuantity}
+                  />
                 ) : (
                   <Button
                     leftIcon={<ShoppingCartPlus strokeWidth={1.5} />}
                     onClick={() => {
-                      addToCart.mutate(data.id);
+                      addToCart.mutate(product.id);
                     }}
                   >
                     Add to bag
@@ -127,16 +95,16 @@ const ProductView = () => {
                 </Button>
               )}
             </div>
-            <p className="mb-4 text-lg">{data.title}</p>
+            <p className="mb-4 text-lg">{product.title}</p>
             <ProductRating
-              rating={data?.rating?.rate}
-              count={data?.rating?.count}
+              rating={product?.rating?.rate}
+              count={product?.rating?.count}
             />
             <p className="mb-2 text-xl font-semibold text-gray-700">
-              {data.price}
+              &#8377; {product.price}
             </p>
             <p className="max-w-md text-base text-gray-600">
-              {data.description}
+              {product.description}
             </p>
           </div>
         </div>

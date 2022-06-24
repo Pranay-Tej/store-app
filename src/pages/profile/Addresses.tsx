@@ -62,16 +62,16 @@ const Addresses = () => {
   }
 
   return (
-    <div className="my-5 max-w-5xl mx-auto p-5 lg:p-10 bg-white">
+    <div className="my-5 mx-auto max-w-5xl bg-white p-5 lg:p-10">
       <Button onClick={toggleAddressModal} leftIcon={<Plus />}>
         New Address
       </Button>
-      <div className="grid gap-6 my-5">
+      <div className="my-5 grid gap-6">
         {addressList &&
           addressList.map(({ id, name, house, street, city, pincode }) => (
             <div
               key={id}
-              className="max-w-md border-2 border-gray-200 rounded-md p-4 text-sm"
+              className="max-w-md rounded-md border-2 border-gray-200 p-4 text-sm"
             >
               <div className="flex justify-between">
                 <p className="text-base">{name}</p>

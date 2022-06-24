@@ -1,4 +1,4 @@
 .cartGrid {
-  gap: 2rem;
-  grid-template-columns: 150px auto;
+  gap: 1rem;
+  grid-template-columns: 120px auto;
 }

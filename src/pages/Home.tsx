@@ -4,7 +4,7 @@ import { GET_PRODUCTS } from '@/graphql/products';
 import { ProductModel } from '@/models/product.model';
 import styles from '@/pages/Home.module.css';
 import { graphqlClient } from '@/utils/graphql-instance';
-import { Loader } from '@mantine/core';
+import { Card, Image, Loader } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ const Home = () => {
 
   return (
     <div
-      className={`${styles.productGrid} my-5 mx-auto max-w-7xl bg-white px-3 pt-8`}
+      className={`${styles.productGrid} my-5 mx-auto max-w-7xl bg-white px-5 py-8`}
     >
       {productList &&
         productList.map(
@@ -52,6 +52,20 @@ const Home = () => {
                 category={category}
                 rating={rating}
               />
+              {/* <Card shadow="sm" p="md" className="group group-hover:scale-110">
+                <Card.Section>
+                  <Image src={image} height={300} alt="Norway" />
+                </Card.Section>
+                <div className="mt-4">
+                  <p className="text-sm font-medium">{title}</p>
+                  <p className="mt-3 font-semibold text-gray-800">
+                    &#8377; {price}
+                  </p>
+                  <p className="mt-3 overflow-hidden overflow-ellipsis text-xs text-gray-800 line-clamp-2">
+                    {description}
+                  </p>
+                </div>
+              </Card> */}
             </Link>
           )
         )}

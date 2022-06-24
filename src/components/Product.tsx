@@ -20,12 +20,12 @@ const Product: React.FC<ProductModel> = ({
         className={`${styles.productImage}`}
         style={{ backgroundImage: `url(${image})` }}
       > */}
-      <div className="flex justify-center">
+      <div className="overflow-hidden">
         <img
           loading="lazy"
           src={image}
           alt={title}
-          className="h-full object-contain"
+          className="h-auto min-h-full object-cover object-center"
         />
       </div>
       <div className="grid gap-2 p-3">
@@ -35,6 +35,9 @@ const Product: React.FC<ProductModel> = ({
           </p>
         </Tooltip>
         <p className="font-semibold text-gray-700">{price}</p>
+        <p className="mt-3 overflow-hidden overflow-ellipsis text-xs text-gray-800 line-clamp-2">
+          {description}
+        </p>
       </div>
     </div>
   );

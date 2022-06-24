@@ -30,16 +30,7 @@ interface ICartContext {
   clearCart: any;
 }
 
-const CartContext = createContext<ICartContext>({
-  fetchUserCart: () => {},
-  cart: [],
-  subTotal: 0,
-  addToCart: () => {},
-  increaseQuantity: () => {},
-  decreaseQuantity: () => {},
-  removeFromCart: () => {},
-  clearCart: () => {}
-});
+const CartContext = createContext({} as ICartContext);
 
 export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [cart, setCart] = React.useState<any[]>([]);
