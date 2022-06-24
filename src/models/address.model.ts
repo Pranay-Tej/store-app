@@ -1,10 +1,10 @@
 export interface Address {
-  id: number;
+  id: string;
   name: string;
   mobile: string;
-  houseNumber: string;
+  house: string;
   street: string;
   landmark: string;
   city: string;
-  zip: string;
+  pincode: string;
 }

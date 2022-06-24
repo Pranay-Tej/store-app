@@ -1,5 +1,6 @@
 import '@//App.css';
 import NavBar from '@/components/NavBar';
+import { Loader } from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
@@ -16,7 +17,13 @@ function App() {
   return (
     <>
       <NavBar />
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense
+        fallback={
+          <div className="grid min-h-screen place-items-center">
+            <Loader variant="bars" />
+          </div>
+        }
+      >
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/accounts/login" component={Login} />

@@ -1,43 +1,38 @@
 import Product from '@/components/Product';
-import { FAKE_STORE_API_BASE_URL } from '@/constants/app.constants';
-import useAxiosGet from '@/hooks/useAxiosGet';
+import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
+import { GET_PRODUCTS } from '@/graphql/products';
 import { ProductModel } from '@/models/product.model';
 import styles from '@/pages/Home.module.css';
-import CircularProgress from '@mui/material/CircularProgress';
-import { useEffect } from 'react';
+import { graphqlClient } from '@/utils/graphql-instance';
+import { Card, Image, Loader } from '@mantine/core';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
   const {
-    fetchData: fetchAllProducts,
+    data: productList,
     isLoading,
-    data,
-    errorMessage
-  } = useAxiosGet<ProductModel[]>();
-
-  useEffect(() => {
-    fetchAllProducts({
-      url: `${FAKE_STORE_API_BASE_URL}/products`,
-      isProtected: true
-    });
-    return () => {};
-  }, []);
+    error
+  } = useQuery(REACT_QUERY_KEYS.GET_PRODUCTS, async () => {
+    const res = await graphqlClient.request(GET_PRODUCTS);
+    return res?.products;
+  });
 
   if (isLoading)
     return (
       <div className="grid min-h-screen place-items-center">
-        <CircularProgress />
+        <Loader variant="bars" />
       </div>
     );
 
-  if (errorMessage) return <div>Error</div>;
+  if (error) return <div>{JSON.stringify(error)}</div>;
 
   return (
     <div
-      className={`${styles.productGrid} my-5 mx-auto max-w-5xl bg-white px-3 pt-8`}
+      className={`${styles.productGrid} my-5 mx-auto max-w-7xl bg-white px-5 py-8`}
     >
-      {data &&
-        data.map(
+      {productList &&
+        productList.map(
           ({
             id,
             title,
@@ -57,6 +52,20 @@ const Home = () => {
                 category={category}
                 rating={rating}
               />
+              {/* <Card shadow="sm" p="md" className="group group-hover:scale-110">
+                <Card.Section>
+                  <Image src={image} height={300} alt="Norway" />
+                </Card.Section>
+                <div className="mt-4">
+                  <p className="text-sm font-medium">{title}</p>
+                  <p className="mt-3 font-semibold text-gray-800">
+                    &#8377; {price}
+                  </p>
+                  <p className="mt-3 overflow-hidden overflow-ellipsis text-xs text-gray-800 line-clamp-2">
+                    {description}
+                  </p>
+                </div>
+              </Card> */}
             </Link>
           )
         )}

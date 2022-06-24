@@ -1,12 +1,16 @@
 import React from 'react';
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import { Star } from 'tabler-icons-react';
 
 const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
   rating,
   count
 }) => {
-  if (count <= 0) {
-    return <div className="inline-flex">No ratings yet</div>;
+  if (!count || count <= 0) {
+    return (
+      <div className="mb-4 inline-flex text-sm text-gray-800">
+        No ratings yet
+      </div>
+    );
   }
   return (
     <div className="mb-4 inline-flex items-center gap-2">
@@ -16,7 +20,7 @@ const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
         }`}
       >
         {rating}
-        <StarOutlineIcon fontSize="small" />
+        <Star strokeWidth={1.5} size={18} />
       </span>
       <span className="">({count})</span>
     </div>
