@@ -8,5 +8,6 @@ module.exports = {
   endOfLine: 'lf',
   trailingComma: 'none',
   proseWrap: 'always',
-  arrowParens: 'avoid'
+  arrowParens: 'avoid',
+  plugins: [require('prettier-plugin-tailwindcss')]
 };

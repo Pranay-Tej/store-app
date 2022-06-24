@@ -28,6 +28,7 @@
     "tabler-icons-react": "^1.50.0"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.0",
     "@types/axios": "^0.14.0",
     "@types/node": "^18.0.0",
     "@types/react": "^17.0.0",

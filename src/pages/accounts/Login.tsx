@@ -67,8 +67,8 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20">
-      <h1 className="text-lg my-5">Login</h1>
+    <div className="mx-auto mt-20 max-w-md rounded-sm border-t-4 border-solid border-blue-500 bg-white p-5 py-8">
+      <h1 className="mb-5 text-lg">Login</h1>
       <form
         onSubmit={handleSubmit(
           data => handleLogin(data),
@@ -88,9 +88,10 @@ const Login = () => {
             render={({ field }) => (
               <TextInput
                 {...field}
+                size="md"
                 label="Username or Email"
                 error={errors?.identity?.message}
-                icon={<User size={16} />}
+                icon={<User size={18} />}
               />
             )}
           />
@@ -106,9 +107,10 @@ const Login = () => {
             render={({ field }) => (
               <PasswordInput
                 {...field}
+                size="md"
                 label="Password"
                 error={errors?.password?.message}
-                icon={<Lock size={16} />}
+                icon={<Lock size={18} />}
               />
             )}
           />
@@ -122,7 +124,7 @@ const Login = () => {
           </Button>
         </div>
       </form>
-      {loginError && <p className="text-red-600 text-sm my-5">{loginError}</p>}
+      {loginError && <p className="my-5 text-sm text-red-600">{loginError}</p>}
     </div>
   );
 };

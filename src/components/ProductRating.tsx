@@ -5,8 +5,12 @@ const ProductRating: React.FC<{ rating: Number; count: Number }> = ({
   rating,
   count
 }) => {
-  if (count <= 0) {
-    return <div className="inline-flex">No ratings yet</div>;
+  if (!count || count <= 0) {
+    return (
+      <div className="mb-4 inline-flex text-sm text-gray-800">
+        No ratings yet
+      </div>
+    );
   }
   return (
     <div className="mb-4 inline-flex items-center gap-2">
