@@ -5,7 +5,6 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "api": "json-server --watch db.json --port 3001",
     "format": "prettier --write .",
     "netlify-functions:serve": "netlify functions:serve",
     "localtunnel": "lt --port 9999 --subdomain store-hasura",

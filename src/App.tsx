@@ -12,6 +12,7 @@ const Login = lazy(() => import('@/pages/accounts/Login'));
 const Cart = lazy(() => import('@/pages/Cart'));
 const ProductView = lazy(() => import('@/pages/ProductView'));
 const Addresses = lazy(() => import('@/pages/profile/Addresses'));
+const Payment = lazy(() => import('@/pages/Payment'));
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           </ProtectedRoute>
           <Route path="/product/:id" component={ProductView} />
           <Route path="/profile/addresses" component={Addresses} />
+          <Route path="/payment" component={Payment} />
         </Switch>
       </Suspense>
     </>
