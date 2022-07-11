@@ -13,6 +13,7 @@ const Cart = lazy(() => import('@/pages/Cart'));
 const ProductView = lazy(() => import('@/pages/ProductView'));
 const Addresses = lazy(() => import('@/pages/profile/Addresses'));
 const Payment = lazy(() => import('@/pages/Payment'));
+const Orders = lazy(() => import('@/pages/orders/Orders'));
 
 function App() {
   return (
@@ -29,12 +30,19 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/accounts/login" component={Login} />
           <Route path="/accounts/register" component={Register} />
+          <Route path="/product/:id" component={ProductView} />
           <ProtectedRoute path="/cart">
             <Cart />
           </ProtectedRoute>
-          <Route path="/product/:id" component={ProductView} />
-          <Route path="/profile/addresses" component={Addresses} />
-          <Route path="/payment" component={Payment} />
+          <ProtectedRoute path="/profile/addresses">
+            <Addresses />
+          </ProtectedRoute>
+          <ProtectedRoute path="/payment">
+            <Payment />
+          </ProtectedRoute>
+          <ProtectedRoute path="/orders">
+            <Orders />
+          </ProtectedRoute>
         </Switch>
       </Suspense>
     </>

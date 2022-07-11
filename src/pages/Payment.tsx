@@ -1,10 +1,12 @@
 import { NETLIFY_FUNCTIONS_BASE_URL } from '@/constants/app.constants';
 import { useAxiosInstance } from '@/context/axios.context';
 import { useUrlQuery } from '@/hooks/useUrlQuery';
-import { Loader } from '@mantine/core';
+import { Button, Loader } from '@mantine/core';
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { Link } from 'react-router-dom';
+import { DiscountCheck } from 'tabler-icons-react';
 
 const Payment = () => {
   const { protectedAxiosInstance } = useAxiosInstance();
@@ -38,18 +40,29 @@ const Payment = () => {
 
   return (
     <div className="mx-auto my-5 min-h-full max-w-7xl bg-white px-5 py-10 lg:px-10">
-      {verifyPayment.isLoading && (
-        <div className="max-w5xl mx-auto">
-          <Loader variant="bars" />
-          <p>Verifying payment status</p>
-        </div>
-      )}
-      {order?.status === 'PAID' && (
-        <div>
-          <p>Payment successful</p>
-          <p>Order id: {order.id}</p>
-        </div>
-      )}
+      <div className="mx-auto max-w-2xl">
+        {verifyPayment.isLoading && (
+          <div className="max-w5xl mx-auto">
+            <Loader variant="bars" />
+            <p>Verifying payment status</p>
+          </div>
+        )}
+        {order?.status === 'PAID' && (
+          <div className="grid justify-items-center gap-2">
+            <DiscountCheck
+              size={60}
+              strokeWidth={1}
+              color={'#40bf64'}
+              className="inline-block"
+            />
+            <p>Payment successful</p>
+            <p>Order Id: {order.id}</p>
+            <Link to={`/orders/${order.id}`}>
+              <Button>Go to Order</Button>
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

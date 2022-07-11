@@ -123,7 +123,7 @@ const Cart = () => {
           size="sm"
         >
           <Stepper.Step label="Cart" description="Cart summary">
-            <div className="py-5">
+            <div className="mx-auto max-w-2xl py-5">
               {cart.map(
                 ({ product: { id, price, image, title }, quantity }) => (
                   <div
@@ -186,7 +186,7 @@ const Cart = () => {
             description="Select a delivery address"
           >
             {/* Addresses */}
-            <div className="mt-5">
+            <div className="mx-auto mt-5 max-w-2xl">
               <div className="my-5 grid gap-6">
                 {addressList &&
                   addressList.map(
@@ -254,19 +254,18 @@ const Cart = () => {
                   setSelectedAddressId(undefined);
                 }}
               />
-            </div>
-
-            <div className="mt-5 flex items-center gap-2">
-              <Button variant="light" onClick={() => setActiveStep(0)}>
-                Previous
-              </Button>
-              <Button
-                onClick={() => handleCheckout.mutate()}
-                loading={handleCheckout.isLoading}
-                size="lg"
-              >
-                Place Order
-              </Button>
+              <div className="mt-5 flex items-center gap-2">
+                <Button variant="light" onClick={() => setActiveStep(0)}>
+                  Previous
+                </Button>
+                <Button
+                  onClick={() => handleCheckout.mutate()}
+                  loading={handleCheckout.isLoading}
+                  size="lg"
+                >
+                  Place Order
+                </Button>
+              </div>
             </div>
           </Stepper.Step>
         </Stepper>
