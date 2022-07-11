@@ -183,9 +183,7 @@ const TheAddressModal: React.FC<{
               loader={<Loader variant="bars" />}
               visible={
                 isFetchAddressByPkLoading ||
-                // isSaveAddressLoading ||
                 addAddress.isLoading ||
-                // isUpdateAddressLoading
                 updateAddressByPk.isLoading
               }
             />
@@ -350,8 +348,6 @@ const TheAddressModal: React.FC<{
               </div>
 
               {addAddress.isError && <p>{JSON.stringify(addAddress.error)}</p>}
-              {/* {saveAddressError && <p>{saveAddressError}</p>} */}
-              {/* {updateAddressError && <p>{updateAddressError}</p>} */}
               {updateAddressByPk.isError && (
                 <p>{JSON.stringify(updateAddressByPk.error)}</p>
               )}

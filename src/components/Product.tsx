@@ -34,7 +34,7 @@ const Product: React.FC<ProductModel> = ({
             {title}
           </p>
         </Tooltip>
-        <p className="font-semibold text-gray-700">{price}</p>
+        <p className="font-semibold text-gray-700">&#8377; {price}</p>
         <p className="mt-3 overflow-hidden overflow-ellipsis text-xs text-gray-800 line-clamp-2">
           {description}
         </p>

@@ -8,17 +8,16 @@ import {
   Menu,
   Tooltip
 } from '@mantine/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
-  MapPin,
+  BuildingStore,
   Logout,
-  ShoppingCart,
-  BuildingStore
+  MapPin,
+  Package,
+  ShoppingCart
 } from 'tabler-icons-react';
 
 const NavBar = () => {
-  const history = useHistory();
-
   const { isAuthenticated, logout } = useAuthContext();
 
   const { cart } = useCartContext();
@@ -53,21 +52,27 @@ const NavBar = () => {
               <Menu
                 withArrow
                 control={
-                  <Tooltip label="Account settings">
+                  <Tooltip label="My Account">
                     <ActionIcon size="lg">
-                      <Avatar alt="no image here" color="indigo">
-                        SP
-                      </Avatar>
+                      <Avatar alt="" color="indigo"></Avatar>
                     </ActionIcon>
                   </Tooltip>
                 }
               >
-                <Menu.Item
-                  onClick={() => history.push('/profile/addresses')}
-                  icon={<MapPin strokeWidth={1.5} />}
-                >
-                  My Addresses
-                </Menu.Item>
+                <Link to="/orders">
+                  <Menu.Item
+                    icon={<Package strokeWidth={1.5} color={'#228be6'} />}
+                  >
+                    Orders
+                  </Menu.Item>
+                </Link>
+                <Link to="/profile/addresses">
+                  <Menu.Item
+                    icon={<MapPin strokeWidth={1.5} color={'#228be6'} />}
+                  >
+                    Addresses
+                  </Menu.Item>
+                </Link>
                 <Menu.Item
                   onClick={handleLogout}
                   icon={<Logout strokeWidth={1.5} />}
