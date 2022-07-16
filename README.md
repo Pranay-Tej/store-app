@@ -1,6 +1,7 @@
-# React Store
+# React Serverless Store
 
-An E-commerce app built with React ecosystem and Hasura (Nhost)
+An E-commerce app built with React ecosystem, Hasura (Nhost) & Netlify
+serverless functions
 
 ---
 
@@ -8,6 +9,7 @@ An E-commerce app built with React ecosystem and Hasura (Nhost)
 
 - <a href="https://github.com/Pranay-Tej/shirudo" target="_blank">Shirudo</a>
   (Authentication)
+- Cashfree (Payment Gateway)
 - React
 - TypeScript
 - GraphQL
@@ -25,8 +27,9 @@ An E-commerce app built with React ecosystem and Hasura (Nhost)
 
 ## Hosting
 
-- Netlify (Serverless functions)
-- Nhost (Hasura API and database)
+- Netlify (React Frontend)
+- Netlify (Serverless Functions)
+- Nhost (Hasura API and Database)
 
 ---
 
@@ -39,5 +42,7 @@ An E-commerce app built with React ecosystem and Hasura (Nhost)
 ## Local Setup
 
 - `git clone REPO_URL`
+- create `.env.local`
+- copy `.env.example` to `.env.local`
 - `npm install` to install dependencies
 - `npm run dev` to run development server

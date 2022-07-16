@@ -48,13 +48,11 @@ export const AxiosProvider: React.FC<React.ReactNode> = ({ children }) => {
       return response;
     },
     error => {
-      if (error.message === 'Network Error') {
+      if (error?.message === 'Network Error') {
         console.error('Network Error');
       }
 
-      const { status } = error.response;
-
-      if (status === 401) {
+      if (error?.response?.status === 401) {
         logout();
       }
 
