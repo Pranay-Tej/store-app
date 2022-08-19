@@ -77,10 +77,10 @@ const OrderList = () => {
                   </p>
                   <p>
                     <span className="text-gray-600">Delivery to: </span>
-                    {order.address.name}
+                    {order.name}
                   </p>
                   <p>
-                    {order.address.city}, {order.address.pincode}
+                    {order.city}, {order.pincode}
                   </p>
                 </div>
               </div>

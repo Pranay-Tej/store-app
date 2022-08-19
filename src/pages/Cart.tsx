@@ -28,7 +28,7 @@ const Cart = () => {
   const { userId } = useAuthContext();
 
   const [activeStep, setActiveStep] = useState(0);
-  const [addressIdForOrder, setAddressIdForOrder] = useState<string>();
+  const [addressForOrder, setAddressForOrder] = useState<Address>();
   const [selectedAddressId, setSelectedAddressId] = useState<string>();
 
   const { value: isAddressModalOpen, toggle: toggleAddressModal } =
@@ -50,8 +50,8 @@ const Cart = () => {
     },
     {
       onSuccess: res => {
-        if (res?.length > 0 && !addressIdForOrder) {
-          setAddressIdForOrder(res[0].id);
+        if (res?.length > 0 && !addressForOrder) {
+          setAddressForOrder(res[0]);
         }
       }
     }
@@ -76,6 +76,8 @@ const Cart = () => {
 
   const handleCheckout = useMutation(
     async () => {
+      const { name, mobile, house, street, landmark, city, pincode } =
+        addressForOrder as Address;
       const res: AxiosResponse<any> = await protectedAxiosInstance.post(
         `${NETLIFY_FUNCTIONS_BASE_URL}/order`,
         {
@@ -85,7 +87,13 @@ const Cart = () => {
             price: item.product.price
           })),
           customer_id: userId,
-          address_id: addressIdForOrder
+          name,
+          mobile,
+          house,
+          street,
+          landmark,
+          city,
+          pincode
         }
       );
       return res?.data?.payment_link;
@@ -189,12 +197,13 @@ const Cart = () => {
             <div className="mx-auto mt-5 max-w-2xl">
               <div className="my-5 grid gap-6">
                 {addressList &&
-                  addressList.map(
-                    ({ id, name, house, street, city, pincode }) => (
+                  addressList.map(address => {
+                    const { id, name, house, street, city, pincode } = address;
+                    return (
                       <div
                         key={id}
                         className={`max-w-md rounded-md border-2 p-4 text-sm ${
-                          addressIdForOrder === id
+                          addressForOrder?.id === id
                             ? 'border-blue-500'
                             : 'border-gray-200'
                         }`}
@@ -212,16 +221,20 @@ const Cart = () => {
                             </ActionIcon>
                             <ActionIcon
                               onClick={() => {
-                                setAddressIdForOrder(id);
+                                setAddressForOrder(address);
                               }}
                             >
                               <CircleCheck
                                 strokeWidth={1.5}
                                 fill={
-                                  addressIdForOrder === id ? '#228be6' : 'white'
+                                  addressForOrder?.id === id
+                                    ? '#228be6'
+                                    : 'white'
                                 }
                                 color={
-                                  addressIdForOrder === id ? 'white' : '#228be6'
+                                  addressForOrder?.id === id
+                                    ? 'white'
+                                    : '#228be6'
                                 }
                               />
                             </ActionIcon>
@@ -233,8 +246,8 @@ const Cart = () => {
                           {city} - {pincode}
                         </div>
                       </div>
-                    )
-                  )}
+                    );
+                  })}
               </div>
 
               <Button
