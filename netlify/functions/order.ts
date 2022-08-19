@@ -10,14 +10,26 @@ const INSERT_ORDERS_ONE = gql`
     $data: [order_items_insert_input!]!
     $status: String = "PENDING"
     $amount: Int
-    $address_id: uuid!
+    $name: String
+    $mobile: numeric
+    $house: String
+    $street: String
+    $landmark: String
+    $city: String
+    $pincode: numeric
   ) {
     insert_orders_one(
       object: {
         status: $status
         order_items: { data: $data }
         amount: $amount
-        address_id: $address_id
+        name: $name
+        mobile: $mobile
+        house: $house
+        street: $street
+        landmark: $landmark
+        city: $city
+        pincode: $pincode
       }
     ) {
       customer_id
@@ -48,13 +60,32 @@ const handler: Handler = async (event, context) => {
     }
 
     const body = JSON.parse(event.body || '{}');
-    const { customer_id, order, address_id } = body;
+    const {
+      customer_id,
+      order,
+      name,
+      mobile,
+      house,
+      street,
+      landmark,
+      city,
+      pincode
+    } = body;
 
-    if (!customer_id || !order || !address_id) {
+    if (
+      !customer_id ||
+      !order ||
+      !name ||
+      !mobile ||
+      !house ||
+      !street ||
+      !city ||
+      !pincode
+    ) {
       return {
         statusCode: STATUS_CODES.BAD_REQUEST,
         body: JSON.stringify({
-          message: 'customer_id, order & address_id are required'
+          message: 'customer_id, order & address fields are required'
         })
       };
     }
@@ -84,7 +115,13 @@ const handler: Handler = async (event, context) => {
           data: order_items,
           status: 'PENDING',
           amount: order_amount,
-          address_id
+          name,
+          mobile,
+          house,
+          street,
+          landmark,
+          city,
+          pincode
         }
       );
 

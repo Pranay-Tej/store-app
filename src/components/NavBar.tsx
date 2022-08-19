@@ -14,7 +14,8 @@ import {
   Logout,
   MapPin,
   Package,
-  ShoppingCart
+  ShoppingCart,
+  BrandGithub
 } from 'tabler-icons-react';
 
 const NavBar = () => {
@@ -31,19 +32,32 @@ const NavBar = () => {
       <div className="mx-auto flex max-w-7xl justify-between p-3 align-middle">
         <div>
           <Link to="/">
-            <ActionIcon size="lg" aria-label="delete">
-              <BuildingStore strokeWidth={1.5} />
-            </ActionIcon>
+            <Tooltip label="React Store">
+              <ActionIcon size="lg" aria-label="delete">
+                <BuildingStore strokeWidth={1.5} />
+              </ActionIcon>
+            </Tooltip>
           </Link>
         </div>
         <div className="flex gap-4">
+          <Tooltip label="GitHub Repo">
+            <a
+              href="https://github.com/Pranay-Tej/react-store"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ActionIcon size="lg" aria-label="delete">
+                <BrandGithub strokeWidth={1.5} />
+              </ActionIcon>
+            </a>
+          </Tooltip>
           {isAuthenticated === false && (
             <>
+              <Link to="/accounts/login">
+                <Button variant="subtle">Login</Button>
+              </Link>
               <Link to="/accounts/register">
                 <Button>Signup</Button>
-              </Link>
-              <Link to="/accounts/login">
-                <Button>Login</Button>
               </Link>
             </>
           )}

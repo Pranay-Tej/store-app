@@ -108,12 +108,12 @@ const Order = () => {
         <div>
           <h2 className="mb-3 font-medium">Delivery Address</h2>
           <div className="grid gap-2">
-            <p>{order.address.name}</p>
-            <p>{order.address.mobile}</p>
-            <p>{order.address.house}</p>
-            <p>{order.address.street}</p>
+            <p>{order.name}</p>
+            <p>{order.mobile}</p>
+            <p>{order.house}</p>
+            <p>{order.street}</p>
             <p>
-              {order.address.city}, {order.address.pincode}
+              {order.city}, {order.pincode}
             </p>
           </div>
         </div>

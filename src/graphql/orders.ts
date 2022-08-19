@@ -10,15 +10,13 @@ export const GET_ORDERS = gql`
       id
       amount
       status
-      address {
-        city
-        name
-        mobile
-        landmark
-        house
-        pincode
-        street
-      }
+      name
+      mobile
+      house
+      street
+      landmark
+      city
+      pincode
       order_items {
         id
         quantity
@@ -40,15 +38,13 @@ export const GET_ORDERS_BY_PK = gql`
       id
       amount
       status
-      address {
-        city
-        name
-        mobile
-        landmark
-        house
-        pincode
-        street
-      }
+      name
+      mobile
+      house
+      street
+      landmark
+      city
+      pincode
       order_items {
         id
         quantity

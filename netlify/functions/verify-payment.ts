@@ -11,6 +11,10 @@ const UPDATE_ORDER_BY_PK = gql`
       amount
       id
       status
+      name
+      house
+      city
+      pincode
       order_items {
         id
         quantity
@@ -20,12 +24,6 @@ const UPDATE_ORDER_BY_PK = gql`
           title
           price
         }
-      }
-      address {
-        city
-        house
-        name
-        pincode
       }
     }
   }
