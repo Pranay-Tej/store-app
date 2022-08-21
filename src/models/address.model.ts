@@ -4,7 +4,9 @@ export interface Address {
   mobile: string;
   house: string;
   street: string;
-  landmark: string;
+  landmark?: string | null | undefined;
   city: string;
   pincode: string;
 }
+
+export type AddressResponse = Address & { __typename: 'addresses' | undefined };

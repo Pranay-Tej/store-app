@@ -16,12 +16,9 @@ const ManageCartItem: React.FC<{ productId: string; quantity: number }> = ({
         aria-label="decrease"
         onClick={() => {
           if (quantity > 1) {
-            decreaseQuantity({
-              product_id: productId,
-              quantity: quantity
-            });
+            decreaseQuantity(productId, quantity);
           } else {
-            removeFromCart.mutate(productId);
+            removeFromCart(productId);
           }
         }}
       >
@@ -32,10 +29,7 @@ const ManageCartItem: React.FC<{ productId: string; quantity: number }> = ({
         size="lg"
         aria-label="increase"
         onClick={() => {
-          increaseQuantity({
-            product_id: productId,
-            quantity: quantity
-          });
+          increaseQuantity(productId, quantity);
         }}
       >
         <Plus strokeWidth={1.5} />

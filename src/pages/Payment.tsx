@@ -4,7 +4,7 @@ import { useUrlQuery } from '@/hooks/useUrlQuery';
 import { Button, Loader } from '@mantine/core';
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { DiscountCheck } from 'tabler-icons-react';
 
