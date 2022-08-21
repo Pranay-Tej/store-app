@@ -1,13 +1,14 @@
 import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
-import { DELETE_ADDRESS_BY_PK, GET_ADDRESSES } from '@/graphql/addresses';
 import useToggle from '@/hooks/useToggle';
-import { Address } from '@/models/address.model';
 import TheAddressModal from '@/pages/profile/components/TheAddressModal';
-import { createProtectedGraphQlClient } from '@/utils/graphql-instance';
+import {
+  useDeleteAddressByPkMutation,
+  useGetAddressesQuery
+} from '@/utils/__generated__/graphql';
 import { ActionIcon, Button, Loader } from '@mantine/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { MapPin, Pencil, Plus, Trash } from 'tabler-icons-react';
 
 const Addresses = () => {
@@ -22,32 +23,23 @@ const Addresses = () => {
     data: addressList,
     isLoading,
     error
-  } = useQuery<Address[]>(REACT_QUERY_KEYS.GET_ADDRESSES, async () => {
-    const res = await createProtectedGraphQlClient().request(GET_ADDRESSES, {
+  } = useGetAddressesQuery(
+    {
       customer_id: userId
-    });
-    return res?.addresses;
-  });
-
-  const deleteAddressByPk = useMutation(
-    async (addressId: string) => {
-      const res = await createProtectedGraphQlClient().request(
-        DELETE_ADDRESS_BY_PK,
-        {
-          id: addressId
-        }
-      );
-      return res?.delete_addresses_by_pk;
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(REACT_QUERY_KEYS.GET_ADDRESSES);
-      },
-      onError: err => {
-        console.error(err);
-      }
+      select: res => res.addresses
     }
   );
+
+  const deleteAddressByPk = useDeleteAddressByPkMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.GET_ADDRESSES]);
+    },
+    onError: err => {
+      console.error(err);
+    }
+  });
 
   if (error) {
     return <div>{JSON.stringify(error)}</div>;
@@ -96,7 +88,7 @@ const Addresses = () => {
                     </ActionIcon>
                     <ActionIcon
                       onClick={() => {
-                        deleteAddressByPk.mutate(id);
+                        deleteAddressByPk.mutate({ id });
                       }}
                       className="text-red-400"
                     >

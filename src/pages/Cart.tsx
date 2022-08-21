@@ -1,17 +1,15 @@
 import ManageCartItem from '@/components/ManageCartItem';
 import { NETLIFY_FUNCTIONS_BASE_URL } from '@/constants/app.constants';
-import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { useAxiosInstance } from '@/context/axios.context';
-import { useCartContext } from '@/context/cart.context';
-import { GET_ADDRESSES } from '@/graphql/addresses';
+import { useCartContext, useUserCartQuery } from '@/context/cart.context';
 import useToggle from '@/hooks/useToggle';
 import { Address } from '@/models/address.model';
-import { createProtectedGraphQlClient } from '@/utils/graphql-instance';
-import { ActionIcon, Button, Divider, Stepper } from '@mantine/core';
+import { useGetAddressesQuery } from '@/utils/__generated__/graphql';
+import { ActionIcon, Button, Loader, Stepper } from '@mantine/core';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CircleCheck,
@@ -34,45 +32,31 @@ const Cart = () => {
   const { value: isAddressModalOpen, toggle: toggleAddressModal } =
     useToggle(false);
 
-  const { cart, subTotal, removeFromCart, fetchUserCart } = useCartContext();
+  const { removeFromCart } = useCartContext();
+  const { data: cart, isLoading } = useUserCartQuery();
 
-  const {
-    data: addressList,
-    isLoading,
-    error
-  } = useQuery<Address[]>(
-    REACT_QUERY_KEYS.GET_ADDRESSES,
-    async () => {
-      const res = await createProtectedGraphQlClient().request(GET_ADDRESSES, {
+  const subTotal = useMemo(() => {
+    return (
+      cart?.reduce((acc, curr) => {
+        return acc + curr?.product?.price * curr?.quantity;
+      }, 0) ?? 0
+    );
+  }, [cart]);
+
+  const { data: addressList, isLoading: isAddressListLoading } =
+    useGetAddressesQuery(
+      {
         customer_id: userId
-      });
-      return res?.addresses;
-    },
-    {
-      onSuccess: res => {
-        if (res?.length > 0 && !addressForOrder) {
-          setAddressForOrder(res[0]);
+      },
+      {
+        select: res => res.addresses,
+        onSuccess: res => {
+          if (res?.length > 0 && !addressForOrder) {
+            setAddressForOrder(res[0] as Address);
+          }
         }
       }
-    }
-  );
-
-  // to test protectedAxiosInstance
-  // this will always respond with 401 error
-  // useEffect((): void => {
-  //   protectedAxiosInstance
-  //     .post(`${FAKE_STORE_API_BASE_URL}/auth/login`, {
-  //       username: 'wrong',
-  //       password: 'wrong'
-  //     })
-  //     .then(res => {
-  //       console.log(res.data);
-  //     });
-  // }, []);
-
-  useEffect(() => {
-    fetchUserCart();
-  }, []);
+    );
 
   const handleCheckout = useMutation(
     async () => {
@@ -81,7 +65,7 @@ const Cart = () => {
       const res: AxiosResponse<any> = await protectedAxiosInstance.post(
         `${NETLIFY_FUNCTIONS_BASE_URL}/order`,
         {
-          order: cart.map((item: any) => ({
+          order: cart?.map((item: any) => ({
             product_id: item.product.id,
             quantity: item.quantity,
             price: item.product.price
@@ -110,7 +94,15 @@ const Cart = () => {
     }
   );
 
-  if (cart.length === 0) {
+  if (isLoading) {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <Loader variant="bars" />
+      </div>
+    );
+  }
+
+  if ((cart?.length ?? 0) === 0) {
     return (
       <div className="mx-auto mt-20 grid max-w-md justify-items-center gap-5">
         <p className="text-2xl">Your cart is empty</p>
@@ -132,7 +124,7 @@ const Cart = () => {
         >
           <Stepper.Step label="Cart" description="Cart summary">
             <div className="mx-auto max-w-2xl py-5">
-              {cart.map(
+              {cart?.map(
                 ({ product: { id, price, image, title }, quantity }) => (
                   <div
                     key={id}
@@ -155,7 +147,7 @@ const Cart = () => {
                           size="lg"
                           color="error"
                           aria-label="remove"
-                          onClick={() => removeFromCart.mutate(id)}
+                          onClick={() => removeFromCart(id)}
                           className="text-red-400"
                         >
                           <Trash strokeWidth={1.5} />
@@ -221,7 +213,7 @@ const Cart = () => {
                             </ActionIcon>
                             <ActionIcon
                               onClick={() => {
-                                setAddressForOrder(address);
+                                setAddressForOrder(address as Address);
                               }}
                             >
                               <CircleCheck

@@ -1,9 +1,12 @@
 import '@//App.css';
 import NavBar from '@/components/NavBar';
 import { Loader } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { SHIRUDO_BASE_URL } from './constants/app.constants';
 
 // lazy load
 const Home = lazy(() => import('@/pages/Home'));
@@ -16,6 +19,20 @@ const Payment = lazy(() => import('@/pages/Payment'));
 const Orders = lazy(() => import('@/pages/orders/Orders'));
 
 function App() {
+  // call shirudo every 10 minutes to keep the heroku app alive
+  useQuery(
+    ['shirudo'],
+    async () => {
+      const res = await axios.get(SHIRUDO_BASE_URL);
+      // console.log('wakeup shirudo heroku app');
+      return res;
+    },
+    {
+      refetchInterval: 1000 * 60 * 10 // 10 minutes
+      // refetchIntervalInBackground: true
+    }
+  );
+
   return (
     <>
       <NavBar />

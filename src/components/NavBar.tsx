@@ -1,5 +1,5 @@
 import { useAuthContext } from '@/context/auth.context';
-import { useCartContext } from '@/context/cart.context';
+import { useUserCartQuery } from '@/context/cart.context';
 import {
   ActionIcon,
   Avatar,
@@ -10,18 +10,18 @@ import {
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import {
+  BrandGithub,
   BuildingStore,
   Logout,
   MapPin,
   Package,
-  ShoppingCart,
-  BrandGithub
+  ShoppingCart
 } from 'tabler-icons-react';
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuthContext();
 
-  const { cart } = useCartContext();
+  const { data: cart } = useUserCartQuery();
 
   const handleLogout = () => {
     logout();
@@ -97,7 +97,12 @@ const NavBar = () => {
               <Link to="/cart">
                 <Tooltip label="Cart">
                   <ActionIcon size="lg" aria-label="delete">
-                    <Indicator label={cart.length}>
+                    <Indicator
+                      disabled={(cart?.length ?? 0) === 0}
+                      label={cart?.length ?? 0}
+                      size={15}
+                      radius="xl"
+                    >
                       <ShoppingCart strokeWidth={1.5} />
                     </Indicator>
                   </ActionIcon>

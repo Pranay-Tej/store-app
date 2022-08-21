@@ -1,0 +1,19 @@
+query getProducts {
+  products {
+    description
+    id
+    image
+    title
+    price
+  }
+}
+
+query getProductByPk($id: uuid!) {
+  products_by_pk(id: $id) {
+    id
+    description
+    image
+    price
+    title
+  }
+}

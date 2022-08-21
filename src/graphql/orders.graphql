@@ -1,0 +1,54 @@
+query getOrders($customer_id: String) {
+  orders(
+    where: { customer_id: { _eq: $customer_id } }
+    order_by: { created_at: desc }
+  ) {
+    created_at
+    id
+    amount
+    status
+    name
+    mobile
+    house
+    street
+    landmark
+    city
+    pincode
+    order_items {
+      id
+      quantity
+      product {
+        id
+        image
+        price
+        title
+      }
+    }
+  }
+}
+
+query getOrderByPk($id: uuid!) {
+  orders_by_pk(id: $id) {
+    created_at
+    id
+    amount
+    status
+    name
+    mobile
+    house
+    street
+    landmark
+    city
+    pincode
+    order_items {
+      id
+      quantity
+      product {
+        id
+        image
+        price
+        title
+      }
+    }
+  }
+}

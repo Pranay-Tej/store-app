@@ -8,9 +8,7 @@ const Product: React.FC<ProductModel> = ({
   title,
   price,
   description,
-  category,
-  image,
-  rating
+  image
 }) => {
   return (
     <div
