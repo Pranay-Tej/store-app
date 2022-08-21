@@ -1,25 +1,25 @@
-import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
-import { GET_ORDERS } from '@/graphql/orders';
-import { createProtectedGraphQlClient } from '@/utils/graphql-instance';
+import { useGetOrdersQuery } from '@/utils/__generated__/graphql';
 import { Avatar, AvatarsGroup, Loader } from '@mantine/core';
 import { format } from 'date-fns';
-import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { DiscountCheck, Package } from 'tabler-icons-react';
 
 const OrderList = () => {
   const { userId } = useAuthContext();
+
   const {
     data: orderList,
     isLoading,
     error
-  } = useQuery(REACT_QUERY_KEYS.GET_ORDERS, async () => {
-    const res = await createProtectedGraphQlClient().request(GET_ORDERS, {
+  } = useGetOrdersQuery(
+    {
       customer_id: userId
-    });
-    return res?.orders;
-  });
+    },
+    {
+      select: res => res.orders
+    }
+  );
 
   if (error) {
     return <div>{JSON.stringify(error)}</div>;

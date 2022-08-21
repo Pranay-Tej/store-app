@@ -1,13 +1,9 @@
 import ManageCartItem from '@/components/ManageCartItem';
-import ProductRating from '@/components/ProductRating';
-import { REACT_QUERY_KEYS } from '@/constants/react-query-keys.constants';
 import { useAuthContext } from '@/context/auth.context';
-import { useCartContext } from '@/context/cart.context';
-import { GET_PRODUCT_BY_PK } from '@/graphql/products';
-import { graphqlClient } from '@/utils/graphql-instance';
+import { useCartContext, useUserCartQuery } from '@/context/cart.context';
+import { useGetProductByPkQuery } from '@/utils/__generated__/graphql';
 import { Button, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
 import { ShoppingCartPlus } from 'tabler-icons-react';
 
@@ -15,7 +11,8 @@ const ProductView = () => {
   const history = useHistory();
   const { isAuthenticated } = useAuthContext();
 
-  const { cart, addToCart } = useCartContext();
+  const { addToCart } = useCartContext();
+  const { data: cart } = useUserCartQuery();
   const [cartQuantity, setCartQuantity] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
@@ -24,21 +21,18 @@ const ProductView = () => {
     data: product,
     isLoading,
     error
-  } = useQuery(
-    [REACT_QUERY_KEYS.GET_PRODUCT_BY_PK, id],
-    async () => {
-      const res = await graphqlClient.request(GET_PRODUCT_BY_PK, {
-        id
-      });
-      return res?.products_by_pk;
+  } = useGetProductByPkQuery(
+    {
+      id
     },
     {
-      enabled: id !== undefined
+      enabled: id !== undefined,
+      select: res => res.products_by_pk
     }
   );
 
   useEffect(() => {
-    setCartQuantity(cart.find(item => item.product.id === id)?.quantity ?? 0);
+    setCartQuantity(cart?.find(item => item.product.id === id)?.quantity ?? 0);
   }, [cart]);
 
   if (isLoading)
@@ -79,7 +73,7 @@ const ProductView = () => {
                   <Button
                     leftIcon={<ShoppingCartPlus strokeWidth={1.5} />}
                     onClick={() => {
-                      addToCart.mutate(product.id);
+                      addToCart(product.id);
                     }}
                   >
                     Add to bag
@@ -96,10 +90,10 @@ const ProductView = () => {
               )}
             </div>
             <p className="mb-4 text-lg">{product.title}</p>
-            <ProductRating
+            {/* <ProductRating
               rating={product?.rating?.rate}
               count={product?.rating?.count}
-            />
+            /> */}
             <p className="mb-2 text-xl font-semibold text-gray-700">
               &#8377; {product.price}
             </p>

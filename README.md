@@ -31,6 +31,7 @@ Dev:
 - Prettier
 - prettier-plugin-tailwindcss
 - Unsplash (product images)
+- GraphQL CodeGen
 
 ---
 
@@ -54,12 +55,13 @@ Dev:
 - `git clone REPO_URL`
 - create `.env.local`
 - copy `.env.example` to `.env.local`
-- `npm install` to install dependencies
-- install netlify cli
+- `pnpm install` to install dependencies
+- install netlify cli `pnpm add -g netlify-cli`
 - link to netlify app
-- `npm run netlify-env:import` to import `env.local` to netlify app environment
-  variables
-- `npm run netlify-dev` to run development server
+- copy `graphql.example-config.yaml` to `graphql.config.yaml`
+- `pnpm run codegen` to generate graphql types and hooks whenever api has
+  changes
+- `pnpm run netlify-dev` to run development server
 
 ---
 

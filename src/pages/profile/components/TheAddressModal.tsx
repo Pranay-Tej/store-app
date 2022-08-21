@@ -4,13 +4,12 @@ import {
   MIN_LENGTH_MESSAGE,
   REQUIRED_FIELD_MESSAGE
 } from '@/constants/validation.constants';
+import { AddressResponse } from '@/models/address.model';
 import {
-  GET_ADDRESS_BY_PK,
-  INSERT_ADDRESS,
-  UPDATE_ADDRESS_BY_PK
-} from '@/graphql/addresses';
-import { Address } from '@/models/address.model';
-import { createProtectedGraphQlClient } from '@/utils/graphql-instance';
+  useGetAddressByPkQuery,
+  useInsertAddressMutation,
+  useUpdateAddressByPkMutation
+} from '@/utils/__generated__/graphql';
 import {
   Button,
   Divider,
@@ -19,16 +18,16 @@ import {
   Modal,
   TextInput
 } from '@mantine/core';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface AddressForm {
   name: string;
   mobile: string;
   house: string;
   street: string;
-  landmark: string;
+  landmark?: string | undefined;
   city: string;
   pincode: string;
 }
@@ -68,21 +67,16 @@ const TheAddressModal: React.FC<{
   const {
     isFetching: isFetchAddressByPkLoading,
     isError: fetchAddressByPkError
-  } = useQuery<Address>(
-    REACT_QUERY_KEYS.GET_ADDRESS_BY_PK,
-    async () => {
-      const res = await createProtectedGraphQlClient().request(
-        GET_ADDRESS_BY_PK,
-        {
-          id: selectedAddressId
-        }
-      );
-      return res?.addresses_by_pk;
+  } = useGetAddressByPkQuery(
+    {
+      id: selectedAddressId
     },
     {
+      select: res => res.addresses_by_pk,
       enabled: isAddressModalOpen && selectedAddressId !== undefined,
+      refetchOnWindowFocus: false,
       onSuccess: data => {
-        setFormValues(data);
+        setFormValues(data as AddressResponse);
       }
     }
   );
@@ -95,12 +89,12 @@ const TheAddressModal: React.FC<{
     landmark,
     city,
     pincode
-  }: Address) => {
+  }: AddressResponse) => {
     setValue('name', name);
     setValue('mobile', mobile);
     setValue('house', house);
     setValue('street', street);
-    setValue('landmark', landmark);
+    setValue('landmark', landmark ?? '');
     setValue('city', city);
     setValue('pincode', pincode);
   };
@@ -108,60 +102,39 @@ const TheAddressModal: React.FC<{
   // handle address form submit
   const handleAddressFormSubmit = (addressData: AddressForm) => {
     if (selectedAddressId) {
-      updateAddressByPk.mutate(addressData);
+      updateAddressByPk.mutate({
+        id: selectedAddressId,
+        address_input: { ...addressData }
+      });
     } else {
-      addAddress.mutate(addressData);
+      addAddress.mutate({ address_input: { ...addressData } });
     }
   };
 
   // Save address
-  const addAddress = useMutation<any, any, AddressForm>(
-    async addressData => {
-      const res = await createProtectedGraphQlClient().request(INSERT_ADDRESS, {
-        address_input: {
-          ...addressData
-        }
-      });
-      return res?.insert_addresses_one;
+  const addAddress = useInsertAddressMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([REACT_QUERY_KEYS.GET_ADDRESSES]);
+      handleClose();
     },
-    {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(REACT_QUERY_KEYS.GET_ADDRESSES);
-        handleClose();
-      },
-      onError: err => {
-        console.error(err);
-      }
+    onError: err => {
+      console.error(err);
     }
-  );
+  });
 
   // Update address
-  const updateAddressByPk = useMutation<any, any, AddressForm>(
-    async addressData => {
-      const res = await createProtectedGraphQlClient().request(
-        UPDATE_ADDRESS_BY_PK,
-        {
-          id: selectedAddressId,
-          address_input: {
-            ...addressData
-          }
-        }
-      );
-      return res?.update_addresses_by_pk;
+  const updateAddressByPk = useUpdateAddressByPkMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([REACT_QUERY_KEYS.GET_ADDRESSES]);
+      handleClose();
     },
-    {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(REACT_QUERY_KEYS.GET_ADDRESSES);
-        handleClose();
-      },
-      onError: err => {
-        console.error(err);
-      }
+    onError: err => {
+      console.error(err);
     }
-  );
+  });
 
   const handleClose = () => {
-    queryClient.cancelQueries(REACT_QUERY_KEYS.GET_ADDRESS_BY_PK);
+    queryClient.cancelQueries([REACT_QUERY_KEYS.GET_ADDRESS_BY_PK]);
     resetAddressForm();
     toggleAddressModal();
     onClose();
@@ -292,15 +265,11 @@ const TheAddressModal: React.FC<{
                   render={({ field }) => (
                     <TextInput
                       {...field}
-                      label="Landmark"
+                      label="Landmark (Optional)"
                       error={errors?.landmark?.message}
                     />
                   )}
                   rules={{
-                    required: {
-                      value: true,
-                      message: REQUIRED_FIELD_MESSAGE
-                    },
                     maxLength: { value: 20, message: MAX_LENGTH_MESSAGE(20) },
                     minLength: { value: 3, message: MIN_LENGTH_MESSAGE(3) }
                   }}
