@@ -1,8 +1,9 @@
+import { ORDER_STATUS } from '@/constants/app.constants';
 import { useGetOrderByPkQuery } from '@/utils/__generated__/graphql';
-import { Loader } from '@mantine/core';
+import { Button, Loader } from '@mantine/core';
 import { format } from 'date-fns';
 import { Link, useParams } from 'react-router-dom';
-import { Clock, DiscountCheck } from 'tabler-icons-react';
+import { Clock, DiscountCheck, RotateClockwise } from 'tabler-icons-react';
 import styles from './Order.module.css';
 
 const Order = () => {
@@ -41,27 +42,23 @@ const Order = () => {
                 <span className="text-gray-600">Order Id: </span>
                 {order.id}
               </p>
-              <p>
+              <p className="flex items-center gap-1">
                 <span className="text-gray-600">Status: </span>
-                {order.status === 'PAID' ? (
-                  <>
-                    <DiscountCheck
-                      strokeWidth={1.5}
-                      color={'#40bf64'}
-                      className="inline-block"
-                    />
-                    {order.status}
-                  </>
-                ) : (
-                  <>
-                    <Clock
-                      strokeWidth={1.5}
-                      color={'#d1d279'}
-                      className="inline-block"
-                    />
-                    {order.status}
-                  </>
+                {order.status === ORDER_STATUS.PAID && (
+                  <DiscountCheck
+                    strokeWidth={1.5}
+                    color={'#40bf64'}
+                    className="inline-block"
+                  />
                 )}
+                {order.status === ORDER_STATUS.PAYMENT_PENDING && (
+                  <Clock
+                    strokeWidth={1.5}
+                    color={'#fdab00'}
+                    className="inline-block"
+                  />
+                )}
+                {order.status}
               </p>
               <p>
                 <span className="text-gray-600">Amount: </span>&#8377;
@@ -73,9 +70,20 @@ const Order = () => {
               </p>
             </div>
           </div>
+
+          {order.status === ORDER_STATUS.PAYMENT_PENDING && (
+            <div className="mb-8">
+              <a href={order?.payment_link ?? ''}>
+                <Button leftIcon={<RotateClockwise strokeWidth={1.5} />}>
+                  Retry Payment
+                </Button>
+              </a>
+            </div>
+          )}
+
           <div>
             {order.order_items.map(
-              ({ product: { id, price, image, title }, quantity }: any) => (
+              ({ product: { id, price, image, title }, quantity }) => (
                 <div
                   key={id}
                   className={`mb-8 grid items-center border-b-2 border-gray-100 pb-4 ${styles.cartGrid}`}
@@ -107,6 +115,7 @@ const Order = () => {
               )
             )}
           </div>
+
           <div>
             <h2 className="mb-3 font-medium">Delivery Address</h2>
             <div className="grid gap-2">

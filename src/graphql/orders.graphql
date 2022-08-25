@@ -40,6 +40,8 @@ query getOrderByPk($id: uuid!) {
     landmark
     city
     pincode
+    order_token
+    payment_link
     order_items {
       id
       quantity

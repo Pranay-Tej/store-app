@@ -3,12 +3,13 @@ import { AxiosResponse } from 'axios';
 import { gql, GraphQLClient } from 'graphql-request';
 import { cashfreeAxiosInstance } from '../utils/cashfreeAxiosClient';
 import { NHOST_BASE_URL, REACT_APP_BASE_URL } from '../utils/env.constants';
+import { ORDER_STATUS } from '../utils/function.constants';
 import { STATUS_CODES } from '../utils/status-codes.constants';
 
 const INSERT_ORDERS_ONE = gql`
   mutation insertOrdersOne(
     $data: [order_items_insert_input!]!
-    $status: String = "PENDING"
+    $status: String = "PAYMENT_PENDING"
     $amount: Int
     $name: String
     $mobile: numeric
@@ -40,6 +41,22 @@ const INSERT_ORDERS_ONE = gql`
         product_id
         quantity
       }
+    }
+  }
+`;
+
+const UPDATE_ORDER_BY_PK = gql`
+  mutation updateOrderByPk(
+    $id: uuid!
+    $order_token: String
+    $payment_link: String
+  ) {
+    update_orders_by_pk(
+      pk_columns: { id: $id }
+      _set: { payment_link: $payment_link, order_token: $order_token }
+    ) {
+      order_token
+      payment_link
     }
   }
 `;
@@ -113,7 +130,7 @@ const handler: Handler = async (event, context) => {
         INSERT_ORDERS_ONE,
         {
           data: order_items,
-          status: 'PENDING',
+          status: ORDER_STATUS.PAYMENT_PENDING,
           amount: order_amount,
           name,
           mobile,
@@ -147,6 +164,15 @@ const handler: Handler = async (event, context) => {
       const res: AxiosResponse<any> = await cashfreeAxiosInstance.post(
         `/orders`,
         data
+      );
+
+      const updateOrderResponse = await graphqlClient.request(
+        UPDATE_ORDER_BY_PK,
+        {
+          id: createOrderResponse.insert_orders_one.id,
+          order_token: res.data.order_token,
+          payment_link: res.data.payment_link
+        }
       );
 
       return {

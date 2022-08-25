@@ -1,9 +1,10 @@
+import { ORDER_STATUS } from '@/constants/app.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { useGetOrdersQuery } from '@/utils/__generated__/graphql';
 import { Avatar, AvatarsGroup, Loader } from '@mantine/core';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { DiscountCheck, Package } from 'tabler-icons-react';
+import { Clock, DiscountCheck, Package } from 'tabler-icons-react';
 
 const OrderList = () => {
   const { userId } = useAuthContext();
@@ -42,7 +43,7 @@ const OrderList = () => {
           My Orders
         </h2>
         {orderList &&
-          orderList.map((order: any) => (
+          orderList.map(order => (
             <Link to={`/orders/${order.id}`} key={order.id}>
               <div
                 key={order.id}
@@ -50,11 +51,9 @@ const OrderList = () => {
               >
                 <div>
                   <AvatarsGroup limit={5} total={order.order_items.length}>
-                    {order.order_items.map(
-                      ({ product: { id, image } }: any) => (
-                        <Avatar src={image} key={id} size="xl" radius="md" />
-                      )
-                    )}
+                    {order.order_items.map(({ product: { id, image } }) => (
+                      <Avatar src={image} key={id} size="xl" radius="md" />
+                    ))}
                   </AvatarsGroup>
                 </div>
                 <div className="grid gap-2">
@@ -62,13 +61,22 @@ const OrderList = () => {
                     <span className="text-gray-600">Amount: </span>
                     &#8377; {order.amount}
                   </p>
-                  <p>
+                  <p className="flex items-center gap-1">
                     <span className="text-gray-600">Status: </span>
-                    <DiscountCheck
-                      strokeWidth={1.5}
-                      color={'#40bf64'}
-                      className="inline-block"
-                    />
+                    {order.status === ORDER_STATUS.PAID && (
+                      <DiscountCheck
+                        strokeWidth={1.5}
+                        color={'#40bf64'}
+                        className="inline-block"
+                      />
+                    )}
+                    {order.status === ORDER_STATUS.PAYMENT_PENDING && (
+                      <Clock
+                        strokeWidth={1.5}
+                        color={'#fdab00'}
+                        className="inline-block"
+                      />
+                    )}
                     {order.status}
                   </p>
                   <p>

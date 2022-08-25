@@ -1,28 +1,43 @@
-import { NETLIFY_FUNCTIONS_BASE_URL } from '@/constants/app.constants';
+import {
+  NETLIFY_FUNCTIONS_BASE_URL,
+  ORDER_STATUS
+} from '@/constants/app.constants';
 import { useAxiosInstance } from '@/context/axios.context';
 import { useUrlQuery } from '@/hooks/useUrlQuery';
 import { Button, Loader } from '@mantine/core';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { DiscountCheck } from 'tabler-icons-react';
+import {
+  DiscountCheck,
+  FaceIdError,
+  RotateClockwise
+} from 'tabler-icons-react';
+
+interface OrderResponse {
+  id: string;
+  status: ORDER_STATUS;
+  message?: string;
+  payment_link?: string;
+}
 
 const Payment = () => {
   const { protectedAxiosInstance } = useAxiosInstance();
-  const [order, setOrder] = useState<any>();
+  const [order, setOrder] = useState<OrderResponse>();
   const urlQuery = useUrlQuery();
 
   const verifyPayment = useMutation(
     async () => {
-      const res: AxiosResponse<any> = await protectedAxiosInstance.post(
-        `${NETLIFY_FUNCTIONS_BASE_URL}/verify-payment`,
-        {
-          order_id: urlQuery.get('order_id'),
-          order_token: urlQuery.get('order_token')
-        }
-      );
-      return res?.data?.update_orders_by_pk;
+      const res: AxiosResponse<OrderResponse> =
+        await protectedAxiosInstance.post(
+          `${NETLIFY_FUNCTIONS_BASE_URL}/verify-payment`,
+          {
+            order_id: urlQuery.get('order_id'),
+            order_token: urlQuery.get('order_token')
+          }
+        );
+      return res?.data;
     },
     {
       onSuccess: res => {
@@ -47,7 +62,8 @@ const Payment = () => {
             <p>Verifying payment status</p>
           </div>
         )}
-        {order?.status === 'PAID' && (
+
+        {order?.status === ORDER_STATUS.PAID && (
           <div className="grid justify-items-center gap-2">
             <DiscountCheck
               size={60}
@@ -60,6 +76,24 @@ const Payment = () => {
             <Link to={`/orders/${order.id}`}>
               <Button>Go to Order</Button>
             </Link>
+          </div>
+        )}
+
+        {order?.status === ORDER_STATUS.PAYMENT_PENDING && (
+          <div className="grid justify-items-center gap-4">
+            <FaceIdError
+              size={60}
+              strokeWidth={1}
+              color={'#862d33'}
+              className="inline-block"
+            />
+            <p>{order?.message}</p>
+            <p>Order Id: {order.id}</p>
+            <a href={order?.payment_link}>
+              <Button leftIcon={<RotateClockwise strokeWidth={1.5} />}>
+                Retry Payment
+              </Button>
+            </a>
           </div>
         )}
       </div>
