@@ -4562,7 +4562,7 @@ export type Order_Items_Variance_Order_By = {
 export type Orders = {
   __typename?: 'orders';
   amount: Scalars['Int'];
-  city?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
   customer: Customers;
@@ -4576,6 +4576,8 @@ export type Orders = {
   order_items: Array<Order_Items>;
   /** An aggregate relationship */
   order_items_aggregate: Order_Items_Aggregate;
+  order_token?: Maybe<Scalars['String']>;
+  payment_link?: Maybe<Scalars['String']>;
   pincode: Scalars['numeric'];
   status: Scalars['String'];
   street: Scalars['String'];
@@ -4685,6 +4687,8 @@ export type Orders_Bool_Exp = {
   mobile?: InputMaybe<Numeric_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   order_items?: InputMaybe<Order_Items_Bool_Exp>;
+  order_token?: InputMaybe<String_Comparison_Exp>;
+  payment_link?: InputMaybe<String_Comparison_Exp>;
   pincode?: InputMaybe<Numeric_Comparison_Exp>;
   status?: InputMaybe<String_Comparison_Exp>;
   street?: InputMaybe<String_Comparison_Exp>;
@@ -4693,6 +4697,10 @@ export type Orders_Bool_Exp = {
 
 /** unique or primary key constraints on table "orders" */
 export enum Orders_Constraint {
+  /** unique or primary key constraint on columns "order_token" */
+  OrdersOrderTokenKey = 'orders_order_token_key',
+  /** unique or primary key constraint on columns "payment_link" */
+  OrdersPaymentLinkKey = 'orders_payment_link_key',
   /** unique or primary key constraint on columns "id" */
   OrdersPkey = 'orders_pkey'
 }
@@ -4717,6 +4725,8 @@ export type Orders_Insert_Input = {
   mobile?: InputMaybe<Scalars['numeric']>;
   name?: InputMaybe<Scalars['String']>;
   order_items?: InputMaybe<Order_Items_Arr_Rel_Insert_Input>;
+  order_token?: InputMaybe<Scalars['String']>;
+  payment_link?: InputMaybe<Scalars['String']>;
   pincode?: InputMaybe<Scalars['numeric']>;
   status?: InputMaybe<Scalars['String']>;
   street?: InputMaybe<Scalars['String']>;
@@ -4735,6 +4745,8 @@ export type Orders_Max_Fields = {
   landmark?: Maybe<Scalars['String']>;
   mobile?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
+  order_token?: Maybe<Scalars['String']>;
+  payment_link?: Maybe<Scalars['String']>;
   pincode?: Maybe<Scalars['numeric']>;
   status?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
@@ -4752,6 +4764,8 @@ export type Orders_Max_Order_By = {
   landmark?: InputMaybe<Order_By>;
   mobile?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  order_token?: InputMaybe<Order_By>;
+  payment_link?: InputMaybe<Order_By>;
   pincode?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   street?: InputMaybe<Order_By>;
@@ -4770,6 +4784,8 @@ export type Orders_Min_Fields = {
   landmark?: Maybe<Scalars['String']>;
   mobile?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
+  order_token?: Maybe<Scalars['String']>;
+  payment_link?: Maybe<Scalars['String']>;
   pincode?: Maybe<Scalars['numeric']>;
   status?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
@@ -4787,6 +4803,8 @@ export type Orders_Min_Order_By = {
   landmark?: InputMaybe<Order_By>;
   mobile?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  order_token?: InputMaybe<Order_By>;
+  payment_link?: InputMaybe<Order_By>;
   pincode?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   street?: InputMaybe<Order_By>;
@@ -4829,6 +4847,8 @@ export type Orders_Order_By = {
   mobile?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   order_items_aggregate?: InputMaybe<Order_Items_Aggregate_Order_By>;
+  order_token?: InputMaybe<Order_By>;
+  payment_link?: InputMaybe<Order_By>;
   pincode?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   street?: InputMaybe<Order_By>;
@@ -4861,6 +4881,10 @@ export enum Orders_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  OrderToken = 'order_token',
+  /** column name */
+  PaymentLink = 'payment_link',
+  /** column name */
   Pincode = 'pincode',
   /** column name */
   Status = 'status',
@@ -4881,6 +4905,8 @@ export type Orders_Set_Input = {
   landmark?: InputMaybe<Scalars['String']>;
   mobile?: InputMaybe<Scalars['numeric']>;
   name?: InputMaybe<Scalars['String']>;
+  order_token?: InputMaybe<Scalars['String']>;
+  payment_link?: InputMaybe<Scalars['String']>;
   pincode?: InputMaybe<Scalars['numeric']>;
   status?: InputMaybe<Scalars['String']>;
   street?: InputMaybe<Scalars['String']>;
@@ -4967,6 +4993,10 @@ export enum Orders_Update_Column {
   Mobile = 'mobile',
   /** column name */
   Name = 'name',
+  /** column name */
+  OrderToken = 'order_token',
+  /** column name */
+  PaymentLink = 'payment_link',
   /** column name */
   Pincode = 'pincode',
   /** column name */
@@ -6969,14 +6999,14 @@ export type GetOrdersQueryVariables = Exact<{
 }>;
 
 
-export type GetOrdersQuery = { __typename?: 'query_root', orders: Array<{ __typename?: 'orders', created_at: any, id: any, amount: number, status: string, name: string, mobile: any, house: string, street: string, landmark?: string | null, city?: string | null, pincode: any, order_items: Array<{ __typename?: 'order_items', id: any, quantity: number, product: { __typename?: 'products', id: any, image: string, price: any, title: string } }> }> };
+export type GetOrdersQuery = { __typename?: 'query_root', orders: Array<{ __typename?: 'orders', created_at: any, id: any, amount: number, status: string, name: string, mobile: any, house: string, street: string, landmark?: string | null, city: string, pincode: any, order_items: Array<{ __typename?: 'order_items', id: any, quantity: number, product: { __typename?: 'products', id: any, image: string, price: any, title: string } }> }> };
 
 export type GetOrderByPkQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetOrderByPkQuery = { __typename?: 'query_root', orders_by_pk?: { __typename?: 'orders', created_at: any, id: any, amount: number, status: string, name: string, mobile: any, house: string, street: string, landmark?: string | null, city?: string | null, pincode: any, order_items: Array<{ __typename?: 'order_items', id: any, quantity: number, product: { __typename?: 'products', id: any, image: string, price: any, title: string } }> } | null };
+export type GetOrderByPkQuery = { __typename?: 'query_root', orders_by_pk?: { __typename?: 'orders', created_at: any, id: any, amount: number, status: string, name: string, mobile: any, house: string, street: string, landmark?: string | null, city: string, pincode: any, order_token?: string | null, payment_link?: string | null, order_items: Array<{ __typename?: 'order_items', id: any, quantity: number, product: { __typename?: 'products', id: any, image: string, price: any, title: string } }> } | null };
 
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7280,6 +7310,8 @@ export const GetOrderByPkDocument = `
     landmark
     city
     pincode
+    order_token
+    payment_link
     order_items {
       id
       quantity
