@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import { gql, GraphQLClient } from 'graphql-request';
 import { cashfreeAxiosInstance } from '../utils/cashfreeAxiosClient';
 import { NHOST_BASE_URL } from '../utils/env.constants';
+import { ORDER_STATUS } from '../utils/function.constants';
 import { STATUS_CODES } from '../utils/status-codes.constants';
 
 const UPDATE_ORDER_BY_PK = gql`
@@ -73,11 +74,14 @@ const handler: Handler = async (event, context) => {
         };
       }
 
-      if (res.data.order_status !== 'PAID') {
+      if (res.data.order_status !== ORDER_STATUS.PAID) {
         return {
-          statusCode: STATUS_CODES.BAD_REQUEST,
+          statusCode: STATUS_CODES.OK,
           body: JSON.stringify({
-            message: 'Order is not paid'
+            id: order_id,
+            status: ORDER_STATUS.PAYMENT_PENDING,
+            payment_link: res.data.payment_link,
+            message: 'Order is not paid. Please use the payment link to retry.'
           })
         };
       }
@@ -93,15 +97,20 @@ const handler: Handler = async (event, context) => {
         UPDATE_ORDER_BY_PK,
         {
           id: order_id,
-          status: 'PAID'
+          status: ORDER_STATUS.PAID
         }
       );
 
       // console.log({ createOrderResponse });
+      const { id, status } = updateOrderResponse.update_orders_by_pk;
 
       return {
         statusCode: STATUS_CODES.OK,
-        body: JSON.stringify(updateOrderResponse)
+        body: JSON.stringify({
+          id,
+          status,
+          message: 'Order is paid'
+        })
       };
     } catch (error) {
       console.error(error);

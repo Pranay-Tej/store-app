@@ -1,0 +1,4 @@
+export enum ORDER_STATUS {
+  PAID = 'PAID',
+  PAYMENT_PENDING = 'PAYMENT_PENDING'
+}
