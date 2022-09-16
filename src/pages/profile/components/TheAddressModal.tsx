@@ -146,6 +146,7 @@ const TheAddressModal: React.FC<{
         overflow="inside"
         opened={isAddressModalOpen}
         onClose={() => handleClose()}
+        closeOnClickOutside={true}
         title={selectedAddressId ? 'Update Address' : 'Save address'}
       >
         {fetchAddressByPkError ? (

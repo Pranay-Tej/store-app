@@ -63,36 +63,36 @@ const NavBar = () => {
           )}
           {isAuthenticated && (
             <>
-              <Menu
-                withArrow
-                control={
+              <Menu withArrow>
+                <Menu.Target>
                   <Tooltip label="My Account">
                     <ActionIcon size="lg">
                       <Avatar alt="" color="indigo"></Avatar>
                     </ActionIcon>
                   </Tooltip>
-                }
-              >
-                <Link to="/orders">
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Link to="/orders">
+                    <Menu.Item
+                      icon={<Package strokeWidth={1.5} color={'#228be6'} />}
+                    >
+                      Orders
+                    </Menu.Item>
+                  </Link>
+                  <Link to="/profile/addresses">
+                    <Menu.Item
+                      icon={<MapPin strokeWidth={1.5} color={'#228be6'} />}
+                    >
+                      Addresses
+                    </Menu.Item>
+                  </Link>
                   <Menu.Item
-                    icon={<Package strokeWidth={1.5} color={'#228be6'} />}
+                    onClick={handleLogout}
+                    icon={<Logout strokeWidth={1.5} />}
                   >
-                    Orders
+                    Logout
                   </Menu.Item>
-                </Link>
-                <Link to="/profile/addresses">
-                  <Menu.Item
-                    icon={<MapPin strokeWidth={1.5} color={'#228be6'} />}
-                  >
-                    Addresses
-                  </Menu.Item>
-                </Link>
-                <Menu.Item
-                  onClick={handleLogout}
-                  icon={<Logout strokeWidth={1.5} />}
-                >
-                  Logout
-                </Menu.Item>
+                </Menu.Dropdown>
               </Menu>
               <Link to="/cart">
                 <Tooltip label="Cart">
