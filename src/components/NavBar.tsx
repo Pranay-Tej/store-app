@@ -63,16 +63,14 @@ const NavBar = () => {
           )}
           {isAuthenticated && (
             <>
-              <Menu
-                withArrow
-                control={
+              <Menu withArrow>
+                <Menu.Target>
                   <Tooltip label="My Account">
                     <ActionIcon size="lg">
                       <Avatar alt="" color="indigo"></Avatar>
                     </ActionIcon>
                   </Tooltip>
-                }
-              >
+                </Menu.Target>
                 <Link to="/orders">
                   <Menu.Item
                     icon={<Package strokeWidth={1.5} color={'#228be6'} />}
