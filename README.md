@@ -57,7 +57,7 @@ Dev:
 - copy `.env.example` to `.env.local`
 - `pnpm install` to install dependencies
 - install netlify cli `pnpm add -g netlify-cli`
-- link to netlify app
+- `netlify login` then `netlify link` link to netlify app
 - copy `graphql.example-config.yaml` to `graphql.config.yaml`
 - `pnpm run codegen` to generate graphql types and hooks whenever api has
   changes
