@@ -1,7 +1,7 @@
 import { ORDER_STATUS } from '@/constants/app.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { useGetOrdersQuery } from '@/utils/__generated__/graphql';
-import { Avatar, AvatarsGroup, Loader } from '@mantine/core';
+import { Avatar, Loader } from '@mantine/core';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { Clock, DiscountCheck, Package } from 'tabler-icons-react';
@@ -50,11 +50,11 @@ const OrderList = () => {
                 className="mb-5 rounded-md border-2 border-gray-400 p-5"
               >
                 <div>
-                  <AvatarsGroup limit={5} total={order.order_items.length}>
+                  <Avatar.Group>
                     {order.order_items.map(({ product: { id, image } }) => (
-                      <Avatar src={image} key={id} size="xl" radius="md" />
+                      <Avatar src={image} key={id} size="lg" radius="xl" />
                     ))}
-                  </AvatarsGroup>
+                  </Avatar.Group>
                 </div>
                 <div className="grid gap-2">
                   <p>
