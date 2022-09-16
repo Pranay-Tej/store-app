@@ -71,26 +71,28 @@ const NavBar = () => {
                     </ActionIcon>
                   </Tooltip>
                 </Menu.Target>
-                <Link to="/orders">
+                <Menu.Dropdown>
+                  <Link to="/orders">
+                    <Menu.Item
+                      icon={<Package strokeWidth={1.5} color={'#228be6'} />}
+                    >
+                      Orders
+                    </Menu.Item>
+                  </Link>
+                  <Link to="/profile/addresses">
+                    <Menu.Item
+                      icon={<MapPin strokeWidth={1.5} color={'#228be6'} />}
+                    >
+                      Addresses
+                    </Menu.Item>
+                  </Link>
                   <Menu.Item
-                    icon={<Package strokeWidth={1.5} color={'#228be6'} />}
+                    onClick={handleLogout}
+                    icon={<Logout strokeWidth={1.5} />}
                   >
-                    Orders
+                    Logout
                   </Menu.Item>
-                </Link>
-                <Link to="/profile/addresses">
-                  <Menu.Item
-                    icon={<MapPin strokeWidth={1.5} color={'#228be6'} />}
-                  >
-                    Addresses
-                  </Menu.Item>
-                </Link>
-                <Menu.Item
-                  onClick={handleLogout}
-                  icon={<Logout strokeWidth={1.5} />}
-                >
-                  Logout
-                </Menu.Item>
+                </Menu.Dropdown>
               </Menu>
               <Link to="/cart">
                 <Tooltip label="Cart">

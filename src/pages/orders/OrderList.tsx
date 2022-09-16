@@ -52,7 +52,7 @@ const OrderList = () => {
                 <div>
                   <Avatar.Group>
                     {order.order_items.map(({ product: { id, image } }) => (
-                      <Avatar src={image} key={id} size="xl" radius="md" />
+                      <Avatar src={image} key={id} size="lg" radius="xl" />
                     ))}
                   </Avatar.Group>
                 </div>
