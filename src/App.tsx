@@ -4,7 +4,7 @@ import { Loader } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { SHIRUDO_BASE_URL } from './constants/app.constants';
 
@@ -28,7 +28,8 @@ function App() {
       return res;
     },
     {
-      refetchInterval: 1000 * 60 * 10 // 10 minutes
+      refetchInterval: 1000 * 60 * 10, // 10 minutes
+      refetchOnWindowFocus: false
       // refetchIntervalInBackground: true
     }
   );
@@ -43,24 +44,18 @@ function App() {
           </div>
         }
       >
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/accounts/login" component={Login} />
-          <Route path="/accounts/register" component={Register} />
-          <Route path="/product/:id" component={ProductView} />
-          <ProtectedRoute path="/cart">
-            <Cart />
-          </ProtectedRoute>
-          <ProtectedRoute path="/profile/addresses">
-            <Addresses />
-          </ProtectedRoute>
-          <ProtectedRoute path="/payment">
-            <Payment />
-          </ProtectedRoute>
-          <ProtectedRoute path="/orders">
-            <Orders />
-          </ProtectedRoute>
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/accounts/login" element={<Login />} />
+          <Route path="/accounts/register" element={<Register />} />
+          <Route path="/product/:id" element={<ProductView />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Cart />} path="cart" />
+            <Route element={<Addresses />} path="/profile/addresses" />
+            <Route element={<Orders />} path="/orders/*" />
+          </Route>
+          <Route element={<Payment />} path="/payment" />
+        </Routes>
       </Suspense>
     </>
   );

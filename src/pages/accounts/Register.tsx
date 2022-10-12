@@ -1,16 +1,13 @@
 import { NETLIFY_FUNCTIONS_BASE_URL } from '@/constants/app.constants';
 import { REQUIRED_FIELD_MESSAGE } from '@/constants/validation.constants';
 import { useAuthContext } from '@/context/auth.context';
+import { useUrlQuery } from '@/hooks/useUrlQuery';
 import { Button, PasswordInput, TextInput } from '@mantine/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Lock, User } from 'tabler-icons-react';
-
-interface LocationState {
-  from: string;
-}
 
 export interface RegisterForm {
   username: string;
@@ -19,8 +16,10 @@ export interface RegisterForm {
 
 const Register = () => {
   const { verifyUser, isAuthenticated } = useAuthContext();
-  const history = useHistory();
-  const { state } = useLocation<LocationState>();
+  const navigate = useNavigate();
+  const urlQuery = useUrlQuery();
+  // const { state } = useLocation();
+
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
   const [registerError, setRegisterError] = useState();
 
@@ -44,7 +43,7 @@ const Register = () => {
     });
 
     if (isAuthenticated) {
-      history.push(state?.from ?? '/');
+      navigate(urlQuery.get('redirectUrl') ?? '/');
     }
   }, [isAuthenticated]);
 
