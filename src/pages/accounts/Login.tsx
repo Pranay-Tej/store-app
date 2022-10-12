@@ -1,16 +1,13 @@
 import { SHIRUDO_APP_ID, SHIRUDO_BASE_URL } from '@/constants/app.constants';
 import { REQUIRED_FIELD_MESSAGE } from '@/constants/validation.constants';
 import { useAuthContext } from '@/context/auth.context';
+import { useUrlQuery } from '@/hooks/useUrlQuery';
 import { Button, PasswordInput, TextInput } from '@mantine/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useHistory, useLocation } from 'react-router-dom';
+import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Lock, User } from 'tabler-icons-react';
-
-interface LocationState {
-  from: string;
-}
 
 export interface LoginForm {
   identity: string;
@@ -19,8 +16,9 @@ export interface LoginForm {
 
 const Login = () => {
   const { verifyUser, isAuthenticated } = useAuthContext();
-  const history = useHistory();
-  const { state } = useLocation<LocationState>();
+  const navigate = useNavigate();
+  const urlQuery = useUrlQuery();
+  // const { state } = useLocation();
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState();
 
@@ -44,7 +42,16 @@ const Login = () => {
     });
 
     if (isAuthenticated) {
-      history.push(state?.from ?? '/');
+      navigate(urlQuery.get('redirectUrl') ?? '/');
+      // navigate(state?.from ?? '/');
+
+      // console.log(urlQuery.get('redirectUrl'));
+      // redirect(urlQuery.get('redirectUrl') ?? '/');
+      // navigate(urlQuery.get('redirectUrl') ?? '/', {
+      //   replace: true,
+      //   relative: 'route',
+
+      // });
     }
   }, [isAuthenticated]);
 

@@ -2,7 +2,7 @@ import { SHIRUDO_APP_ID, SHIRUDO_BASE_URL } from '@/constants/app.constants';
 import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys.constants';
 import axios, { AxiosResponse } from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface IAuthContext {
   isAuthenticated: boolean;
@@ -16,7 +16,7 @@ interface IAuthContext {
 const AuthContext = createContext({} as IAuthContext);
 
 export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>();
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
     setUserId(undefined);
     setUsername(undefined);
     setIsAuthenticated(false);
-    history.push('/accounts/login');
+    navigate('/accounts/login');
   };
 
   return (

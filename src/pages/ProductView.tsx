@@ -4,11 +4,11 @@ import { useCartContext, useUserCartQuery } from '@/context/cart.context';
 import { useGetProductByPkQuery } from '@/utils/__generated__/graphql';
 import { Button, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ShoppingCartPlus } from 'tabler-icons-react';
 
 const ProductView = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuthContext();
 
   const { addToCart } = useCartContext();
@@ -82,7 +82,7 @@ const ProductView = () => {
               ) : (
                 <Button
                   onClick={() => {
-                    history.push('/accounts/login');
+                    navigate('/accounts/login');
                   }}
                 >
                   Login
