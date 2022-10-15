@@ -15,6 +15,7 @@ interface ICartContext {
   increaseQuantity: (product_id: string, quantity: number) => void;
   decreaseQuantity: (product_id: string, quantity: number) => void;
   removeFromCart: (product_id: string) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext({} as ICartContext);
@@ -67,7 +68,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   };
 
-  const clearCart = useClearCartMutation({
+  const clearCartMutation = useClearCartMutation({
     onSuccess: () => {
       queryClient.invalidateQueries([REACT_QUERY_KEYS.GET_USER_CART_ITEMS]);
     },
@@ -76,13 +77,20 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     }
   });
 
+  const clearCart = () => {
+    clearCartMutation.mutate({
+      customer_id: userId
+    });
+  };
+
   return (
     <CartContext.Provider
       value={{
         addToCart,
         increaseQuantity,
         decreaseQuantity,
-        removeFromCart
+        removeFromCart,
+        clearCart
       }}
     >
       {children}
