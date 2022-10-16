@@ -178,6 +178,7 @@ const Cart = () => {
                   onClick={() => {
                     clearCart();
                   }}
+                  data-testid="clear-cart"
                 >
                   Clear Cart
                 </Button>
@@ -185,6 +186,7 @@ const Cart = () => {
                   onClick={() => {
                     setActiveStep(1);
                   }}
+                  data-testid="next"
                 >
                   Next
                 </Button>
@@ -222,6 +224,7 @@ const Cart = () => {
                               <Pencil strokeWidth={1.5} />
                             </ActionIcon>
                             <ActionIcon
+                              data-testid={`address-select-${name}`}
                               onClick={() => {
                                 setAddressForOrder(address as Address);
                               }}
@@ -257,6 +260,7 @@ const Cart = () => {
                 variant="outline"
                 onClick={toggleAddressModal}
                 leftIcon={<Plus strokeWidth={1.5} />}
+                data-testid="new-address"
               >
                 New Address
               </Button>

@@ -65,7 +65,11 @@ const Addresses = () => {
           />
           My Addresses
         </h2>
-        <Button onClick={toggleAddressModal} leftIcon={<Plus />}>
+        <Button
+          onClick={toggleAddressModal}
+          leftIcon={<Plus />}
+          data-testid="new-address"
+        >
           New Address
         </Button>
         <div className="my-3 grid gap-6">
@@ -83,6 +87,7 @@ const Addresses = () => {
                         setSelectedAddressId(id);
                         toggleAddressModal();
                       }}
+                      data-testid={`edit-address-${name}`}
                     >
                       <Pencil strokeWidth={1.5} />
                     </ActionIcon>
@@ -91,6 +96,7 @@ const Addresses = () => {
                         deleteAddressByPk.mutate({ id });
                       }}
                       className="text-red-400"
+                      data-testid={`delete-address-${name}`}
                     >
                       <Trash strokeWidth={1.5} />
                     </ActionIcon>
