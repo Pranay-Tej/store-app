@@ -3,6 +3,7 @@ import {
   ORDER_STATUS
 } from '@/constants/app.constants';
 import { useAxiosInstance } from '@/context/axios.context';
+import { useCartContext } from '@/context/cart.context';
 import { useUrlQuery } from '@/hooks/useUrlQuery';
 import { Button, Loader } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
@@ -23,6 +24,8 @@ interface OrderResponse {
 }
 
 const Payment = () => {
+  const { clearCart } = useCartContext();
+
   const { protectedAxiosInstance } = useAxiosInstance();
   const [order, setOrder] = useState<OrderResponse>();
   const urlQuery = useUrlQuery();
@@ -42,6 +45,9 @@ const Payment = () => {
     {
       onSuccess: res => {
         setOrder(res);
+        if (res?.status === ORDER_STATUS.PAID) {
+          clearCart();
+        }
       },
       onError: err => {
         console.error(err);

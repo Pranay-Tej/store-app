@@ -32,7 +32,7 @@ const Cart = () => {
   const { value: isAddressModalOpen, toggle: toggleAddressModal } =
     useToggle(false);
 
-  const { removeFromCart } = useCartContext();
+  const { removeFromCart, clearCart } = useCartContext();
   const { data: cart, isLoading } = useUserCartQuery();
 
   const subTotal = useMemo(() => {
@@ -172,13 +172,23 @@ const Cart = () => {
                   &#8377; {subTotal}
                 </span>
               </div>
-              <Button
-                onClick={() => {
-                  setActiveStep(1);
-                }}
-              >
-                Next
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="light"
+                  onClick={() => {
+                    clearCart();
+                  }}
+                >
+                  Clear Cart
+                </Button>
+                <Button
+                  onClick={() => {
+                    setActiveStep(1);
+                  }}
+                >
+                  Next
+                </Button>
+              </div>
             </div>
           </Stepper.Step>
           <Stepper.Step
@@ -267,6 +277,7 @@ const Cart = () => {
                   onClick={() => handleCheckout.mutate()}
                   loading={handleCheckout.isLoading}
                   size="lg"
+                  disabled={addressList?.length === 0}
                 >
                   Place Order
                 </Button>
