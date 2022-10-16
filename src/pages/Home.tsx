@@ -28,6 +28,7 @@ const Home = () => {
   return (
     <div
       className={`${styles.productGrid} my-5 mx-auto max-w-7xl bg-white px-5 py-8`}
+      data-testid="product-list"
     >
       {productList &&
         productList.map(({ id, title, description, image, price }) => (

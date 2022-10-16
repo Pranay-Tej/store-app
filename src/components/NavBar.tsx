@@ -53,7 +53,7 @@ const NavBar = () => {
           </Tooltip>
           {isAuthenticated === false && (
             <>
-              <Link to="/accounts/login">
+              <Link to="/accounts/login" data-testid="login-link">
                 <Button variant="subtle">Login</Button>
               </Link>
               <Link to="/accounts/register">
@@ -67,7 +67,11 @@ const NavBar = () => {
                 <Menu.Target>
                   <Tooltip label="My Account">
                     <ActionIcon size="lg">
-                      <Avatar alt="" color="indigo"></Avatar>
+                      <Avatar
+                        alt="avatar"
+                        color="indigo"
+                        data-testid="avatar-icon"
+                      ></Avatar>
                     </ActionIcon>
                   </Tooltip>
                 </Menu.Target>
@@ -82,6 +86,7 @@ const NavBar = () => {
                   <Link to="/profile/addresses">
                     <Menu.Item
                       icon={<MapPin strokeWidth={1.5} color={'#228be6'} />}
+                      data-testid="address-link"
                     >
                       Addresses
                     </Menu.Item>
@@ -96,7 +101,11 @@ const NavBar = () => {
               </Menu>
               <Link to="/cart">
                 <Tooltip label="Cart">
-                  <ActionIcon size="lg" aria-label="delete">
+                  <ActionIcon
+                    size="lg"
+                    aria-label="cart"
+                    data-testid="cart-link"
+                  >
                     <Indicator
                       disabled={(cart?.length ?? 0) === 0}
                       label={cart?.length ?? 0}

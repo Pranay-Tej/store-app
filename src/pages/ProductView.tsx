@@ -75,6 +75,7 @@ const ProductView = () => {
                     onClick={() => {
                       addToCart(product.id);
                     }}
+                    data-testid="add-to-bag"
                   >
                     Add to bag
                   </Button>
@@ -84,12 +85,15 @@ const ProductView = () => {
                   onClick={() => {
                     navigate('/accounts/login');
                   }}
+                  data-testid="login-button"
                 >
                   Login
                 </Button>
               )}
             </div>
-            <p className="mb-4 text-lg">{product.title}</p>
+            <p className="mb-4 text-lg" data-testid="product-title">
+              {product.title}
+            </p>
             {/* <ProductRating
               rating={product?.rating?.rate}
               count={product?.rating?.count}

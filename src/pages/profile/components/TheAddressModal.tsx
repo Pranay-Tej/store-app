@@ -163,6 +163,7 @@ const TheAddressModal: React.FC<{
             />
 
             <form
+              data-testid="address-form"
               onSubmit={handleSubmit(
                 data => handleAddressFormSubmit(data),
                 e => console.log(e)
@@ -183,6 +184,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="Name"
                       error={errors?.name?.message}
+                      id="name"
                     />
                   )}
                   rules={{
@@ -203,6 +205,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="Mobile"
                       error={errors?.mobile?.message}
+                      id="mobile"
                     />
                   )}
                   rules={{
@@ -228,6 +231,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="House Number"
                       error={errors?.house?.message}
+                      id="house"
                     />
                   )}
                   rules={{
@@ -248,6 +252,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="Street"
                       error={errors?.street?.message}
+                      id="street"
                     />
                   )}
                   rules={{
@@ -268,6 +273,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="Landmark (Optional)"
                       error={errors?.landmark?.message}
+                      id="landmark"
                     />
                   )}
                   rules={{
@@ -284,6 +290,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="City"
                       error={errors?.city?.message}
+                      id="city"
                     />
                   )}
                   rules={{
@@ -304,6 +311,7 @@ const TheAddressModal: React.FC<{
                       {...field}
                       label="Zip"
                       error={errors?.pincode?.message}
+                      id="pincode"
                     />
                   )}
                   rules={{

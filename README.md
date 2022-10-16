@@ -62,6 +62,10 @@ Dev:
 - `pnpm run codegen` to generate graphql types and hooks whenever api has
   changes
 - `pnpm run netlify-dev` to run development server
+- Cypress tests
+  - copy `cypress-example.env.json` to `cypress.env.json`
+  - `pnpm cy:open` to open Cypress test runner
+  - `pnpm test` to run tests in headless mode
 
 ---
 

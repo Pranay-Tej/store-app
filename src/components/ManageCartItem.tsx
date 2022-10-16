@@ -21,16 +21,20 @@ const ManageCartItem: React.FC<{ productId: string; quantity: number }> = ({
             removeFromCart(productId);
           }
         }}
+        data-testid="decrease"
       >
         <Minus strokeWidth={1.5} />
       </ActionIcon>
-      <p className="text-lg font-semibold">{quantity}</p>
+      <p className="text-lg font-semibold" data-testid="quantity">
+        {quantity}
+      </p>
       <ActionIcon
         size="lg"
         aria-label="increase"
         onClick={() => {
           increaseQuantity(productId, quantity);
         }}
+        data-testid="increase"
       >
         <Plus strokeWidth={1.5} />
       </ActionIcon>

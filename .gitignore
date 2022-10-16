@@ -2,6 +2,17 @@ node_modules
 .DS_Store
 dist
 dist-ssr
+
+# for env.local
 *.local
+
+# netlify config
 .netlify
+
+# graphql codegen config
 graphql.config.yaml
+
+# cypress
+cypress.env.json
+cypress/screenshots
+cypress/videos
