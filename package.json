@@ -13,7 +13,8 @@
     "netlify-env:import": "netlify env:import .env.local",
     "codegen": "graphql-codegen --config graphql.config.yaml --errors-only",
     "cy:open": "cypress open",
-    "test": "cypress run --spec cypress/e2e/main/**/*.cy.ts"
+    "test": "cypress run --spec cypress/e2e/main/**/*.cy.ts",
+    "test:local": "CYPRESS_baseUrl=http://localhost:8888 cypress run --spec cypress/e2e/main/**/*.cy.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
