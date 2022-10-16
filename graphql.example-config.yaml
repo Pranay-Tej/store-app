@@ -1,7 +1,7 @@
 schema:
-  - nhost-graphql-api:
+  - your-nhost-graphql-api-base-url:
       headers:
-        x-hasura-admin-secret: nhost-admin-secret
+        x-hasura-admin-secret: your-nhost-admin-secret
 generates:
   src/utils/__generated__/graphql.ts:
     documents:
