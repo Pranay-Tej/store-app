@@ -27,6 +27,7 @@ Dev:
 - Mantine UI
 - React Context
 - Tailwind CSS
+- Cypress e2e tests
 - Vite
 - Prettier
 - prettier-plugin-tailwindcss

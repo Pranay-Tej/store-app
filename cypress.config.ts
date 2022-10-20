@@ -9,6 +9,6 @@ export default defineConfig({
     // baseUrl: process.env.CYPRESS_baseUrl || 'http://localhost:8888'
   },
   experimentalStudio: true,
-  defaultCommandTimeout: 9000,
+  defaultCommandTimeout: 10000, // 10 seconds
   video: false
 });

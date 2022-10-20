@@ -12,7 +12,7 @@
     "netlify-dev:live": "netlify dev --live",
     "netlify-env:import": "netlify env:import .env.local",
     "codegen": "graphql-codegen --config graphql.config.yaml --errors-only",
-    "cy:open": "cypress open",
+    "cy:open": "CYPRESS_baseUrl=http://localhost:8888 cypress open",
     "test": "cypress run --spec cypress/e2e/main/**/*.cy.ts",
     "test:local": "CYPRESS_baseUrl=http://localhost:8888 cypress run --spec cypress/e2e/main/**/*.cy.ts"
   },
