@@ -68,6 +68,7 @@ describe('order flow', () => {
 
     it('address selection step', () => {
       cy.visit('/cart');
+      cy.wait(1000);
       cy.get('[data-testid="next"]').click();
       cy.get('[data-testid="new-address"]').click();
       cy.contains('Place Order').should('be.disabled');
