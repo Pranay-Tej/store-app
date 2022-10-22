@@ -11,7 +11,10 @@
     "netlify-dev": "netlify dev",
     "netlify-dev:live": "netlify dev --live",
     "netlify-env:import": "netlify env:import .env.local",
-    "codegen": "graphql-codegen --config graphql.config.yaml --errors-only"
+    "codegen": "graphql-codegen --config graphql.config.yaml --errors-only",
+    "cy:open": "CYPRESS_baseUrl=http://localhost:8888 cypress open",
+    "test": "cypress run --spec cypress/e2e/main/**/*.cy.ts",
+    "test:local": "CYPRESS_baseUrl=http://localhost:8888 cypress run --spec cypress/e2e/main/**/*.cy.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -32,6 +35,7 @@
     "tabler-icons-react": "^1.50.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@graphql-codegen/cli": "^2.11.6",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/typescript-react-query": "^4.0.1",
@@ -41,6 +45,9 @@
     "@types/react-dom": "^17.0.0",
     "@vitejs/plugin-react": "^1.0.0",
     "autoprefixer": "^10.3.7",
+    "cypress": "^10.10.0",
+    "netlify-cli": "^12.0.9",
+    "netlify-plugin-cypress": "^2.2.0",
     "postcss": "^8.3.11",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.11",

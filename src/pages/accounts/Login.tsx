@@ -30,8 +30,8 @@ const Login = () => {
     reset: resetLoginForm
   } = useForm<LoginForm>({
     defaultValues: {
-      identity: '',
-      password: ''
+      identity: 'user001',
+      password: 'user001'
     }
   });
 
@@ -77,6 +77,7 @@ const Login = () => {
     <div className="mx-auto mt-20 max-w-md rounded-sm border-t-4 border-solid border-blue-500 bg-white p-5 py-8">
       <h1 className="mb-5 text-lg">Login</h1>
       <form
+        data-testid="login-form"
         onSubmit={handleSubmit(
           data => handleLogin(data),
           e => console.error(e)
@@ -99,6 +100,8 @@ const Login = () => {
                 label="Username or Email"
                 error={errors?.identity?.message}
                 icon={<User size={18} />}
+                data-testid="identity"
+                id="identity"
               />
             )}
           />
@@ -118,6 +121,8 @@ const Login = () => {
                 label="Password"
                 error={errors?.password?.message}
                 icon={<Lock size={18} />}
+                data-testid="password"
+                id="password"
               />
             )}
           />

@@ -19,20 +19,20 @@ const Payment = lazy(() => import('@/pages/Payment'));
 const Orders = lazy(() => import('@/pages/orders/Orders'));
 
 function App() {
-  // call shirudo every 10 minutes to keep the heroku app alive
-  useQuery(
-    ['shirudo'],
-    async () => {
-      const res = await axios.get(SHIRUDO_BASE_URL);
-      // console.log('wakeup shirudo heroku app');
-      return res;
-    },
-    {
-      refetchInterval: 1000 * 60 * 10, // 10 minutes
-      refetchOnWindowFocus: false
-      // refetchIntervalInBackground: true
-    }
-  );
+  // call shirudo every 10 minutes to keep the render app alive
+  // useQuery(
+  //   ['shirudo'],
+  //   async () => {
+  //     const res = await axios.get(SHIRUDO_BASE_URL);
+  //     // console.log('wakeup shirudo render app');
+  //     return res;
+  //   },
+  //   {
+  //     refetchInterval: 1000 * 60 * 10, // 10 minutes
+  //     refetchOnWindowFocus: false
+  //     // refetchIntervalInBackground: true
+  //   }
+  // );
 
   return (
     <>
