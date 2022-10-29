@@ -25,17 +25,17 @@ describe('product-detail-page flow', () => {
     it('adds product to cart', () => {
       cy.get('[data-testid="add-to-bag"]').click();
       cy.contains('Add to bag').should('not.exist');
-      cy.contains('1').should('be.visible');
+      cy.get('[data-testid="quantity"]').should('contain.text', '1');
     });
 
     it('increases quantity', () => {
       cy.get('[data-testid="increase"]').click();
-      cy.contains('2').should('be.visible');
+      cy.get('[data-testid="quantity"]').should('contain.text', '2');
     });
 
     it('decreases quantity', () => {
       cy.get('[data-testid="decrease"]').click();
-      cy.contains('1').should('be.visible');
+      cy.get('[data-testid="quantity"]').should('contain.text', '1');
     });
 
     it('removes from cart', () => {

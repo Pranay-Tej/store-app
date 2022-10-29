@@ -30,7 +30,7 @@ describe('order flow', () => {
     it('adds product to cart', () => {
       cy.get('[data-testid="add-to-bag"]').click();
       cy.contains('Add to bag').should('not.exist');
-      cy.contains('1').should('be.visible');
+      cy.get('[data-testid="quantity"]').should('contain.text', '1');
     });
   });
 
@@ -57,18 +57,17 @@ describe('order flow', () => {
     it('increases quantity', () => {
       cy.visit('/cart');
       cy.get('[data-testid="increase"]').click();
-      cy.contains('2').should('be.visible');
+      cy.get('[data-testid="quantity"]').should('contain.text', '2');
     });
 
     it('decreases quantity', () => {
       cy.visit('/cart');
       cy.get('[data-testid="decrease"]').click();
-      cy.contains('1').should('be.visible');
+      cy.get('[data-testid="quantity"]').should('contain.text', '1');
     });
 
     it('address selection step', () => {
       cy.visit('/cart');
-      cy.wait(1000);
       cy.get('[data-testid="next"]').click();
       cy.get('[data-testid="new-address"]').click();
       cy.contains('Place Order').should('be.disabled');
