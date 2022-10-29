@@ -54,6 +54,6 @@ describe('addresses flow', () => {
   it('deletes address', () => {
     cy.visit('/profile/addresses');
     cy.get(`[data-testid="delete-address-${updatedName}"]`).click();
-    cy.contains('TestPersonA').should('not.exist');
+    cy.contains(updatedName).should('not.exist');
   });
 });
