@@ -2,7 +2,7 @@ import { ORDER_STATUS } from '@/constants/app.constants';
 import { useAuthContext } from '@/context/auth.context';
 import { useGetOrdersQuery } from '@/utils/__generated__/graphql';
 import { Avatar, Loader } from '@mantine/core';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import { Clock, DiscountCheck, Package } from 'tabler-icons-react';
 
@@ -81,7 +81,7 @@ const OrderList = () => {
                   </p>
                   <p>
                     <span className="text-gray-600">Ordered on: </span>
-                    {format(new Date(order.created_at), 'dd MMMM yyyy')}
+                    {dayjs(order.created_at).format('DD MMM YYYY, hh:mm A')}
                   </p>
                   <p>
                     <span className="text-gray-600">Delivery to: </span>
