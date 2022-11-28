@@ -42,7 +42,9 @@ const Login = () => {
     });
 
     if (isAuthenticated) {
-      navigate(urlQuery.get('redirectUrl') ?? '/');
+      navigate(urlQuery.get('redirectUrl') ?? '/', {
+        replace: true
+      });
       // navigate(state?.from ?? '/');
 
       // console.log(urlQuery.get('redirectUrl'));
