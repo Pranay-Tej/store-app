@@ -43,7 +43,9 @@ const Register = () => {
     });
 
     if (isAuthenticated) {
-      navigate(urlQuery.get('redirectUrl') ?? '/');
+      navigate(urlQuery.get('redirectUrl') ?? '/', {
+        replace: true
+      });
     }
   }, [isAuthenticated]);
 

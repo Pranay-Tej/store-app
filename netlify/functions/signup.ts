@@ -7,6 +7,7 @@ import {
   SHIRUDO_BASE_URL
 } from '../utils/env.constants';
 import { STATUS_CODES } from '../utils/status-codes.constants';
+import { z } from 'zod';
 
 const REGISTER_USER_MUTATION = gql`
   mutation register_customer {
@@ -33,16 +34,25 @@ const handler: Handler = async (event, context) => {
     }
 
     const body = JSON.parse(event.body || '{}');
-    const { username, password } = body;
 
-    if (!username || !password) {
+    const UserSchema = z.object({
+      username: z
+        .string()
+        .min(3)
+        .regex(/^[A-Za-z0-9_-]*$/),
+      password: z.string().min(3)
+    });
+
+    const result = UserSchema.safeParse(body);
+
+    if (!result.success) {
       return {
         statusCode: STATUS_CODES.BAD_REQUEST,
-        body: JSON.stringify({
-          message: 'Username and password are required'
-        })
+        body: JSON.stringify(result.error.flatten())
       };
     }
+
+    const { username, password } = result.data;
 
     try {
       const res: AxiosResponse<{
@@ -68,16 +78,14 @@ const handler: Handler = async (event, context) => {
       console.error(error);
       return {
         statusCode: STATUS_CODES.INTERNAL_SERVER_ERROR,
-        message: JSON.stringify(error)
+        body: JSON.stringify(error)
       };
     }
   } catch (error) {
     console.error(error);
     return {
       statusCode: STATUS_CODES.INTERNAL_SERVER_ERROR,
-      body: JSON.stringify({
-        error: error.message
-      })
+      body: JSON.stringify(error)
     };
   }
 };

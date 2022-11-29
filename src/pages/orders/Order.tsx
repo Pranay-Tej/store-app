@@ -1,7 +1,7 @@
 import { ORDER_STATUS } from '@/constants/app.constants';
 import { useGetOrderByPkQuery } from '@/utils/__generated__/graphql';
 import { Button, Loader } from '@mantine/core';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { Link, useParams } from 'react-router-dom';
 import { Clock, DiscountCheck, RotateClockwise } from 'tabler-icons-react';
 import styles from './Order.module.css';
@@ -66,7 +66,7 @@ const Order = () => {
               </p>
               <p>
                 <span className="text-gray-600">Ordered on: </span>
-                {format(new Date(order.created_at), 'dd MMMM yyyy')}
+                {dayjs(order.created_at).format('DD MMM YYYY, hh:mm A')}
               </p>
             </div>
           </div>

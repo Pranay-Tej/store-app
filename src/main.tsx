@@ -12,6 +12,13 @@ import { queryClient } from './utils/react-query-client';
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 
+// dayjs plugins
+// no need to extend in other files
+// import dayjs from 'dayjs';
+// import relativeTime from 'dayjs/plugin/relativeTime';
+
+// dayjs.extend(relativeTime);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
