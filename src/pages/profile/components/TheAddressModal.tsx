@@ -276,10 +276,6 @@ const TheAddressModal: React.FC<{
                       id="landmark"
                     />
                   )}
-                  rules={{
-                    maxLength: { value: 20, message: MAX_LENGTH_MESSAGE(20) },
-                    minLength: { value: 3, message: MIN_LENGTH_MESSAGE(3) }
-                  }}
                 />
                 <Controller
                   name="city"

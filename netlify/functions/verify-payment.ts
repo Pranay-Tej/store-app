@@ -5,6 +5,7 @@ import { cashfreeAxiosInstance } from '../utils/cashfreeAxiosClient';
 import { NHOST_BASE_URL } from '../utils/env.constants';
 import { ORDER_STATUS } from '../utils/function.constants';
 import { STATUS_CODES } from '../utils/status-codes.constants';
+import { z } from 'zod';
 
 const UPDATE_ORDER_BY_PK = gql`
   mutation updateOrderByPk($id: uuid!, $status: String = "PAID") {
@@ -46,16 +47,22 @@ const handler: Handler = async (event, context) => {
     }
 
     const body = JSON.parse(event.body || '{}');
-    const { order_id, order_token } = body;
 
-    if (!order_id || !order_token) {
+    const VerifyPaymentSchema = z.object({
+      order_id: z.string().uuid(),
+      order_token: z.string()
+    });
+
+    const result = VerifyPaymentSchema.safeParse(body);
+
+    if (!result.success) {
       return {
         statusCode: STATUS_CODES.BAD_REQUEST,
-        body: JSON.stringify({
-          message: 'order_id & order_token are required'
-        })
+        body: JSON.stringify(result.error.flatten())
       };
     }
+
+    const { order_id, order_token } = result.data;
 
     try {
       // fetch order from cashfree
@@ -116,16 +123,14 @@ const handler: Handler = async (event, context) => {
       console.error(error);
       return {
         statusCode: STATUS_CODES.INTERNAL_SERVER_ERROR,
-        message: JSON.stringify(error)
+        body: JSON.stringify(error)
       };
     }
   } catch (error) {
     console.error(error);
     return {
       statusCode: STATUS_CODES.INTERNAL_SERVER_ERROR,
-      body: JSON.stringify({
-        error: error.message
-      })
+      body: JSON.stringify(error)
     };
   }
 };

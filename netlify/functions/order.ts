@@ -5,6 +5,7 @@ import { cashfreeAxiosInstance } from '../utils/cashfreeAxiosClient';
 import { NHOST_BASE_URL, REACT_APP_BASE_URL } from '../utils/env.constants';
 import { ORDER_STATUS } from '../utils/function.constants';
 import { STATUS_CODES } from '../utils/status-codes.constants';
+import { z } from 'zod';
 
 const INSERT_ORDERS_ONE = gql`
   mutation insertOrdersOne(
@@ -77,6 +78,35 @@ const handler: Handler = async (event, context) => {
     }
 
     const body = JSON.parse(event.body || '{}');
+
+    const OrderSchema = z.object({
+      customer_id: z.string(),
+      order: z
+        .object({
+          product_id: z.string().uuid(),
+          quantity: z.number().nonnegative(),
+          price: z.number().nonnegative()
+        })
+        .array(),
+      name: z.string().min(2).max(30),
+      mobile: z.number(),
+      house: z.string().min(3).max(30),
+      street: z.string().min(3).max(30),
+      landmark: z.union([z.string(), z.null()]),
+      city: z.string().min(3).max(30),
+      pincode: z.number()
+    });
+
+    const result = OrderSchema.safeParse(body);
+
+    if (!result.success) {
+      console.error(JSON.stringify(result.error.format()));
+      return {
+        statusCode: STATUS_CODES.BAD_REQUEST,
+        body: JSON.stringify(result.error.flatten())
+      };
+    }
+
     const {
       customer_id,
       order,
@@ -87,25 +117,7 @@ const handler: Handler = async (event, context) => {
       landmark,
       city,
       pincode
-    } = body;
-
-    if (
-      !customer_id ||
-      !order ||
-      !name ||
-      !mobile ||
-      !house ||
-      !street ||
-      !city ||
-      !pincode
-    ) {
-      return {
-        statusCode: STATUS_CODES.BAD_REQUEST,
-        body: JSON.stringify({
-          message: 'customer_id, order & address fields are required'
-        })
-      };
-    }
+    } = result.data;
 
     const order_amount = order.reduce((acc, curr) => {
       return acc + curr.quantity * curr.price;
@@ -183,16 +195,14 @@ const handler: Handler = async (event, context) => {
       console.error(error);
       return {
         statusCode: STATUS_CODES.INTERNAL_SERVER_ERROR,
-        message: JSON.stringify(error)
+        body: JSON.stringify(error)
       };
     }
   } catch (error) {
     console.error(error);
     return {
       statusCode: STATUS_CODES.INTERNAL_SERVER_ERROR,
-      body: JSON.stringify({
-        error: error.message
-      })
+      body: JSON.stringify(error)
     };
   }
 };
