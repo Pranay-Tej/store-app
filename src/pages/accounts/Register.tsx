@@ -52,11 +52,11 @@ const Register = () => {
   const handleRegister = async (registerData: RegisterForm) => {
     try {
       setIsRegisterLoading(true);
-      const { data } = await axios.post<{ jwt: string }>(
+      const { data } = await axios.post<{ token: string }>(
         `${NETLIFY_FUNCTIONS_BASE_URL}/signup`,
         registerData
       );
-      verifyUser(data?.jwt);
+      verifyUser(data?.token);
     } catch (error: any) {
       setRegisterError(error?.response?.data?.message);
     } finally {

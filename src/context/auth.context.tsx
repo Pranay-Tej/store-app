@@ -8,8 +8,8 @@ interface IAuthContext {
   isAuthenticated: boolean;
   userId: string | undefined;
   username: string | undefined;
-  verifyUser: (jwt: string) => void;
-  // setAuthState: (jwt: string, userId: string, username: string) => void;
+  verifyUser: (token: string) => void;
+  // setAuthState: (token: string, userId: string, username: string) => void;
   logout: () => void;
 }
 
@@ -33,28 +33,27 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }) => {
     }
   }, []);
 
-  const verifyUser = async (jwt: string) => {
+  const verifyUser = async (token: string) => {
     try {
       const {
         data: userData
-      }: AxiosResponse<{ user: { _id: string; username: string } }> =
+      }: AxiosResponse<{ user: { id: string; username: string } }> =
         await axios.get(`${SHIRUDO_BASE_URL}/users/verify`, {
           headers: {
-            Authorization: `Bearer ${jwt}`,
-            ShirudoAppId: SHIRUDO_APP_ID
+            Authorization: `Bearer ${token}`
           }
         });
-      setAuthState(jwt, userData?.user?._id, userData?.user?.username);
+      setAuthState(token, userData?.user?.id, userData?.user?.username);
     } catch (error) {
       logout();
     }
   };
   const setAuthState = async (
-    jwt: string,
+    token: string,
     userId: string,
     username: string
   ) => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.API_TOKEN, jwt);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.API_TOKEN, token);
     localStorage.setItem(LOCAL_STORAGE_KEYS.IS_AUTHENTICATED, 'true');
     localStorage.setItem(LOCAL_STORAGE_KEYS.USER_ID, userId);
     localStorage.setItem(LOCAL_STORAGE_KEYS.USERNAME, username);
