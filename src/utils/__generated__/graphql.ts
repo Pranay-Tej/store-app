@@ -115,6 +115,17 @@ export type Addresses_Aggregate = {
   nodes: Array<Addresses>;
 };
 
+export type Addresses_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Addresses_Aggregate_Bool_Exp_Count>;
+};
+
+export type Addresses_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Addresses_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Addresses_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "addresses" */
 export type Addresses_Aggregate_Fields = {
   __typename?: 'addresses_aggregate_fields';
@@ -399,6 +410,29 @@ export type Addresses_Stddev_Samp_Order_By = {
   pincode?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "addresses" */
+export type Addresses_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Addresses_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Addresses_Stream_Cursor_Value_Input = {
+  city?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  customer_id?: InputMaybe<Scalars['String']>;
+  house?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  landmark?: InputMaybe<Scalars['String']>;
+  mobile?: InputMaybe<Scalars['numeric']>;
+  name?: InputMaybe<Scalars['String']>;
+  pincode?: InputMaybe<Scalars['numeric']>;
+  street?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type Addresses_Sum_Fields = {
   __typename?: 'addresses_sum_fields';
@@ -595,7 +629,7 @@ export type AuthProviderRequests_Order_By = {
   options?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: authProviderRequests */
+/** primary key columns input for table: auth.provider_requests */
 export type AuthProviderRequests_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -615,6 +649,20 @@ export enum AuthProviderRequests_Select_Column {
 
 /** input type for updating data in table "auth.provider_requests" */
 export type AuthProviderRequests_Set_Input = {
+  id?: InputMaybe<Scalars['uuid']>;
+  options?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** Streaming cursor of the table "authProviderRequests" */
+export type AuthProviderRequests_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthProviderRequests_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthProviderRequests_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   options?: InputMaybe<Scalars['jsonb']>;
 };
@@ -702,6 +750,7 @@ export type AuthProviders_Bool_Exp = {
   _or?: InputMaybe<Array<AuthProviders_Bool_Exp>>;
   id?: InputMaybe<String_Comparison_Exp>;
   userProviders?: InputMaybe<AuthUserProviders_Bool_Exp>;
+  userProviders_aggregate?: InputMaybe<AuthUserProviders_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "auth.providers" */
@@ -757,7 +806,7 @@ export type AuthProviders_Order_By = {
   userProviders_aggregate?: InputMaybe<AuthUserProviders_Aggregate_Order_By>;
 };
 
-/** primary key columns input for table: authProviders */
+/** primary key columns input for table: auth.providers */
 export type AuthProviders_Pk_Columns_Input = {
   id: Scalars['String'];
 };
@@ -770,6 +819,19 @@ export enum AuthProviders_Select_Column {
 
 /** input type for updating data in table "auth.providers" */
 export type AuthProviders_Set_Input = {
+  id?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "authProviders" */
+export type AuthProviders_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthProviders_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthProviders_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['String']>;
 };
 
@@ -790,7 +852,9 @@ export type AuthRefreshTokens = {
   __typename?: 'authRefreshTokens';
   createdAt: Scalars['timestamptz'];
   expiresAt: Scalars['timestamptz'];
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
+  refreshTokenHash?: Maybe<Scalars['String']>;
   /** An object relationship */
   user: Users;
   userId: Scalars['uuid'];
@@ -801,6 +865,17 @@ export type AuthRefreshTokens_Aggregate = {
   __typename?: 'authRefreshTokens_aggregate';
   aggregate?: Maybe<AuthRefreshTokens_Aggregate_Fields>;
   nodes: Array<AuthRefreshTokens>;
+};
+
+export type AuthRefreshTokens_Aggregate_Bool_Exp = {
+  count?: InputMaybe<AuthRefreshTokens_Aggregate_Bool_Exp_Count>;
+};
+
+export type AuthRefreshTokens_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<AuthRefreshTokens_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<AuthRefreshTokens_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "auth.refresh_tokens" */
@@ -840,6 +915,7 @@ export type AuthRefreshTokens_Bool_Exp = {
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   expiresAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   refreshToken?: InputMaybe<Uuid_Comparison_Exp>;
+  refreshTokenHash?: InputMaybe<String_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   userId?: InputMaybe<Uuid_Comparison_Exp>;
 };
@@ -854,6 +930,7 @@ export enum AuthRefreshTokens_Constraint {
 export type AuthRefreshTokens_Insert_Input = {
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   expiresAt?: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken?: InputMaybe<Scalars['uuid']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   userId?: InputMaybe<Scalars['uuid']>;
@@ -864,7 +941,9 @@ export type AuthRefreshTokens_Max_Fields = {
   __typename?: 'authRefreshTokens_max_fields';
   createdAt?: Maybe<Scalars['timestamptz']>;
   expiresAt?: Maybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken?: Maybe<Scalars['uuid']>;
+  refreshTokenHash?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['uuid']>;
 };
 
@@ -872,7 +951,9 @@ export type AuthRefreshTokens_Max_Fields = {
 export type AuthRefreshTokens_Max_Order_By = {
   createdAt?: InputMaybe<Order_By>;
   expiresAt?: InputMaybe<Order_By>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken?: InputMaybe<Order_By>;
+  refreshTokenHash?: InputMaybe<Order_By>;
   userId?: InputMaybe<Order_By>;
 };
 
@@ -881,7 +962,9 @@ export type AuthRefreshTokens_Min_Fields = {
   __typename?: 'authRefreshTokens_min_fields';
   createdAt?: Maybe<Scalars['timestamptz']>;
   expiresAt?: Maybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken?: Maybe<Scalars['uuid']>;
+  refreshTokenHash?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['uuid']>;
 };
 
@@ -889,7 +972,9 @@ export type AuthRefreshTokens_Min_Fields = {
 export type AuthRefreshTokens_Min_Order_By = {
   createdAt?: InputMaybe<Order_By>;
   expiresAt?: InputMaybe<Order_By>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken?: InputMaybe<Order_By>;
+  refreshTokenHash?: InputMaybe<Order_By>;
   userId?: InputMaybe<Order_By>;
 };
 
@@ -914,12 +999,14 @@ export type AuthRefreshTokens_Order_By = {
   createdAt?: InputMaybe<Order_By>;
   expiresAt?: InputMaybe<Order_By>;
   refreshToken?: InputMaybe<Order_By>;
+  refreshTokenHash?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
   userId?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: authRefreshTokens */
+/** primary key columns input for table: auth.refresh_tokens */
 export type AuthRefreshTokens_Pk_Columns_Input = {
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
 };
 
@@ -932,6 +1019,8 @@ export enum AuthRefreshTokens_Select_Column {
   /** column name */
   RefreshToken = 'refreshToken',
   /** column name */
+  RefreshTokenHash = 'refreshTokenHash',
+  /** column name */
   UserId = 'userId'
 }
 
@@ -939,7 +1028,26 @@ export enum AuthRefreshTokens_Select_Column {
 export type AuthRefreshTokens_Set_Input = {
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   expiresAt?: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken?: InputMaybe<Scalars['uuid']>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
+/** Streaming cursor of the table "authRefreshTokens" */
+export type AuthRefreshTokens_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthRefreshTokens_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthRefreshTokens_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  expiresAt?: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
+  refreshToken?: InputMaybe<Scalars['uuid']>;
+  refreshTokenHash?: InputMaybe<Scalars['String']>;
   userId?: InputMaybe<Scalars['uuid']>;
 };
 
@@ -1044,7 +1152,9 @@ export type AuthRoles_Bool_Exp = {
   _or?: InputMaybe<Array<AuthRoles_Bool_Exp>>;
   role?: InputMaybe<String_Comparison_Exp>;
   userRoles?: InputMaybe<AuthUserRoles_Bool_Exp>;
+  userRoles_aggregate?: InputMaybe<AuthUserRoles_Aggregate_Bool_Exp>;
   usersByDefaultRole?: InputMaybe<Users_Bool_Exp>;
+  usersByDefaultRole_aggregate?: InputMaybe<Users_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "auth.roles" */
@@ -1102,7 +1212,7 @@ export type AuthRoles_Order_By = {
   usersByDefaultRole_aggregate?: InputMaybe<Users_Aggregate_Order_By>;
 };
 
-/** primary key columns input for table: authRoles */
+/** primary key columns input for table: auth.roles */
 export type AuthRoles_Pk_Columns_Input = {
   role: Scalars['String'];
 };
@@ -1118,6 +1228,19 @@ export type AuthRoles_Set_Input = {
   role?: InputMaybe<Scalars['String']>;
 };
 
+/** Streaming cursor of the table "authRoles" */
+export type AuthRoles_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthRoles_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthRoles_Stream_Cursor_Value_Input = {
+  role?: InputMaybe<Scalars['String']>;
+};
+
 /** update columns of table "auth.roles" */
 export enum AuthRoles_Update_Column {
   /** column name */
@@ -1128,317 +1251,6 @@ export type AuthRoles_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<AuthRoles_Set_Input>;
   where: AuthRoles_Bool_Exp;
-};
-
-/** User webauthn authenticators. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type AuthUserAuthenticators = {
-  __typename?: 'authUserAuthenticators';
-  counter: Scalars['bigint'];
-  credentialId: Scalars['String'];
-  credentialPublicKey?: Maybe<Scalars['bytea']>;
-  id: Scalars['uuid'];
-  transports: Scalars['String'];
-  /** An object relationship */
-  user: Users;
-  userId: Scalars['uuid'];
-};
-
-/** aggregated selection of "auth.user_authenticators" */
-export type AuthUserAuthenticators_Aggregate = {
-  __typename?: 'authUserAuthenticators_aggregate';
-  aggregate?: Maybe<AuthUserAuthenticators_Aggregate_Fields>;
-  nodes: Array<AuthUserAuthenticators>;
-};
-
-/** aggregate fields of "auth.user_authenticators" */
-export type AuthUserAuthenticators_Aggregate_Fields = {
-  __typename?: 'authUserAuthenticators_aggregate_fields';
-  avg?: Maybe<AuthUserAuthenticators_Avg_Fields>;
-  count: Scalars['Int'];
-  max?: Maybe<AuthUserAuthenticators_Max_Fields>;
-  min?: Maybe<AuthUserAuthenticators_Min_Fields>;
-  stddev?: Maybe<AuthUserAuthenticators_Stddev_Fields>;
-  stddev_pop?: Maybe<AuthUserAuthenticators_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<AuthUserAuthenticators_Stddev_Samp_Fields>;
-  sum?: Maybe<AuthUserAuthenticators_Sum_Fields>;
-  var_pop?: Maybe<AuthUserAuthenticators_Var_Pop_Fields>;
-  var_samp?: Maybe<AuthUserAuthenticators_Var_Samp_Fields>;
-  variance?: Maybe<AuthUserAuthenticators_Variance_Fields>;
-};
-
-
-/** aggregate fields of "auth.user_authenticators" */
-export type AuthUserAuthenticators_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Aggregate_Order_By = {
-  avg?: InputMaybe<AuthUserAuthenticators_Avg_Order_By>;
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<AuthUserAuthenticators_Max_Order_By>;
-  min?: InputMaybe<AuthUserAuthenticators_Min_Order_By>;
-  stddev?: InputMaybe<AuthUserAuthenticators_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<AuthUserAuthenticators_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<AuthUserAuthenticators_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<AuthUserAuthenticators_Sum_Order_By>;
-  var_pop?: InputMaybe<AuthUserAuthenticators_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<AuthUserAuthenticators_Var_Samp_Order_By>;
-  variance?: InputMaybe<AuthUserAuthenticators_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Arr_Rel_Insert_Input = {
-  data: Array<AuthUserAuthenticators_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<AuthUserAuthenticators_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type AuthUserAuthenticators_Avg_Fields = {
-  __typename?: 'authUserAuthenticators_avg_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Avg_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "auth.user_authenticators". All fields are combined with a logical 'AND'. */
-export type AuthUserAuthenticators_Bool_Exp = {
-  _and?: InputMaybe<Array<AuthUserAuthenticators_Bool_Exp>>;
-  _not?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
-  _or?: InputMaybe<Array<AuthUserAuthenticators_Bool_Exp>>;
-  counter?: InputMaybe<Bigint_Comparison_Exp>;
-  credentialId?: InputMaybe<String_Comparison_Exp>;
-  credentialPublicKey?: InputMaybe<Bytea_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  transports?: InputMaybe<String_Comparison_Exp>;
-  user?: InputMaybe<Users_Bool_Exp>;
-  userId?: InputMaybe<Uuid_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "auth.user_authenticators" */
-export enum AuthUserAuthenticators_Constraint {
-  /** unique or primary key constraint on columns "credential_id" */
-  UserAuthenticatorsCredentialIdKey = 'user_authenticators_credential_id_key',
-  /** unique or primary key constraint on columns "id" */
-  UserAuthenticatorsPkey = 'user_authenticators_pkey'
-}
-
-/** input type for incrementing numeric columns in table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Inc_Input = {
-  counter?: InputMaybe<Scalars['bigint']>;
-};
-
-/** input type for inserting data into table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Insert_Input = {
-  counter?: InputMaybe<Scalars['bigint']>;
-  credentialId?: InputMaybe<Scalars['String']>;
-  credentialPublicKey?: InputMaybe<Scalars['bytea']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  transports?: InputMaybe<Scalars['String']>;
-  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
-  userId?: InputMaybe<Scalars['uuid']>;
-};
-
-/** aggregate max on columns */
-export type AuthUserAuthenticators_Max_Fields = {
-  __typename?: 'authUserAuthenticators_max_fields';
-  counter?: Maybe<Scalars['bigint']>;
-  credentialId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  transports?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['uuid']>;
-};
-
-/** order by max() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Max_Order_By = {
-  counter?: InputMaybe<Order_By>;
-  credentialId?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  transports?: InputMaybe<Order_By>;
-  userId?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type AuthUserAuthenticators_Min_Fields = {
-  __typename?: 'authUserAuthenticators_min_fields';
-  counter?: Maybe<Scalars['bigint']>;
-  credentialId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  transports?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['uuid']>;
-};
-
-/** order by min() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Min_Order_By = {
-  counter?: InputMaybe<Order_By>;
-  credentialId?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  transports?: InputMaybe<Order_By>;
-  userId?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Mutation_Response = {
-  __typename?: 'authUserAuthenticators_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<AuthUserAuthenticators>;
-};
-
-/** on_conflict condition type for table "auth.user_authenticators" */
-export type AuthUserAuthenticators_On_Conflict = {
-  constraint: AuthUserAuthenticators_Constraint;
-  update_columns?: Array<AuthUserAuthenticators_Update_Column>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "auth.user_authenticators". */
-export type AuthUserAuthenticators_Order_By = {
-  counter?: InputMaybe<Order_By>;
-  credentialId?: InputMaybe<Order_By>;
-  credentialPublicKey?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  transports?: InputMaybe<Order_By>;
-  user?: InputMaybe<Users_Order_By>;
-  userId?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: authUserAuthenticators */
-export type AuthUserAuthenticators_Pk_Columns_Input = {
-  id: Scalars['uuid'];
-};
-
-/** select columns of table "auth.user_authenticators" */
-export enum AuthUserAuthenticators_Select_Column {
-  /** column name */
-  Counter = 'counter',
-  /** column name */
-  CredentialId = 'credentialId',
-  /** column name */
-  CredentialPublicKey = 'credentialPublicKey',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Transports = 'transports',
-  /** column name */
-  UserId = 'userId'
-}
-
-/** input type for updating data in table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Set_Input = {
-  counter?: InputMaybe<Scalars['bigint']>;
-  credentialId?: InputMaybe<Scalars['String']>;
-  credentialPublicKey?: InputMaybe<Scalars['bytea']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  transports?: InputMaybe<Scalars['String']>;
-  userId?: InputMaybe<Scalars['uuid']>;
-};
-
-/** aggregate stddev on columns */
-export type AuthUserAuthenticators_Stddev_Fields = {
-  __typename?: 'authUserAuthenticators_stddev_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Stddev_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type AuthUserAuthenticators_Stddev_Pop_Fields = {
-  __typename?: 'authUserAuthenticators_stddev_pop_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Stddev_Pop_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type AuthUserAuthenticators_Stddev_Samp_Fields = {
-  __typename?: 'authUserAuthenticators_stddev_samp_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Stddev_Samp_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type AuthUserAuthenticators_Sum_Fields = {
-  __typename?: 'authUserAuthenticators_sum_fields';
-  counter?: Maybe<Scalars['bigint']>;
-};
-
-/** order by sum() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Sum_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** update columns of table "auth.user_authenticators" */
-export enum AuthUserAuthenticators_Update_Column {
-  /** column name */
-  Counter = 'counter',
-  /** column name */
-  CredentialId = 'credentialId',
-  /** column name */
-  CredentialPublicKey = 'credentialPublicKey',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Transports = 'transports',
-  /** column name */
-  UserId = 'userId'
-}
-
-export type AuthUserAuthenticators_Updates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<AuthUserAuthenticators_Inc_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<AuthUserAuthenticators_Set_Input>;
-  where: AuthUserAuthenticators_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type AuthUserAuthenticators_Var_Pop_Fields = {
-  __typename?: 'authUserAuthenticators_var_pop_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Var_Pop_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type AuthUserAuthenticators_Var_Samp_Fields = {
-  __typename?: 'authUserAuthenticators_var_samp_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Var_Samp_Order_By = {
-  counter?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type AuthUserAuthenticators_Variance_Fields = {
-  __typename?: 'authUserAuthenticators_variance_fields';
-  counter?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "auth.user_authenticators" */
-export type AuthUserAuthenticators_Variance_Order_By = {
-  counter?: InputMaybe<Order_By>;
 };
 
 /** Active providers for a given user. Don't modify its structure as Hasura Auth relies on it to function properly. */
@@ -1463,6 +1275,17 @@ export type AuthUserProviders_Aggregate = {
   __typename?: 'authUserProviders_aggregate';
   aggregate?: Maybe<AuthUserProviders_Aggregate_Fields>;
   nodes: Array<AuthUserProviders>;
+};
+
+export type AuthUserProviders_Aggregate_Bool_Exp = {
+  count?: InputMaybe<AuthUserProviders_Aggregate_Bool_Exp_Count>;
+};
+
+export type AuthUserProviders_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<AuthUserProviders_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<AuthUserProviders_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "auth.user_providers" */
@@ -1615,7 +1438,7 @@ export type AuthUserProviders_Order_By = {
   userId?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: authUserProviders */
+/** primary key columns input for table: auth.user_providers */
 export type AuthUserProviders_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -1642,6 +1465,26 @@ export enum AuthUserProviders_Select_Column {
 
 /** input type for updating data in table "auth.user_providers" */
 export type AuthUserProviders_Set_Input = {
+  accessToken?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  providerId?: InputMaybe<Scalars['String']>;
+  providerUserId?: InputMaybe<Scalars['String']>;
+  refreshToken?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
+/** Streaming cursor of the table "authUserProviders" */
+export type AuthUserProviders_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthUserProviders_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthUserProviders_Stream_Cursor_Value_Input = {
   accessToken?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -1696,6 +1539,17 @@ export type AuthUserRoles_Aggregate = {
   __typename?: 'authUserRoles_aggregate';
   aggregate?: Maybe<AuthUserRoles_Aggregate_Fields>;
   nodes: Array<AuthUserRoles>;
+};
+
+export type AuthUserRoles_Aggregate_Bool_Exp = {
+  count?: InputMaybe<AuthUserRoles_Aggregate_Bool_Exp_Count>;
+};
+
+export type AuthUserRoles_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<AuthUserRoles_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<AuthUserRoles_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "auth.user_roles" */
@@ -1818,7 +1672,7 @@ export type AuthUserRoles_Order_By = {
   userId?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: authUserRoles */
+/** primary key columns input for table: auth.user_roles */
 export type AuthUserRoles_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -1843,6 +1697,22 @@ export type AuthUserRoles_Set_Input = {
   userId?: InputMaybe<Scalars['uuid']>;
 };
 
+/** Streaming cursor of the table "authUserRoles" */
+export type AuthUserRoles_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthUserRoles_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthUserRoles_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
 /** update columns of table "auth.user_roles" */
 export enum AuthUserRoles_Update_Column {
   /** column name */
@@ -1859,6 +1729,360 @@ export type AuthUserRoles_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<AuthUserRoles_Set_Input>;
   where: AuthUserRoles_Bool_Exp;
+};
+
+/** User webauthn security keys. Don't modify its structure as Hasura Auth relies on it to function properly. */
+export type AuthUserSecurityKeys = {
+  __typename?: 'authUserSecurityKeys';
+  counter: Scalars['bigint'];
+  credentialId: Scalars['String'];
+  credentialPublicKey?: Maybe<Scalars['bytea']>;
+  id: Scalars['uuid'];
+  nickname?: Maybe<Scalars['String']>;
+  transports: Scalars['String'];
+  /** An object relationship */
+  user: Users;
+  userId: Scalars['uuid'];
+};
+
+/** aggregated selection of "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Aggregate = {
+  __typename?: 'authUserSecurityKeys_aggregate';
+  aggregate?: Maybe<AuthUserSecurityKeys_Aggregate_Fields>;
+  nodes: Array<AuthUserSecurityKeys>;
+};
+
+export type AuthUserSecurityKeys_Aggregate_Bool_Exp = {
+  count?: InputMaybe<AuthUserSecurityKeys_Aggregate_Bool_Exp_Count>;
+};
+
+export type AuthUserSecurityKeys_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Aggregate_Fields = {
+  __typename?: 'authUserSecurityKeys_aggregate_fields';
+  avg?: Maybe<AuthUserSecurityKeys_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<AuthUserSecurityKeys_Max_Fields>;
+  min?: Maybe<AuthUserSecurityKeys_Min_Fields>;
+  stddev?: Maybe<AuthUserSecurityKeys_Stddev_Fields>;
+  stddev_pop?: Maybe<AuthUserSecurityKeys_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<AuthUserSecurityKeys_Stddev_Samp_Fields>;
+  sum?: Maybe<AuthUserSecurityKeys_Sum_Fields>;
+  var_pop?: Maybe<AuthUserSecurityKeys_Var_Pop_Fields>;
+  var_samp?: Maybe<AuthUserSecurityKeys_Var_Samp_Fields>;
+  variance?: Maybe<AuthUserSecurityKeys_Variance_Fields>;
+};
+
+
+/** aggregate fields of "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Aggregate_Order_By = {
+  avg?: InputMaybe<AuthUserSecurityKeys_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<AuthUserSecurityKeys_Max_Order_By>;
+  min?: InputMaybe<AuthUserSecurityKeys_Min_Order_By>;
+  stddev?: InputMaybe<AuthUserSecurityKeys_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<AuthUserSecurityKeys_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<AuthUserSecurityKeys_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<AuthUserSecurityKeys_Sum_Order_By>;
+  var_pop?: InputMaybe<AuthUserSecurityKeys_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<AuthUserSecurityKeys_Var_Samp_Order_By>;
+  variance?: InputMaybe<AuthUserSecurityKeys_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Arr_Rel_Insert_Input = {
+  data: Array<AuthUserSecurityKeys_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<AuthUserSecurityKeys_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type AuthUserSecurityKeys_Avg_Fields = {
+  __typename?: 'authUserSecurityKeys_avg_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Avg_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "auth.user_security_keys". All fields are combined with a logical 'AND'. */
+export type AuthUserSecurityKeys_Bool_Exp = {
+  _and?: InputMaybe<Array<AuthUserSecurityKeys_Bool_Exp>>;
+  _not?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+  _or?: InputMaybe<Array<AuthUserSecurityKeys_Bool_Exp>>;
+  counter?: InputMaybe<Bigint_Comparison_Exp>;
+  credentialId?: InputMaybe<String_Comparison_Exp>;
+  credentialPublicKey?: InputMaybe<Bytea_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  nickname?: InputMaybe<String_Comparison_Exp>;
+  transports?: InputMaybe<String_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
+  userId?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "auth.user_security_keys" */
+export enum AuthUserSecurityKeys_Constraint {
+  /** unique or primary key constraint on columns "credential_id" */
+  UserSecurityKeyCredentialIdKey = 'user_security_key_credential_id_key',
+  /** unique or primary key constraint on columns "id" */
+  UserSecurityKeysPkey = 'user_security_keys_pkey'
+}
+
+/** input type for incrementing numeric columns in table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Inc_Input = {
+  counter?: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Insert_Input = {
+  counter?: InputMaybe<Scalars['bigint']>;
+  credentialId?: InputMaybe<Scalars['String']>;
+  credentialPublicKey?: InputMaybe<Scalars['bytea']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  nickname?: InputMaybe<Scalars['String']>;
+  transports?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type AuthUserSecurityKeys_Max_Fields = {
+  __typename?: 'authUserSecurityKeys_max_fields';
+  counter?: Maybe<Scalars['bigint']>;
+  credentialId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  nickname?: Maybe<Scalars['String']>;
+  transports?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Max_Order_By = {
+  counter?: InputMaybe<Order_By>;
+  credentialId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  nickname?: InputMaybe<Order_By>;
+  transports?: InputMaybe<Order_By>;
+  userId?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type AuthUserSecurityKeys_Min_Fields = {
+  __typename?: 'authUserSecurityKeys_min_fields';
+  counter?: Maybe<Scalars['bigint']>;
+  credentialId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  nickname?: Maybe<Scalars['String']>;
+  transports?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Min_Order_By = {
+  counter?: InputMaybe<Order_By>;
+  credentialId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  nickname?: InputMaybe<Order_By>;
+  transports?: InputMaybe<Order_By>;
+  userId?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Mutation_Response = {
+  __typename?: 'authUserSecurityKeys_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<AuthUserSecurityKeys>;
+};
+
+/** on_conflict condition type for table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_On_Conflict = {
+  constraint: AuthUserSecurityKeys_Constraint;
+  update_columns?: Array<AuthUserSecurityKeys_Update_Column>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "auth.user_security_keys". */
+export type AuthUserSecurityKeys_Order_By = {
+  counter?: InputMaybe<Order_By>;
+  credentialId?: InputMaybe<Order_By>;
+  credentialPublicKey?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  nickname?: InputMaybe<Order_By>;
+  transports?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
+  userId?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: auth.user_security_keys */
+export type AuthUserSecurityKeys_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "auth.user_security_keys" */
+export enum AuthUserSecurityKeys_Select_Column {
+  /** column name */
+  Counter = 'counter',
+  /** column name */
+  CredentialId = 'credentialId',
+  /** column name */
+  CredentialPublicKey = 'credentialPublicKey',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Nickname = 'nickname',
+  /** column name */
+  Transports = 'transports',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** input type for updating data in table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Set_Input = {
+  counter?: InputMaybe<Scalars['bigint']>;
+  credentialId?: InputMaybe<Scalars['String']>;
+  credentialPublicKey?: InputMaybe<Scalars['bytea']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  nickname?: InputMaybe<Scalars['String']>;
+  transports?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate stddev on columns */
+export type AuthUserSecurityKeys_Stddev_Fields = {
+  __typename?: 'authUserSecurityKeys_stddev_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Stddev_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type AuthUserSecurityKeys_Stddev_Pop_Fields = {
+  __typename?: 'authUserSecurityKeys_stddev_pop_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Stddev_Pop_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type AuthUserSecurityKeys_Stddev_Samp_Fields = {
+  __typename?: 'authUserSecurityKeys_stddev_samp_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Stddev_Samp_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "authUserSecurityKeys" */
+export type AuthUserSecurityKeys_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: AuthUserSecurityKeys_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthUserSecurityKeys_Stream_Cursor_Value_Input = {
+  counter?: InputMaybe<Scalars['bigint']>;
+  credentialId?: InputMaybe<Scalars['String']>;
+  credentialPublicKey?: InputMaybe<Scalars['bytea']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  nickname?: InputMaybe<Scalars['String']>;
+  transports?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate sum on columns */
+export type AuthUserSecurityKeys_Sum_Fields = {
+  __typename?: 'authUserSecurityKeys_sum_fields';
+  counter?: Maybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Sum_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "auth.user_security_keys" */
+export enum AuthUserSecurityKeys_Update_Column {
+  /** column name */
+  Counter = 'counter',
+  /** column name */
+  CredentialId = 'credentialId',
+  /** column name */
+  CredentialPublicKey = 'credentialPublicKey',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Nickname = 'nickname',
+  /** column name */
+  Transports = 'transports',
+  /** column name */
+  UserId = 'userId'
+}
+
+export type AuthUserSecurityKeys_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<AuthUserSecurityKeys_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<AuthUserSecurityKeys_Set_Input>;
+  where: AuthUserSecurityKeys_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type AuthUserSecurityKeys_Var_Pop_Fields = {
+  __typename?: 'authUserSecurityKeys_var_pop_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Var_Pop_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type AuthUserSecurityKeys_Var_Samp_Fields = {
+  __typename?: 'authUserSecurityKeys_var_samp_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Var_Samp_Order_By = {
+  counter?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type AuthUserSecurityKeys_Variance_Fields = {
+  __typename?: 'authUserSecurityKeys_variance_fields';
+  counter?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "auth.user_security_keys" */
+export type AuthUserSecurityKeys_Variance_Order_By = {
+  counter?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -1958,6 +2182,7 @@ export type Buckets_Bool_Exp = {
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   downloadExpiration?: InputMaybe<Int_Comparison_Exp>;
   files?: InputMaybe<Files_Bool_Exp>;
+  files_aggregate?: InputMaybe<Files_Aggregate_Bool_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   maxUploadFileSize?: InputMaybe<Int_Comparison_Exp>;
   minUploadFileSize?: InputMaybe<Int_Comparison_Exp>;
@@ -2051,7 +2276,7 @@ export type Buckets_Order_By = {
   updatedAt?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: buckets */
+/** primary key columns input for table: storage.buckets */
 export type Buckets_Pk_Columns_Input = {
   id: Scalars['String'];
 };
@@ -2110,6 +2335,26 @@ export type Buckets_Stddev_Samp_Fields = {
   downloadExpiration?: Maybe<Scalars['Float']>;
   maxUploadFileSize?: Maybe<Scalars['Float']>;
   minUploadFileSize?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "buckets" */
+export type Buckets_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Buckets_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Buckets_Stream_Cursor_Value_Input = {
+  cacheControl?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  downloadExpiration?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['String']>;
+  maxUploadFileSize?: InputMaybe<Scalars['Int']>;
+  minUploadFileSize?: InputMaybe<Scalars['Int']>;
+  presignedUrlsEnabled?: InputMaybe<Scalars['Boolean']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate sum on columns */
@@ -2205,6 +2450,17 @@ export type Cart_Items_Aggregate = {
   __typename?: 'cart_items_aggregate';
   aggregate?: Maybe<Cart_Items_Aggregate_Fields>;
   nodes: Array<Cart_Items>;
+};
+
+export type Cart_Items_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Cart_Items_Aggregate_Bool_Exp_Count>;
+};
+
+export type Cart_Items_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Cart_Items_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Cart_Items_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "cart_items" */
@@ -2437,6 +2693,24 @@ export type Cart_Items_Stddev_Samp_Order_By = {
   quantity?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "cart_items" */
+export type Cart_Items_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Cart_Items_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Cart_Items_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  customer_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  product_id?: InputMaybe<Scalars['uuid']>;
+  quantity?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type Cart_Items_Sum_Fields = {
   __typename?: 'cart_items_sum_fields';
@@ -2537,6 +2811,14 @@ export type Citext_Comparison_Exp = {
   /** does the column match the given SQL regular expression */
   _similar?: InputMaybe<Scalars['citext']>;
 };
+
+/** ordering argument of a cursor */
+export enum Cursor_Ordering {
+  /** ascending ordering of the cursor */
+  Asc = 'ASC',
+  /** descending ordering of the cursor */
+  Desc = 'DESC'
+}
 
 /** columns and relationships of "customers" */
 export type Customers = {
@@ -2671,12 +2953,16 @@ export type Customers_Bool_Exp = {
   _not?: InputMaybe<Customers_Bool_Exp>;
   _or?: InputMaybe<Array<Customers_Bool_Exp>>;
   addresses?: InputMaybe<Addresses_Bool_Exp>;
+  addresses_aggregate?: InputMaybe<Addresses_Aggregate_Bool_Exp>;
   cart_items?: InputMaybe<Cart_Items_Bool_Exp>;
+  cart_items_aggregate?: InputMaybe<Cart_Items_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   hasura_id?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   order_items?: InputMaybe<Order_Items_Bool_Exp>;
+  order_items_aggregate?: InputMaybe<Order_Items_Aggregate_Bool_Exp>;
   orders?: InputMaybe<Orders_Bool_Exp>;
+  orders_aggregate?: InputMaybe<Orders_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -2778,6 +3064,22 @@ export type Customers_Set_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** Streaming cursor of the table "customers" */
+export type Customers_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Customers_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Customers_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  hasura_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** update columns of table "customers" */
 export enum Customers_Update_Column {
   /** column name */
@@ -2818,6 +3120,33 @@ export type Files_Aggregate = {
   __typename?: 'files_aggregate';
   aggregate?: Maybe<Files_Aggregate_Fields>;
   nodes: Array<Files>;
+};
+
+export type Files_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Files_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Files_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Files_Aggregate_Bool_Exp_Count>;
+};
+
+export type Files_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Files_Select_Column_Files_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Files_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Files_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Files_Select_Column_Files_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Files_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Files_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Files_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Files_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "storage.files" */
@@ -3005,7 +3334,7 @@ export type Files_Order_By = {
   uploadedByUserId?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: files */
+/** primary key columns input for table: storage.files */
 export type Files_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -3032,6 +3361,18 @@ export enum Files_Select_Column {
   UpdatedAt = 'updatedAt',
   /** column name */
   UploadedByUserId = 'uploadedByUserId'
+}
+
+/** select "files_aggregate_bool_exp_bool_and_arguments_columns" columns of table "storage.files" */
+export enum Files_Select_Column_Files_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsUploaded = 'isUploaded'
+}
+
+/** select "files_aggregate_bool_exp_bool_or_arguments_columns" columns of table "storage.files" */
+export enum Files_Select_Column_Files_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsUploaded = 'isUploaded'
 }
 
 /** input type for updating data in table "storage.files" */
@@ -3079,6 +3420,28 @@ export type Files_Stddev_Samp_Fields = {
 /** order by stddev_samp() on columns of table "storage.files" */
 export type Files_Stddev_Samp_Order_By = {
   size?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "files" */
+export type Files_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Files_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Files_Stream_Cursor_Value_Input = {
+  bucketId?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  etag?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  isUploaded?: InputMaybe<Scalars['Boolean']>;
+  mimeType?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  size?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  uploadedByUserId?: InputMaybe<Scalars['uuid']>;
 };
 
 /** aggregate sum on columns */
@@ -3204,10 +3567,6 @@ export type Mutation_Root = {
   deleteAuthRole?: Maybe<AuthRoles>;
   /** delete data from the table: "auth.roles" */
   deleteAuthRoles?: Maybe<AuthRoles_Mutation_Response>;
-  /** delete single row from the table: "auth.user_authenticators" */
-  deleteAuthUserAuthenticator?: Maybe<AuthUserAuthenticators>;
-  /** delete data from the table: "auth.user_authenticators" */
-  deleteAuthUserAuthenticators?: Maybe<AuthUserAuthenticators_Mutation_Response>;
   /** delete single row from the table: "auth.user_providers" */
   deleteAuthUserProvider?: Maybe<AuthUserProviders>;
   /** delete data from the table: "auth.user_providers" */
@@ -3216,6 +3575,10 @@ export type Mutation_Root = {
   deleteAuthUserRole?: Maybe<AuthUserRoles>;
   /** delete data from the table: "auth.user_roles" */
   deleteAuthUserRoles?: Maybe<AuthUserRoles_Mutation_Response>;
+  /** delete single row from the table: "auth.user_security_keys" */
+  deleteAuthUserSecurityKey?: Maybe<AuthUserSecurityKeys>;
+  /** delete data from the table: "auth.user_security_keys" */
+  deleteAuthUserSecurityKeys?: Maybe<AuthUserSecurityKeys_Mutation_Response>;
   /** delete single row from the table: "storage.buckets" */
   deleteBucket?: Maybe<Buckets>;
   /** delete data from the table: "storage.buckets" */
@@ -3268,10 +3631,6 @@ export type Mutation_Root = {
   insertAuthRole?: Maybe<AuthRoles>;
   /** insert data into the table: "auth.roles" */
   insertAuthRoles?: Maybe<AuthRoles_Mutation_Response>;
-  /** insert a single row into the table: "auth.user_authenticators" */
-  insertAuthUserAuthenticator?: Maybe<AuthUserAuthenticators>;
-  /** insert data into the table: "auth.user_authenticators" */
-  insertAuthUserAuthenticators?: Maybe<AuthUserAuthenticators_Mutation_Response>;
   /** insert a single row into the table: "auth.user_providers" */
   insertAuthUserProvider?: Maybe<AuthUserProviders>;
   /** insert data into the table: "auth.user_providers" */
@@ -3280,6 +3639,10 @@ export type Mutation_Root = {
   insertAuthUserRole?: Maybe<AuthUserRoles>;
   /** insert data into the table: "auth.user_roles" */
   insertAuthUserRoles?: Maybe<AuthUserRoles_Mutation_Response>;
+  /** insert a single row into the table: "auth.user_security_keys" */
+  insertAuthUserSecurityKey?: Maybe<AuthUserSecurityKeys>;
+  /** insert data into the table: "auth.user_security_keys" */
+  insertAuthUserSecurityKeys?: Maybe<AuthUserSecurityKeys_Mutation_Response>;
   /** insert a single row into the table: "storage.buckets" */
   insertBucket?: Maybe<Buckets>;
   /** insert data into the table: "storage.buckets" */
@@ -3333,10 +3696,6 @@ export type Mutation_Root = {
   updateAuthRole?: Maybe<AuthRoles>;
   /** update data of the table: "auth.roles" */
   updateAuthRoles?: Maybe<AuthRoles_Mutation_Response>;
-  /** update single row of the table: "auth.user_authenticators" */
-  updateAuthUserAuthenticator?: Maybe<AuthUserAuthenticators>;
-  /** update data of the table: "auth.user_authenticators" */
-  updateAuthUserAuthenticators?: Maybe<AuthUserAuthenticators_Mutation_Response>;
   /** update single row of the table: "auth.user_providers" */
   updateAuthUserProvider?: Maybe<AuthUserProviders>;
   /** update data of the table: "auth.user_providers" */
@@ -3345,6 +3704,10 @@ export type Mutation_Root = {
   updateAuthUserRole?: Maybe<AuthUserRoles>;
   /** update data of the table: "auth.user_roles" */
   updateAuthUserRoles?: Maybe<AuthUserRoles_Mutation_Response>;
+  /** update single row of the table: "auth.user_security_keys" */
+  updateAuthUserSecurityKey?: Maybe<AuthUserSecurityKeys>;
+  /** update data of the table: "auth.user_security_keys" */
+  updateAuthUserSecurityKeys?: Maybe<AuthUserSecurityKeys_Mutation_Response>;
   /** update single row of the table: "storage.buckets" */
   updateBucket?: Maybe<Buckets>;
   /** update data of the table: "storage.buckets" */
@@ -3371,12 +3734,12 @@ export type Mutation_Root = {
   update_authRefreshTokens_many?: Maybe<Array<Maybe<AuthRefreshTokens_Mutation_Response>>>;
   /** update multiples rows of table: "auth.roles" */
   update_authRoles_many?: Maybe<Array<Maybe<AuthRoles_Mutation_Response>>>;
-  /** update multiples rows of table: "auth.user_authenticators" */
-  update_authUserAuthenticators_many?: Maybe<Array<Maybe<AuthUserAuthenticators_Mutation_Response>>>;
   /** update multiples rows of table: "auth.user_providers" */
   update_authUserProviders_many?: Maybe<Array<Maybe<AuthUserProviders_Mutation_Response>>>;
   /** update multiples rows of table: "auth.user_roles" */
   update_authUserRoles_many?: Maybe<Array<Maybe<AuthUserRoles_Mutation_Response>>>;
+  /** update multiples rows of table: "auth.user_security_keys" */
+  update_authUserSecurityKeys_many?: Maybe<Array<Maybe<AuthUserSecurityKeys_Mutation_Response>>>;
   /** update multiples rows of table: "storage.buckets" */
   update_buckets_many?: Maybe<Array<Maybe<Buckets_Mutation_Response>>>;
   /** update data of the table: "cart_items" */
@@ -3465,18 +3828,6 @@ export type Mutation_RootDeleteAuthRolesArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteAuthUserAuthenticatorArgs = {
-  id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteAuthUserAuthenticatorsArgs = {
-  where: AuthUserAuthenticators_Bool_Exp;
-};
-
-
-/** mutation root */
 export type Mutation_RootDeleteAuthUserProviderArgs = {
   id: Scalars['uuid'];
 };
@@ -3497,6 +3848,18 @@ export type Mutation_RootDeleteAuthUserRoleArgs = {
 /** mutation root */
 export type Mutation_RootDeleteAuthUserRolesArgs = {
   where: AuthUserRoles_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteAuthUserSecurityKeyArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteAuthUserSecurityKeysArgs = {
+  where: AuthUserSecurityKeys_Bool_Exp;
 };
 
 
@@ -3665,20 +4028,6 @@ export type Mutation_RootInsertAuthRolesArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsertAuthUserAuthenticatorArgs = {
-  object: AuthUserAuthenticators_Insert_Input;
-  on_conflict?: InputMaybe<AuthUserAuthenticators_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertAuthUserAuthenticatorsArgs = {
-  objects: Array<AuthUserAuthenticators_Insert_Input>;
-  on_conflict?: InputMaybe<AuthUserAuthenticators_On_Conflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsertAuthUserProviderArgs = {
   object: AuthUserProviders_Insert_Input;
   on_conflict?: InputMaybe<AuthUserProviders_On_Conflict>;
@@ -3703,6 +4052,20 @@ export type Mutation_RootInsertAuthUserRoleArgs = {
 export type Mutation_RootInsertAuthUserRolesArgs = {
   objects: Array<AuthUserRoles_Insert_Input>;
   on_conflict?: InputMaybe<AuthUserRoles_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertAuthUserSecurityKeyArgs = {
+  object: AuthUserSecurityKeys_Insert_Input;
+  on_conflict?: InputMaybe<AuthUserSecurityKeys_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertAuthUserSecurityKeysArgs = {
+  objects: Array<AuthUserSecurityKeys_Insert_Input>;
+  on_conflict?: InputMaybe<AuthUserSecurityKeys_On_Conflict>;
 };
 
 
@@ -3905,22 +4268,6 @@ export type Mutation_RootUpdateAuthRolesArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateAuthUserAuthenticatorArgs = {
-  _inc?: InputMaybe<AuthUserAuthenticators_Inc_Input>;
-  _set?: InputMaybe<AuthUserAuthenticators_Set_Input>;
-  pk_columns: AuthUserAuthenticators_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateAuthUserAuthenticatorsArgs = {
-  _inc?: InputMaybe<AuthUserAuthenticators_Inc_Input>;
-  _set?: InputMaybe<AuthUserAuthenticators_Set_Input>;
-  where: AuthUserAuthenticators_Bool_Exp;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdateAuthUserProviderArgs = {
   _set?: InputMaybe<AuthUserProviders_Set_Input>;
   pk_columns: AuthUserProviders_Pk_Columns_Input;
@@ -3945,6 +4292,22 @@ export type Mutation_RootUpdateAuthUserRoleArgs = {
 export type Mutation_RootUpdateAuthUserRolesArgs = {
   _set?: InputMaybe<AuthUserRoles_Set_Input>;
   where: AuthUserRoles_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAuthUserSecurityKeyArgs = {
+  _inc?: InputMaybe<AuthUserSecurityKeys_Inc_Input>;
+  _set?: InputMaybe<AuthUserSecurityKeys_Set_Input>;
+  pk_columns: AuthUserSecurityKeys_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAuthUserSecurityKeysArgs = {
+  _inc?: InputMaybe<AuthUserSecurityKeys_Inc_Input>;
+  _set?: InputMaybe<AuthUserSecurityKeys_Set_Input>;
+  where: AuthUserSecurityKeys_Bool_Exp;
 };
 
 
@@ -4051,12 +4414,6 @@ export type Mutation_RootUpdate_AuthRoles_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_AuthUserAuthenticators_ManyArgs = {
-  updates: Array<AuthUserAuthenticators_Updates>;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_AuthUserProviders_ManyArgs = {
   updates: Array<AuthUserProviders_Updates>;
 };
@@ -4065,6 +4422,12 @@ export type Mutation_RootUpdate_AuthUserProviders_ManyArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_AuthUserRoles_ManyArgs = {
   updates: Array<AuthUserRoles_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_AuthUserSecurityKeys_ManyArgs = {
+  updates: Array<AuthUserSecurityKeys_Updates>;
 };
 
 
@@ -4245,6 +4608,17 @@ export type Order_Items_Aggregate = {
   __typename?: 'order_items_aggregate';
   aggregate?: Maybe<Order_Items_Aggregate_Fields>;
   nodes: Array<Order_Items>;
+};
+
+export type Order_Items_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Order_Items_Aggregate_Bool_Exp_Count>;
+};
+
+export type Order_Items_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Order_Items_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Order_Items_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "order_items" */
@@ -4488,6 +4862,25 @@ export type Order_Items_Stddev_Samp_Order_By = {
   quantity?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "order_items" */
+export type Order_Items_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Order_Items_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Order_Items_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  customer_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  order_id?: InputMaybe<Scalars['uuid']>;
+  product_id?: InputMaybe<Scalars['uuid']>;
+  quantity?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type Order_Items_Sum_Fields = {
   __typename?: 'order_items_sum_fields';
@@ -4611,6 +5004,17 @@ export type Orders_Aggregate = {
   nodes: Array<Orders>;
 };
 
+export type Orders_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Orders_Aggregate_Bool_Exp_Count>;
+};
+
+export type Orders_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Orders_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Orders_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "orders" */
 export type Orders_Aggregate_Fields = {
   __typename?: 'orders_aggregate_fields';
@@ -4687,6 +5091,7 @@ export type Orders_Bool_Exp = {
   mobile?: InputMaybe<Numeric_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   order_items?: InputMaybe<Order_Items_Bool_Exp>;
+  order_items_aggregate?: InputMaybe<Order_Items_Aggregate_Bool_Exp>;
   order_token?: InputMaybe<String_Comparison_Exp>;
   payment_link?: InputMaybe<String_Comparison_Exp>;
   pincode?: InputMaybe<Numeric_Comparison_Exp>;
@@ -4958,6 +5363,33 @@ export type Orders_Stddev_Samp_Order_By = {
   pincode?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "orders" */
+export type Orders_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Orders_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Orders_Stream_Cursor_Value_Input = {
+  amount?: InputMaybe<Scalars['Int']>;
+  city?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  customer_id?: InputMaybe<Scalars['String']>;
+  house?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  landmark?: InputMaybe<Scalars['String']>;
+  mobile?: InputMaybe<Scalars['numeric']>;
+  name?: InputMaybe<Scalars['String']>;
+  order_token?: InputMaybe<Scalars['String']>;
+  payment_link?: InputMaybe<Scalars['String']>;
+  pincode?: InputMaybe<Scalars['numeric']>;
+  status?: InputMaybe<Scalars['String']>;
+  street?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type Orders_Sum_Fields = {
   __typename?: 'orders_sum_fields';
@@ -5162,11 +5594,13 @@ export type Products_Bool_Exp = {
   _not?: InputMaybe<Products_Bool_Exp>;
   _or?: InputMaybe<Array<Products_Bool_Exp>>;
   cart_items?: InputMaybe<Cart_Items_Bool_Exp>;
+  cart_items_aggregate?: InputMaybe<Cart_Items_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   image?: InputMaybe<String_Comparison_Exp>;
   order_items?: InputMaybe<Order_Items_Bool_Exp>;
+  order_items_aggregate?: InputMaybe<Order_Items_Aggregate_Bool_Exp>;
   price?: InputMaybe<Numeric_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -5310,6 +5744,25 @@ export type Products_Stddev_Samp_Fields = {
   price?: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "products" */
+export type Products_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Products_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Products_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  image?: InputMaybe<Scalars['String']>;
+  price?: InputMaybe<Scalars['numeric']>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type Products_Sum_Fields = {
   __typename?: 'products_sum_fields';
@@ -5392,12 +5845,6 @@ export type Query_Root = {
   authRoles: Array<AuthRoles>;
   /** fetch aggregated fields from the table: "auth.roles" */
   authRolesAggregate: AuthRoles_Aggregate;
-  /** fetch data from the table: "auth.user_authenticators" using primary key columns */
-  authUserAuthenticator?: Maybe<AuthUserAuthenticators>;
-  /** fetch data from the table: "auth.user_authenticators" */
-  authUserAuthenticators: Array<AuthUserAuthenticators>;
-  /** fetch aggregated fields from the table: "auth.user_authenticators" */
-  authUserAuthenticatorsAggregate: AuthUserAuthenticators_Aggregate;
   /** fetch data from the table: "auth.user_providers" using primary key columns */
   authUserProvider?: Maybe<AuthUserProviders>;
   /** fetch data from the table: "auth.user_providers" */
@@ -5410,6 +5857,12 @@ export type Query_Root = {
   authUserRoles: Array<AuthUserRoles>;
   /** fetch aggregated fields from the table: "auth.user_roles" */
   authUserRolesAggregate: AuthUserRoles_Aggregate;
+  /** fetch data from the table: "auth.user_security_keys" using primary key columns */
+  authUserSecurityKey?: Maybe<AuthUserSecurityKeys>;
+  /** fetch data from the table: "auth.user_security_keys" */
+  authUserSecurityKeys: Array<AuthUserSecurityKeys>;
+  /** fetch aggregated fields from the table: "auth.user_security_keys" */
+  authUserSecurityKeysAggregate: AuthUserSecurityKeys_Aggregate;
   /** fetch data from the table: "storage.buckets" using primary key columns */
   bucket?: Maybe<Buckets>;
   /** fetch data from the table: "storage.buckets" */
@@ -5576,29 +6029,6 @@ export type Query_RootAuthRolesAggregateArgs = {
 };
 
 
-export type Query_RootAuthUserAuthenticatorArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Query_RootAuthUserAuthenticatorsArgs = {
-  distinct_on?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<AuthUserAuthenticators_Order_By>>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
-};
-
-
-export type Query_RootAuthUserAuthenticatorsAggregateArgs = {
-  distinct_on?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<AuthUserAuthenticators_Order_By>>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
-};
-
-
 export type Query_RootAuthUserProviderArgs = {
   id: Scalars['uuid'];
 };
@@ -5642,6 +6072,29 @@ export type Query_RootAuthUserRolesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<AuthUserRoles_Order_By>>;
   where?: InputMaybe<AuthUserRoles_Bool_Exp>;
+};
+
+
+export type Query_RootAuthUserSecurityKeyArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootAuthUserSecurityKeysArgs = {
+  distinct_on?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<AuthUserSecurityKeys_Order_By>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+
+export type Query_RootAuthUserSecurityKeysAggregateArgs = {
+  distinct_on?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<AuthUserSecurityKeys_Order_By>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
 };
 
 
@@ -5836,6 +6289,8 @@ export type Subscription_Root = {
   addresses_aggregate: Addresses_Aggregate;
   /** fetch data from the table: "addresses" using primary key columns */
   addresses_by_pk?: Maybe<Addresses>;
+  /** fetch data from the table in a streaming manner: "addresses" */
+  addresses_stream: Array<Addresses>;
   /** fetch data from the table: "auth.providers" using primary key columns */
   authProvider?: Maybe<AuthProviders>;
   /** fetch data from the table: "auth.provider_requests" using primary key columns */
@@ -5844,88 +6299,118 @@ export type Subscription_Root = {
   authProviderRequests: Array<AuthProviderRequests>;
   /** fetch aggregated fields from the table: "auth.provider_requests" */
   authProviderRequestsAggregate: AuthProviderRequests_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.provider_requests" */
+  authProviderRequests_stream: Array<AuthProviderRequests>;
   /** fetch data from the table: "auth.providers" */
   authProviders: Array<AuthProviders>;
   /** fetch aggregated fields from the table: "auth.providers" */
   authProvidersAggregate: AuthProviders_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.providers" */
+  authProviders_stream: Array<AuthProviders>;
   /** fetch data from the table: "auth.refresh_tokens" using primary key columns */
   authRefreshToken?: Maybe<AuthRefreshTokens>;
   /** fetch data from the table: "auth.refresh_tokens" */
   authRefreshTokens: Array<AuthRefreshTokens>;
   /** fetch aggregated fields from the table: "auth.refresh_tokens" */
   authRefreshTokensAggregate: AuthRefreshTokens_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.refresh_tokens" */
+  authRefreshTokens_stream: Array<AuthRefreshTokens>;
   /** fetch data from the table: "auth.roles" using primary key columns */
   authRole?: Maybe<AuthRoles>;
   /** fetch data from the table: "auth.roles" */
   authRoles: Array<AuthRoles>;
   /** fetch aggregated fields from the table: "auth.roles" */
   authRolesAggregate: AuthRoles_Aggregate;
-  /** fetch data from the table: "auth.user_authenticators" using primary key columns */
-  authUserAuthenticator?: Maybe<AuthUserAuthenticators>;
-  /** fetch data from the table: "auth.user_authenticators" */
-  authUserAuthenticators: Array<AuthUserAuthenticators>;
-  /** fetch aggregated fields from the table: "auth.user_authenticators" */
-  authUserAuthenticatorsAggregate: AuthUserAuthenticators_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.roles" */
+  authRoles_stream: Array<AuthRoles>;
   /** fetch data from the table: "auth.user_providers" using primary key columns */
   authUserProvider?: Maybe<AuthUserProviders>;
   /** fetch data from the table: "auth.user_providers" */
   authUserProviders: Array<AuthUserProviders>;
   /** fetch aggregated fields from the table: "auth.user_providers" */
   authUserProvidersAggregate: AuthUserProviders_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.user_providers" */
+  authUserProviders_stream: Array<AuthUserProviders>;
   /** fetch data from the table: "auth.user_roles" using primary key columns */
   authUserRole?: Maybe<AuthUserRoles>;
   /** fetch data from the table: "auth.user_roles" */
   authUserRoles: Array<AuthUserRoles>;
   /** fetch aggregated fields from the table: "auth.user_roles" */
   authUserRolesAggregate: AuthUserRoles_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.user_roles" */
+  authUserRoles_stream: Array<AuthUserRoles>;
+  /** fetch data from the table: "auth.user_security_keys" using primary key columns */
+  authUserSecurityKey?: Maybe<AuthUserSecurityKeys>;
+  /** fetch data from the table: "auth.user_security_keys" */
+  authUserSecurityKeys: Array<AuthUserSecurityKeys>;
+  /** fetch aggregated fields from the table: "auth.user_security_keys" */
+  authUserSecurityKeysAggregate: AuthUserSecurityKeys_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.user_security_keys" */
+  authUserSecurityKeys_stream: Array<AuthUserSecurityKeys>;
   /** fetch data from the table: "storage.buckets" using primary key columns */
   bucket?: Maybe<Buckets>;
   /** fetch data from the table: "storage.buckets" */
   buckets: Array<Buckets>;
   /** fetch aggregated fields from the table: "storage.buckets" */
   bucketsAggregate: Buckets_Aggregate;
+  /** fetch data from the table in a streaming manner: "storage.buckets" */
+  buckets_stream: Array<Buckets>;
   /** An array relationship */
   cart_items: Array<Cart_Items>;
   /** An aggregate relationship */
   cart_items_aggregate: Cart_Items_Aggregate;
   /** fetch data from the table: "cart_items" using primary key columns */
   cart_items_by_pk?: Maybe<Cart_Items>;
+  /** fetch data from the table in a streaming manner: "cart_items" */
+  cart_items_stream: Array<Cart_Items>;
   /** fetch data from the table: "customers" */
   customers: Array<Customers>;
   /** fetch aggregated fields from the table: "customers" */
   customers_aggregate: Customers_Aggregate;
   /** fetch data from the table: "customers" using primary key columns */
   customers_by_pk?: Maybe<Customers>;
+  /** fetch data from the table in a streaming manner: "customers" */
+  customers_stream: Array<Customers>;
   /** fetch data from the table: "storage.files" using primary key columns */
   file?: Maybe<Files>;
   /** An array relationship */
   files: Array<Files>;
   /** fetch aggregated fields from the table: "storage.files" */
   filesAggregate: Files_Aggregate;
+  /** fetch data from the table in a streaming manner: "storage.files" */
+  files_stream: Array<Files>;
   /** An array relationship */
   order_items: Array<Order_Items>;
   /** An aggregate relationship */
   order_items_aggregate: Order_Items_Aggregate;
   /** fetch data from the table: "order_items" using primary key columns */
   order_items_by_pk?: Maybe<Order_Items>;
+  /** fetch data from the table in a streaming manner: "order_items" */
+  order_items_stream: Array<Order_Items>;
   /** An array relationship */
   orders: Array<Orders>;
   /** An aggregate relationship */
   orders_aggregate: Orders_Aggregate;
   /** fetch data from the table: "orders" using primary key columns */
   orders_by_pk?: Maybe<Orders>;
+  /** fetch data from the table in a streaming manner: "orders" */
+  orders_stream: Array<Orders>;
   /** fetch data from the table: "products" */
   products: Array<Products>;
   /** fetch aggregated fields from the table: "products" */
   products_aggregate: Products_Aggregate;
   /** fetch data from the table: "products" using primary key columns */
   products_by_pk?: Maybe<Products>;
+  /** fetch data from the table in a streaming manner: "products" */
+  products_stream: Array<Products>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user?: Maybe<Users>;
   /** fetch data from the table: "auth.users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "auth.users" */
   usersAggregate: Users_Aggregate;
+  /** fetch data from the table in a streaming manner: "auth.users" */
+  users_stream: Array<Users>;
 };
 
 
@@ -5949,6 +6434,13 @@ export type Subscription_RootAddresses_AggregateArgs = {
 
 export type Subscription_RootAddresses_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootAddresses_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Addresses_Stream_Cursor_Input>>;
+  where?: InputMaybe<Addresses_Bool_Exp>;
 };
 
 
@@ -5980,6 +6472,13 @@ export type Subscription_RootAuthProviderRequestsAggregateArgs = {
 };
 
 
+export type Subscription_RootAuthProviderRequests_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthProviderRequests_Stream_Cursor_Input>>;
+  where?: InputMaybe<AuthProviderRequests_Bool_Exp>;
+};
+
+
 export type Subscription_RootAuthProvidersArgs = {
   distinct_on?: InputMaybe<Array<AuthProviders_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5994,6 +6493,13 @@ export type Subscription_RootAuthProvidersAggregateArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<AuthProviders_Order_By>>;
+  where?: InputMaybe<AuthProviders_Bool_Exp>;
+};
+
+
+export type Subscription_RootAuthProviders_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthProviders_Stream_Cursor_Input>>;
   where?: InputMaybe<AuthProviders_Bool_Exp>;
 };
 
@@ -6021,6 +6527,13 @@ export type Subscription_RootAuthRefreshTokensAggregateArgs = {
 };
 
 
+export type Subscription_RootAuthRefreshTokens_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthRefreshTokens_Stream_Cursor_Input>>;
+  where?: InputMaybe<AuthRefreshTokens_Bool_Exp>;
+};
+
+
 export type Subscription_RootAuthRoleArgs = {
   role: Scalars['String'];
 };
@@ -6044,26 +6557,10 @@ export type Subscription_RootAuthRolesAggregateArgs = {
 };
 
 
-export type Subscription_RootAuthUserAuthenticatorArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Subscription_RootAuthUserAuthenticatorsArgs = {
-  distinct_on?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<AuthUserAuthenticators_Order_By>>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
-};
-
-
-export type Subscription_RootAuthUserAuthenticatorsAggregateArgs = {
-  distinct_on?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<AuthUserAuthenticators_Order_By>>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
+export type Subscription_RootAuthRoles_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthRoles_Stream_Cursor_Input>>;
+  where?: InputMaybe<AuthRoles_Bool_Exp>;
 };
 
 
@@ -6086,6 +6583,13 @@ export type Subscription_RootAuthUserProvidersAggregateArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<AuthUserProviders_Order_By>>;
+  where?: InputMaybe<AuthUserProviders_Bool_Exp>;
+};
+
+
+export type Subscription_RootAuthUserProviders_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthUserProviders_Stream_Cursor_Input>>;
   where?: InputMaybe<AuthUserProviders_Bool_Exp>;
 };
 
@@ -6113,6 +6617,43 @@ export type Subscription_RootAuthUserRolesAggregateArgs = {
 };
 
 
+export type Subscription_RootAuthUserRoles_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthUserRoles_Stream_Cursor_Input>>;
+  where?: InputMaybe<AuthUserRoles_Bool_Exp>;
+};
+
+
+export type Subscription_RootAuthUserSecurityKeyArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootAuthUserSecurityKeysArgs = {
+  distinct_on?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<AuthUserSecurityKeys_Order_By>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+
+export type Subscription_RootAuthUserSecurityKeysAggregateArgs = {
+  distinct_on?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<AuthUserSecurityKeys_Order_By>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+
+export type Subscription_RootAuthUserSecurityKeys_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<AuthUserSecurityKeys_Stream_Cursor_Input>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+
 export type Subscription_RootBucketArgs = {
   id: Scalars['String'];
 };
@@ -6132,6 +6673,13 @@ export type Subscription_RootBucketsAggregateArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Buckets_Order_By>>;
+  where?: InputMaybe<Buckets_Bool_Exp>;
+};
+
+
+export type Subscription_RootBuckets_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Buckets_Stream_Cursor_Input>>;
   where?: InputMaybe<Buckets_Bool_Exp>;
 };
 
@@ -6159,6 +6707,13 @@ export type Subscription_RootCart_Items_By_PkArgs = {
 };
 
 
+export type Subscription_RootCart_Items_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Cart_Items_Stream_Cursor_Input>>;
+  where?: InputMaybe<Cart_Items_Bool_Exp>;
+};
+
+
 export type Subscription_RootCustomersArgs = {
   distinct_on?: InputMaybe<Array<Customers_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6182,6 +6737,13 @@ export type Subscription_RootCustomers_By_PkArgs = {
 };
 
 
+export type Subscription_RootCustomers_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Customers_Stream_Cursor_Input>>;
+  where?: InputMaybe<Customers_Bool_Exp>;
+};
+
+
 export type Subscription_RootFileArgs = {
   id: Scalars['uuid'];
 };
@@ -6201,6 +6763,13 @@ export type Subscription_RootFilesAggregateArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Files_Order_By>>;
+  where?: InputMaybe<Files_Bool_Exp>;
+};
+
+
+export type Subscription_RootFiles_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Files_Stream_Cursor_Input>>;
   where?: InputMaybe<Files_Bool_Exp>;
 };
 
@@ -6228,6 +6797,13 @@ export type Subscription_RootOrder_Items_By_PkArgs = {
 };
 
 
+export type Subscription_RootOrder_Items_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Order_Items_Stream_Cursor_Input>>;
+  where?: InputMaybe<Order_Items_Bool_Exp>;
+};
+
+
 export type Subscription_RootOrdersArgs = {
   distinct_on?: InputMaybe<Array<Orders_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6248,6 +6824,13 @@ export type Subscription_RootOrders_AggregateArgs = {
 
 export type Subscription_RootOrders_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootOrders_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Orders_Stream_Cursor_Input>>;
+  where?: InputMaybe<Orders_Bool_Exp>;
 };
 
 
@@ -6274,6 +6857,13 @@ export type Subscription_RootProducts_By_PkArgs = {
 };
 
 
+export type Subscription_RootProducts_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Products_Stream_Cursor_Input>>;
+  where?: InputMaybe<Products_Bool_Exp>;
+};
+
+
 export type Subscription_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -6296,6 +6886,13 @@ export type Subscription_RootUsersAggregateArgs = {
   where?: InputMaybe<Users_Bool_Exp>;
 };
 
+
+export type Subscription_RootUsers_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['timestamptz']>;
@@ -6313,10 +6910,6 @@ export type Timestamptz_Comparison_Exp = {
 export type Users = {
   __typename?: 'users';
   activeMfaType?: Maybe<Scalars['String']>;
-  /** An array relationship */
-  authenticators: Array<AuthUserAuthenticators>;
-  /** An aggregate relationship */
-  authenticators_aggregate: AuthUserAuthenticators_Aggregate;
   avatarUrl: Scalars['String'];
   createdAt: Scalars['timestamptz'];
   currentChallenge?: Maybe<Scalars['String']>;
@@ -6347,6 +6940,10 @@ export type Users = {
   roles: Array<AuthUserRoles>;
   /** An aggregate relationship */
   roles_aggregate: AuthUserRoles_Aggregate;
+  /** An array relationship */
+  securityKeys: Array<AuthUserSecurityKeys>;
+  /** An aggregate relationship */
+  securityKeys_aggregate: AuthUserSecurityKeys_Aggregate;
   ticket?: Maybe<Scalars['String']>;
   ticketExpiresAt: Scalars['timestamptz'];
   totpSecret?: Maybe<Scalars['String']>;
@@ -6355,26 +6952,6 @@ export type Users = {
   userProviders: Array<AuthUserProviders>;
   /** An aggregate relationship */
   userProviders_aggregate: AuthUserProviders_Aggregate;
-};
-
-
-/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type UsersAuthenticatorsArgs = {
-  distinct_on?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<AuthUserAuthenticators_Order_By>>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
-};
-
-
-/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type UsersAuthenticators_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<AuthUserAuthenticators_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<AuthUserAuthenticators_Order_By>>;
-  where?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
 };
 
 
@@ -6425,6 +7002,26 @@ export type UsersRoles_AggregateArgs = {
 
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
+export type UsersSecurityKeysArgs = {
+  distinct_on?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<AuthUserSecurityKeys_Order_By>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+
+/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
+export type UsersSecurityKeys_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<AuthUserSecurityKeys_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<AuthUserSecurityKeys_Order_By>>;
+  where?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+};
+
+
+/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersUserProvidersArgs = {
   distinct_on?: InputMaybe<Array<AuthUserProviders_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6448,6 +7045,33 @@ export type Users_Aggregate = {
   __typename?: 'users_aggregate';
   aggregate?: Maybe<Users_Aggregate_Fields>;
   nodes: Array<Users>;
+};
+
+export type Users_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Users_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Users_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Users_Aggregate_Bool_Exp_Count>;
+};
+
+export type Users_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Users_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Users_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Users_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Users_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Users_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Users_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "auth.users" */
@@ -6490,7 +7114,6 @@ export type Users_Bool_Exp = {
   _not?: InputMaybe<Users_Bool_Exp>;
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
   activeMfaType?: InputMaybe<String_Comparison_Exp>;
-  authenticators?: InputMaybe<AuthUserAuthenticators_Bool_Exp>;
   avatarUrl?: InputMaybe<String_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   currentChallenge?: InputMaybe<String_Comparison_Exp>;
@@ -6513,12 +7136,17 @@ export type Users_Bool_Exp = {
   phoneNumber?: InputMaybe<String_Comparison_Exp>;
   phoneNumberVerified?: InputMaybe<Boolean_Comparison_Exp>;
   refreshTokens?: InputMaybe<AuthRefreshTokens_Bool_Exp>;
+  refreshTokens_aggregate?: InputMaybe<AuthRefreshTokens_Aggregate_Bool_Exp>;
   roles?: InputMaybe<AuthUserRoles_Bool_Exp>;
+  roles_aggregate?: InputMaybe<AuthUserRoles_Aggregate_Bool_Exp>;
+  securityKeys?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
+  securityKeys_aggregate?: InputMaybe<AuthUserSecurityKeys_Aggregate_Bool_Exp>;
   ticket?: InputMaybe<String_Comparison_Exp>;
   ticketExpiresAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   totpSecret?: InputMaybe<String_Comparison_Exp>;
   updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   userProviders?: InputMaybe<AuthUserProviders_Bool_Exp>;
+  userProviders_aggregate?: InputMaybe<AuthUserProviders_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "auth.users" */
@@ -6549,7 +7177,6 @@ export type Users_Delete_Key_Input = {
 /** input type for inserting data into table "auth.users" */
 export type Users_Insert_Input = {
   activeMfaType?: InputMaybe<Scalars['String']>;
-  authenticators?: InputMaybe<AuthUserAuthenticators_Arr_Rel_Insert_Input>;
   avatarUrl?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   currentChallenge?: InputMaybe<Scalars['String']>;
@@ -6573,6 +7200,7 @@ export type Users_Insert_Input = {
   phoneNumberVerified?: InputMaybe<Scalars['Boolean']>;
   refreshTokens?: InputMaybe<AuthRefreshTokens_Arr_Rel_Insert_Input>;
   roles?: InputMaybe<AuthUserRoles_Arr_Rel_Insert_Input>;
+  securityKeys?: InputMaybe<AuthUserSecurityKeys_Arr_Rel_Insert_Input>;
   ticket?: InputMaybe<Scalars['String']>;
   ticketExpiresAt?: InputMaybe<Scalars['timestamptz']>;
   totpSecret?: InputMaybe<Scalars['String']>;
@@ -6704,7 +7332,6 @@ export type Users_On_Conflict = {
 /** Ordering options when selecting data from "auth.users". */
 export type Users_Order_By = {
   activeMfaType?: InputMaybe<Order_By>;
-  authenticators_aggregate?: InputMaybe<AuthUserAuthenticators_Aggregate_Order_By>;
   avatarUrl?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   currentChallenge?: InputMaybe<Order_By>;
@@ -6728,6 +7355,7 @@ export type Users_Order_By = {
   phoneNumberVerified?: InputMaybe<Order_By>;
   refreshTokens_aggregate?: InputMaybe<AuthRefreshTokens_Aggregate_Order_By>;
   roles_aggregate?: InputMaybe<AuthUserRoles_Aggregate_Order_By>;
+  securityKeys_aggregate?: InputMaybe<AuthUserSecurityKeys_Aggregate_Order_By>;
   ticket?: InputMaybe<Order_By>;
   ticketExpiresAt?: InputMaybe<Order_By>;
   totpSecret?: InputMaybe<Order_By>;
@@ -6735,7 +7363,7 @@ export type Users_Order_By = {
   userProviders_aggregate?: InputMaybe<AuthUserProviders_Aggregate_Order_By>;
 };
 
-/** primary key columns input for table: users */
+/** primary key columns input for table: auth.users */
 export type Users_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
@@ -6799,8 +7427,69 @@ export enum Users_Select_Column {
   UpdatedAt = 'updatedAt'
 }
 
+/** select "users_aggregate_bool_exp_bool_and_arguments_columns" columns of table "auth.users" */
+export enum Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Disabled = 'disabled',
+  /** column name */
+  EmailVerified = 'emailVerified',
+  /** column name */
+  IsAnonymous = 'isAnonymous',
+  /** column name */
+  PhoneNumberVerified = 'phoneNumberVerified'
+}
+
+/** select "users_aggregate_bool_exp_bool_or_arguments_columns" columns of table "auth.users" */
+export enum Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Disabled = 'disabled',
+  /** column name */
+  EmailVerified = 'emailVerified',
+  /** column name */
+  IsAnonymous = 'isAnonymous',
+  /** column name */
+  PhoneNumberVerified = 'phoneNumberVerified'
+}
+
 /** input type for updating data in table "auth.users" */
 export type Users_Set_Input = {
+  activeMfaType?: InputMaybe<Scalars['String']>;
+  avatarUrl?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  currentChallenge?: InputMaybe<Scalars['String']>;
+  defaultRole?: InputMaybe<Scalars['String']>;
+  disabled?: InputMaybe<Scalars['Boolean']>;
+  displayName?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['citext']>;
+  emailVerified?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  isAnonymous?: InputMaybe<Scalars['Boolean']>;
+  lastSeen?: InputMaybe<Scalars['timestamptz']>;
+  locale?: InputMaybe<Scalars['String']>;
+  metadata?: InputMaybe<Scalars['jsonb']>;
+  newEmail?: InputMaybe<Scalars['citext']>;
+  otpHash?: InputMaybe<Scalars['String']>;
+  otpHashExpiresAt?: InputMaybe<Scalars['timestamptz']>;
+  otpMethodLastUsed?: InputMaybe<Scalars['String']>;
+  passwordHash?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  phoneNumberVerified?: InputMaybe<Scalars['Boolean']>;
+  ticket?: InputMaybe<Scalars['String']>;
+  ticketExpiresAt?: InputMaybe<Scalars['timestamptz']>;
+  totpSecret?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "users" */
+export type Users_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Users_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Users_Stream_Cursor_Value_Input = {
   activeMfaType?: InputMaybe<Scalars['String']>;
   avatarUrl?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;

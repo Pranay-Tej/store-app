@@ -60,14 +60,14 @@ const Login = () => {
   const handleLogin = async (loginData: LoginForm) => {
     try {
       setIsLoginLoading(true);
-      const { data } = await axios.post<{ jwt: string }>(
+      const { data } = await axios.post<{ token: string }>(
         `${SHIRUDO_BASE_URL}/users/login`,
         {
           ...loginData,
-          app_id: SHIRUDO_APP_ID
+          appId: SHIRUDO_APP_ID
         }
       );
-      verifyUser(data?.jwt);
+      verifyUser(data?.token);
     } catch (error: any) {
       setLoginError(error?.response?.data?.message);
     } finally {

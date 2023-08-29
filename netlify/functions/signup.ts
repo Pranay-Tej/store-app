@@ -56,15 +56,15 @@ const handler: Handler = async (event, context) => {
 
     try {
       const res: AxiosResponse<{
-        jwt: string;
+        token: string;
       }> = await axios.post(`${SHIRUDO_BASE_URL}/users/register`, {
         username,
         password,
-        app_id: SHIRUDO_APP_ID
+        appId: SHIRUDO_APP_ID
       });
 
       const graphqlClient = new GraphQLClient(NHOST_BASE_URL);
-      graphqlClient.setHeader('Authorization', `Bearer ${res.data.jwt}`);
+      graphqlClient.setHeader('Authorization', `Bearer ${res.data.token}`);
 
       const userRegisterResponse = await graphqlClient.request(
         REGISTER_USER_MUTATION
