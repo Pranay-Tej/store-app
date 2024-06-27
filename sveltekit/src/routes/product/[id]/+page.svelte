@@ -18,7 +18,7 @@
 	{#if product}
 		<div class="product">
 			<div class="img-container">
-				<img src={product.imageUrl} alt="product" />
+				<img src={product.imageUrl} alt="product" style:--product-image="image-{product.id}" />
 			</div>
 			<p>{product.title}</p>
 		</div>
@@ -42,6 +42,7 @@
 			object-fit: cover;
 			max-width: 100%;
 			min-height: 100%;
+			view-transition-name: var(--product-image);
 		}
 	}
 </style>
