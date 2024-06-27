@@ -4,7 +4,11 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"drizzle-kit:generate": "drizzle-kit generate",
+		"drizzle-kit:migrate": "drizzle-kit migrate",
+		"drizzle-kit:drop": "drizzle-kit drop",
+		"drizzle-kit:studio": "drizzle-kit studio",
+		"build": "drizzle-kit migrate && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"test-ui": "playwright test --ui",
@@ -19,6 +23,8 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.7",
+		"@types/pg": "^8.11.6",
+		"drizzle-kit": "^0.22.7",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
@@ -32,5 +38,9 @@
 		"typescript-eslint": "^8.0.0-alpha.20",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"drizzle-orm": "^0.31.2",
+		"pg": "^8.12.0"
+	}
 }
