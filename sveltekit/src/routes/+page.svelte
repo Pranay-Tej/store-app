@@ -2,16 +2,22 @@
 	import { ROUTES } from '$lib/constants/routes.js';
 
 	const { data } = $props();
+	const products = $derived(data.products);
 </script>
+
+<svelte:head>
+	<title>SvelteKit Store</title>
+	<meta name="description" content="E-commerce app build with SveleKit ecosystem" />
+</svelte:head>
 
 <!-- <pre>{JSON.stringify(data.products, null, 2)}</pre> -->
 
-{#if data?.products}
+{#if products}
 	<div class="product-list">
-		{#each data.products as product (product.id)}
+		{#each products as product (product.id)}
 			<a href={ROUTES.product(product.id)} class="product">
 				<div class="img-container">
-					<img src={product.imageUrl} alt={product.title} />
+					<img src={product.imageUrl} alt="product" />
 				</div>
 				<p>{product.title}</p>
 			</a>
