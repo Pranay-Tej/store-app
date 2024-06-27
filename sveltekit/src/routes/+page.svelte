@@ -1,2 +1,42 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { ROUTES } from '$lib/constants/routes.js';
+
+	const { data } = $props();
+</script>
+
+<!-- <pre>{JSON.stringify(data.products, null, 2)}</pre> -->
+
+{#if data?.products}
+	<div class="product-list">
+		{#each data.products as product (product.id)}
+			<a href={ROUTES.product(product.id)} class="product">
+				<div class="img-container">
+					<img src={product.imageUrl} alt={product.title} />
+				</div>
+				<p>{product.title}</p>
+			</a>
+		{/each}
+	</div>
+{/if}
+
+<style>
+	.product-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+		gap: 2rem;
+	}
+
+	.product {
+		display: grid;
+		grid-template-rows: 430px auto;
+		text-decoration: none;
+		.img-container {
+			min-height: 100%;
+		}
+		img {
+			object-fit: cover;
+			max-width: 100%;
+			min-height: 100%;
+		}
+	}
+</style>

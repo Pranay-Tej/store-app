@@ -1,0 +1,7 @@
+:root {
+	--ds-primary-bg: hsl(226, 5%, 100%);
+}
+
+:root[data-theme='dark'] {
+	--ds-primary-bg: hsl(226, 5%, 10%);
+}
