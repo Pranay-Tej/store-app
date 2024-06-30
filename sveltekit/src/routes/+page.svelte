@@ -10,8 +10,6 @@
 	<meta name="description" content="E-commerce app build with SveleKit ecosystem" />
 </svelte:head>
 
-<!-- <pre>{JSON.stringify(data.products, null, 2)}</pre> -->
-
 {#if products}
 	<div class="product-list">
 		{#each products as product (product.id)}
