@@ -74,9 +74,6 @@
 	};
 </script>
 
-<pre>{JSON.stringify(cartState.items, null, 2)}</pre>
-<hr />
-<pre>{JSON.stringify(cartItem, null, 2)}</pre>
 
 <svelte:head>
 	<title>Buy {product?.title ?? 'from'} &bull; SvelteKit Store</title>
@@ -96,14 +93,7 @@
 						<button onclick={handleAddToCart} disabled={isUpdateButtonsDisabled}>Add to cart</button
 						>
 					{:else}
-						<div>
-							<button
-								onclick={handleDecreaseQuantity}
-								disabled={cartItem?.quantity === 1 || isUpdateButtonsDisabled}>-</button
-							>
-							<span>{cartItem?.quantity}</span>
-							<button onclick={handleIncreaseQuantity} disabled={isUpdateButtonsDisabled}>+</button>
-						</div>
+						<a href={ROUTES.cart}>Go to cart</a>
 					{/if}
 				{:else}
 					<a href={ROUTES.login}>Login to add to cart</a>

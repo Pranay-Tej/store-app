@@ -11,7 +11,10 @@ export const load = async ({ locals, depends }) => {
 		if (userId) {
 			userCartItems = await db.query.CartItemTable.findMany({
 				where: (CartItemTable, { eq }) => eq(CartItemTable.userId, userId),
-				orderBy: (CartItemTable, { desc }) => [desc(CartItemTable.createdAt)]
+				orderBy: (CartItemTable, { desc }) => [desc(CartItemTable.createdAt)],
+				with: {
+					product: true
+				}
 			});
 		}
 		return { user, userCartItems: userCartItems ?? [] };

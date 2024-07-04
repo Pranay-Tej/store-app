@@ -16,3 +16,5 @@ export const ProductRelations = relations(ProductTable, ({ many }) => ({
 	cartItems: many(CartItemTable),
 	orderItems: many(OrderItemTable)
 }));
+
+export type Product = typeof ProductTable.$inferSelect;
