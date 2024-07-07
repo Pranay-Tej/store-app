@@ -7,11 +7,14 @@
 	import type { CartItem } from '$lib/schema/CartItemTable';
 	import axios from 'axios';
 
+	const { data } = $props();
+
 	const cartState = getCartContext();
 
 	const cartItems = $derived(cartState.items);
 
 	let isUpdateButtonsDisabled = $state(false);
+	let selectedAddress = $state(null);
 
 	const handleDecreaseQuantity = async (cartItem: CartItem) => {
 		if (!cartItem) {
@@ -66,8 +69,13 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Cart &bull; SvelteKit Store</title>
+	<meta name="description" content="Cart" />
+</svelte:head>
 
 {#if cartItems}
+	<h2>Cart</h2>
 	{#each cartItems as cartItem (cartItem.id)}
 		<div class="cart-item">
 			<a href={ROUTES.product(cartItem.product.id)}>
@@ -96,6 +104,26 @@
 			</div>
 		</div>
 	{/each}
+{/if}
+
+<hr />
+
+<h2>Select Address</h2>
+
+{#if data.addresses}
+	{#each data.addresses as address (address.id)}
+		<div>
+			<label for={address.id}>{address.name}</label>
+			<input type="radio" id={address.id} bind:group={selectedAddress} value={address.id} />
+		</div>
+	{/each}
+{/if}
+
+{#if selectedAddress && cartItems.length > 0}
+	<form action="?/order" method="post">
+		<input type="text" name="addressId" value={selectedAddress} hidden />
+		<button>Place Order</button>
+	</form>
 {/if}
 
 <style>

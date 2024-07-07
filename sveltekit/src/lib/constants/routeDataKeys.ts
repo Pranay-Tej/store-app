@@ -1,3 +1,4 @@
 export const ROUTE_DATA_KEYS = {
-	appRootLayout: '/appRootLayout'
+	appRootLayout: '/appRootLayout',
+	addresses: '/addresses'
 };

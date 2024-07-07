@@ -30,10 +30,12 @@
 
 <a href={ROUTES.home}>Home</a>
 {#if data.user}
+	<a href={ROUTES.cart}>Cart</a>
+	<a href={ROUTES.addresses}>Addresses</a>
+	<a href={ROUTES.orders}>Orders</a>
 	<form method="post" action="/logout">
 		<button>Logout</button>
 	</form>
-	<a href={ROUTES.cart}>Cart</a>
 {:else}
 	<a href={ROUTES.login}>Login</a>
 	<a href={ROUTES.register}>Register</a>
