@@ -1,7 +1,9 @@
 :root {
 	--ds-primary-bg: hsl(226, 5%, 100%);
+	--ds-loading-bar-bg: hsla(220, 96%, 60%, 0.8);
 }
 
 :root[data-theme='dark'] {
 	--ds-primary-bg: hsl(226, 5%, 10%);
+	--ds-loading-bar-bg: hsla(220, 5%, 99%, 0.7);
 }

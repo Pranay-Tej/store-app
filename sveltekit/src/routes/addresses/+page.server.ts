@@ -1,4 +1,3 @@
-import { invalidate } from '$app/navigation';
 import { ROUTE_DATA_KEYS } from '$lib/constants/routeDataKeys.js';
 import { AddressTable } from '$lib/schema/AddressTable.js';
 import { db } from '$lib/server/db/client';
@@ -34,16 +33,18 @@ export const actions: Actions = {
 		}
 		const data = Object.fromEntries(await event.request.formData());
 		const [_, err] = await resolvePromise(
-			db.insert(AddressTable).values({
-				address: data.address,
-				name: data.name,
-				userId
-			})
+			db
+				.insert(AddressTable)
+				.values({
+					address: data.address,
+					name: data.name,
+					userId
+				})
+				.returning()
 		);
 		if (err) {
-			return { success: false };
+			return fail(500, { success: false });
 		}
-		invalidate(ROUTE_DATA_KEYS.addresses);
 		return { success: true };
 	},
 
@@ -55,12 +56,11 @@ export const actions: Actions = {
 		}
 
 		const [_, err] = await resolvePromise(
-			db.delete(AddressTable).where(eq(AddressTable.id, data.id))
+			db.delete(AddressTable).where(eq(AddressTable.id, data.id)).returning()
 		);
 		if (err) {
-			return { success: false };
+			return fail(500, { success: false });
 		}
-		invalidate(ROUTE_DATA_KEYS.addresses);
 		return { success: true };
 	}
 };
