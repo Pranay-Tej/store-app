@@ -2,7 +2,8 @@ import { invalidate } from '$app/navigation';
 import { ROUTE_DATA_KEYS } from '$lib/constants/routeDataKeys.js';
 import { AddressTable } from '$lib/schema/AddressTable.js';
 import { db } from '$lib/server/db/client';
-import type { Actions } from '@sveltejs/kit';
+import { resolvePromise } from '$lib/utils/resolvePromise.js';
+import { error, fail, type Actions } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 export const load = async ({ locals, depends }) => {
@@ -10,53 +11,56 @@ export const load = async ({ locals, depends }) => {
 
 	const userId = locals.user?.id;
 	if (!userId) {
-		throw new Error('Not logged in');
+		throw error(401, { message: 'Not logged in' });
 	}
-	try {
-		const addresses = await db.query.AddressTable.findMany({
+	const [addresses, err] = await resolvePromise(
+		db.query.AddressTable.findMany({
 			where: (AddressTable, { eq }) => eq(AddressTable.userId, userId)
-		});
-		// console.log(addresses);
+		})
+	);
 
-		return { addresses };
-	} catch (error) {
-		console.error(error);
+	if (err || !addresses) {
+		throw error(404, { message: 'Addresses not found' });
 	}
+
+	return { addresses };
 };
 
 export const actions: Actions = {
 	add: async (event) => {
-		try {
-			const userId = event.locals.user?.id;
-			if (!userId) {
-				throw new Error('Not logged in');
-			}
-			const data = Object.fromEntries(await event.request.formData());
-			await db.insert(AddressTable).values({
+		const userId = event.locals.user?.id;
+		if (!userId) {
+			return fail(401, { message: 'Not logged in' });
+		}
+		const data = Object.fromEntries(await event.request.formData());
+		const [_, err] = await resolvePromise(
+			db.insert(AddressTable).values({
 				address: data.address,
 				name: data.name,
 				userId
-			});
-			invalidate(ROUTE_DATA_KEYS.addresses);
-			return { success: true };
-		} catch (error) {
-			console.error(error);
+			})
+		);
+		if (err) {
 			return { success: false };
 		}
+		invalidate(ROUTE_DATA_KEYS.addresses);
+		return { success: true };
 	},
 
 	delete: async (event) => {
-		try {
-			const userId = event.locals.user?.id;
-			const data = Object.fromEntries(await event.request.formData());
-			if (!userId || !data.id) {
-				throw new Error('Not logged in');
-			}
-			await db.delete(AddressTable).where(eq(AddressTable.id, data.id));
-			invalidate(ROUTE_DATA_KEYS.addresses);
-			return { success: true };
-		} catch (error) {
-			console.error(error);
+		const userId = event.locals.user?.id;
+		const data = Object.fromEntries(await event.request.formData());
+		if (!userId || !data.id) {
+			return fail(401, { message: 'Not logged in' });
 		}
+
+		const [_, err] = await resolvePromise(
+			db.delete(AddressTable).where(eq(AddressTable.id, data.id))
+		);
+		if (err) {
+			return { success: false };
+		}
+		invalidate(ROUTE_DATA_KEYS.addresses);
+		return { success: true };
 	}
 };

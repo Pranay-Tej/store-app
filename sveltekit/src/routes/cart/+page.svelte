@@ -5,6 +5,7 @@
 	import { ROUTES } from '$lib/constants/routes';
 	import { getCartContext } from '$lib/context/cartContext.svelte';
 	import type { CartItem } from '$lib/schema/CartItemTable';
+	import { resolvePromise } from '$lib/utils/resolvePromise.js';
 	import axios from 'axios';
 
 	const { data } = $props();
@@ -20,52 +21,51 @@
 		if (!cartItem) {
 			return;
 		}
-		try {
-			isUpdateButtonsDisabled = true;
-			const res = await axios.post(API_ROUTES.updateCartItem(cartItem.id), {
+		isUpdateButtonsDisabled = true;
+		const [res, err] = await resolvePromise(
+			axios.post(API_ROUTES.updateCartItem(cartItem.id), {
 				quantity: cartItem.quantity - 1
-			});
-			if (res.status === 200) {
-				invalidate(ROUTE_DATA_KEYS.appRootLayout);
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			isUpdateButtonsDisabled = false;
+			})
+		);
+		isUpdateButtonsDisabled = false;
+		if (err || res?.status !== 200) {
+			return;
 		}
+
+		invalidate(ROUTE_DATA_KEYS.appRootLayout);
 	};
 
 	const handleIncreaseQuantity = async (cartItem: CartItem) => {
 		if (!cartItem) {
 			return;
 		}
-		try {
-			isUpdateButtonsDisabled = true;
-			const res = await axios.post(API_ROUTES.updateCartItem(cartItem.id), {
+		isUpdateButtonsDisabled = true;
+		const [res, err] = await resolvePromise(
+			axios.post(API_ROUTES.updateCartItem(cartItem.id), {
 				quantity: cartItem.quantity + 1
-			});
-			if (res.status === 200) {
-				invalidate(ROUTE_DATA_KEYS.appRootLayout);
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			isUpdateButtonsDisabled = false;
+			})
+		);
+		isUpdateButtonsDisabled = false;
+		if (err || res?.status !== 200) {
+			return;
 		}
+
+		invalidate(ROUTE_DATA_KEYS.appRootLayout);
 	};
 
 	const handleRemove = async (cartItemId: string) => {
-		try {
-			isUpdateButtonsDisabled = true;
-			const res = await axios.delete(API_ROUTES.deleteCartItem(cartItemId));
-			if (res.status === 200) {
-				invalidate(ROUTE_DATA_KEYS.appRootLayout);
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			isUpdateButtonsDisabled = false;
+		if (!cartItemId) {
+			return;
 		}
+
+		isUpdateButtonsDisabled = true;
+		const [res, err] = await resolvePromise(axios.delete(API_ROUTES.deleteCartItem(cartItemId)));
+		isUpdateButtonsDisabled = false;
+		if (err || res?.status !== 200) {
+			return;
+		}
+
+		invalidate(ROUTE_DATA_KEYS.appRootLayout);
 	};
 </script>
 
@@ -113,8 +113,10 @@
 {#if data.addresses}
 	{#each data.addresses as address (address.id)}
 		<div>
-			<label for={address.id}>{address.name}</label>
-			<input type="radio" id={address.id} bind:group={selectedAddress} value={address.id} />
+			<label for={address.id}>
+				<input type="radio" id={address.id} bind:group={selectedAddress} value={address.id} />
+				{address.name}
+			</label>
 		</div>
 	{/each}
 {/if}

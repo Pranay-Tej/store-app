@@ -1,16 +1,19 @@
 import { db } from '$lib/server/db/client.js';
+import { resolvePromise } from '$lib/utils/resolvePromise.js';
+import { error } from '@sveltejs/kit';
 
 export const load = async ({ locals }) => {
 	const userId = locals.user?.id;
 	if (!userId) {
-		throw new Error('Not logged in');
+		throw error(401, { message: 'Not logged in' });
 	}
-	try {
-		const orders = await db.query.OrderTable.findMany({
+	const [orders, err] = await resolvePromise(
+		db.query.OrderTable.findMany({
 			where: (OrderTable, { eq }) => eq(OrderTable.userId, userId)
-		});
-		return { orders };
-	} catch (error) {
-		console.error(error);
+		})
+	);
+	if (err || !orders) {
+		throw error(404, { message: 'Orders not found' });
 	}
+	return { orders };
 };

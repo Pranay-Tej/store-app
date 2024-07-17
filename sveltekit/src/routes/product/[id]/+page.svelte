@@ -5,6 +5,7 @@
 	import { ROUTES } from '$lib/constants/routes.js';
 	import { getCartContext } from '$lib/context/cartContext.svelte.js';
 	import { getUserContext } from '$lib/context/userContext.svelte.js';
+	import { resolvePromise } from '$lib/utils/resolvePromise.js';
 	import axios from 'axios';
 
 	const { data } = $props();
@@ -20,88 +21,57 @@
 		if (!product) {
 			return;
 		}
-		try {
-			isUpdateButtonsDisabled = true;
-			const res = await axios.post(API_ROUTES.addToCart, {
+		isUpdateButtonsDisabled = true;
+		const [res, err] = await resolvePromise(
+			axios.post(API_ROUTES.addToCart, {
 				productId: product.id
-			});
-			if (res.status === 200) {
-				invalidate(ROUTE_DATA_KEYS.appRootLayout);
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			isUpdateButtonsDisabled = false;
-		}
-	};
-
-	const handleDecreaseQuantity = async () => {
-		if (!product || !cartItem) {
+			})
+		);
+		isUpdateButtonsDisabled = false;
+		if (err || res?.status !== 200) {
 			return;
 		}
-		try {
-			isUpdateButtonsDisabled = true;
-			const res = await axios.post(API_ROUTES.updateCartItem(cartItem.id), {
-				quantity: cartItem.quantity - 1
-			});
-			if (res.status === 200) {
-				invalidate(ROUTE_DATA_KEYS.appRootLayout);
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			isUpdateButtonsDisabled = false;
-		}
-	};
 
-	const handleIncreaseQuantity = async () => {
-		if (!product || !cartItem) {
-			return;
-		}
-		try {
-			isUpdateButtonsDisabled = true;
-			const res = await axios.post(API_ROUTES.updateCartItem(cartItem.id), {
-				quantity: cartItem.quantity + 1
-			});
-			if (res.status === 200) {
-				invalidate(ROUTE_DATA_KEYS.appRootLayout);
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			isUpdateButtonsDisabled = false;
-		}
+		invalidate(ROUTE_DATA_KEYS.appRootLayout);
 	};
 </script>
-
 
 <svelte:head>
 	<title>Buy {product?.title ?? 'from'} &bull; SvelteKit Store</title>
 	<meta name="description" content={product?.description} />
 </svelte:head>
 
-<div class="container">
-	{#if product}
-		<div class="product">
-			<div class="img-container">
-				<img src={product.imageUrl} alt="product" style:--product-image="image-{product.id}" />
-			</div>
-			<div>
-				<p>{product.title}</p>
-				{#if userState.user !== null}
-					{#if cartItem === null || cartItem.quantity === 0}
-						<button onclick={handleAddToCart} disabled={isUpdateButtonsDisabled}>Add to cart</button
-						>
+{#await data.product}
+	<p>Loading...</p>
+{:then productItem}
+	<div class="container">
+		{#if productItem}
+			<div class="product">
+				<div class="img-container">
+					<img
+						src={productItem.imageUrl}
+						alt="product"
+						style:--product-image="image-{productItem.id}"
+					/>
+				</div>
+				<div>
+					<p>{productItem.title}</p>
+					{#if userState.user !== null}
+						{#if cartItem === null || cartItem.quantity === 0}
+							<button onclick={handleAddToCart} disabled={isUpdateButtonsDisabled}
+								>Add to cart</button
+							>
+						{:else}
+							<a href={ROUTES.cart}>Go to cart</a>
+						{/if}
 					{:else}
-						<a href={ROUTES.cart}>Go to cart</a>
+						<a href={ROUTES.login}>Login to add to cart</a>
 					{/if}
-				{:else}
-					<a href={ROUTES.login}>Login to add to cart</a>
-				{/if}
+				</div>
 			</div>
-		</div>
-	{/if}
-</div>
+		{/if}
+	</div>
+{/await}
 
 <style>
 	.container {

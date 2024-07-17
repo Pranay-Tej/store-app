@@ -7,7 +7,8 @@ import {
 import { OrderItemTable, type OrderItemInsert } from '$lib/schema/OrderItemTable.js';
 import { OrderTable } from '$lib/schema/OrderTable.js';
 import { db } from '$lib/server/db/client';
-import { redirect, type Actions } from '@sveltejs/kit';
+import { resolvePromise } from '$lib/utils/resolvePromise.js';
+import { error, redirect, type Actions } from '@sveltejs/kit';
 import axios from 'axios';
 import { eq } from 'drizzle-orm';
 
@@ -16,16 +17,17 @@ export const load = async ({ locals }) => {
 	if (!userId) {
 		throw new Error('Not logged in');
 	}
-	try {
-		const addresses = await db.query.AddressTable.findMany({
+	const [addresses, err] = await resolvePromise(
+		db.query.AddressTable.findMany({
 			where: (AddressTable, { eq }) => eq(AddressTable.userId, userId)
+		})
+	);
+	if (err || !addresses) {
+		error(404, {
+			message: 'Addresses not found'
 		});
-		// console.log(addresses);
-
-		return { addresses };
-	} catch (error) {
-		console.error(error);
 	}
+	return { addresses };
 };
 
 export const actions: Actions = {
@@ -95,7 +97,7 @@ export const actions: Actions = {
 						}
 					}
 				);
-				console.log(cashFreeOrder.data);
+				// console.log(cashFreeOrder.data);
 
 				if (!cashFreeOrder.data.order_token) {
 					throw new Error('Failed to create order');
