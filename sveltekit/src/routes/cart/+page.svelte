@@ -89,16 +89,18 @@
 			<div>
 				<p>{cartItem.product.title}</p>
 				<p>{cartItem.product.price}</p>
-				<div>
-					<button
-						onclick={() => handleDecreaseQuantity(cartItem)}
-						disabled={cartItem?.quantity === 1 || isUpdateButtonsDisabled}>-</button
-					>
-					<span>{cartItem?.quantity}</span>
-					<button
-						onclick={() => handleIncreaseQuantity(cartItem)}
-						disabled={isUpdateButtonsDisabled}>+</button
-					>
+				<div class="cart-item-actions">
+					<div class="qty">
+						<button
+							onclick={() => handleDecreaseQuantity(cartItem)}
+							disabled={cartItem?.quantity === 1 || isUpdateButtonsDisabled}>-</button
+						>
+						<span>{cartItem?.quantity}</span>
+						<button
+							onclick={() => handleIncreaseQuantity(cartItem)}
+							disabled={isUpdateButtonsDisabled}>+</button
+						>
+					</div>
 					<button onclick={() => handleRemove(cartItem.id)}>Remove</button>
 				</div>
 			</div>
@@ -132,6 +134,14 @@
 	.cart-item {
 		display: flex;
 		gap: 2rem;
+	}
+	.cart-item-actions {
+		display: flex;
+		gap: 1rem;
+		.qty {
+			display: flex;
+			gap: 0.5rem;
+		}
 	}
 	.product-image {
 		max-width: 100px;

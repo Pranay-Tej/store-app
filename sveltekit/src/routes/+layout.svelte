@@ -8,11 +8,15 @@
 
 	const { data, children } = $props();
 
-	setUserContext(data.user ?? null);
+	let userState = setUserContext(data.user ?? null);
 	let cartState = setCartContext([]);
 
 	$effect(() => {
 		cartState.items = data.userCartItems ?? [];
+	});
+
+	$effect(() => {
+		userState.user = data.user ?? null;
 	});
 
 	$inspect(cartState);
@@ -35,22 +39,29 @@
 	</div>
 {/if}
 
-<a href={ROUTES.home}>Home</a>
-{#if data.user}
-	<a href={ROUTES.cart}>Cart</a>
-	<a href={ROUTES.addresses}>Addresses</a>
-	<a href={ROUTES.orders}>Orders</a>
-	<form method="post" action="/logout">
-		<button>Logout</button>
-	</form>
-{:else}
-	<a href={ROUTES.login}>Login</a>
-	<a href={ROUTES.register}>Register</a>
-{/if}
+<nav>
+	<a href={ROUTES.home}>Home</a>
+	{#if data.user}
+		<a href={ROUTES.cart}>Cart</a>
+		<a href={ROUTES.addresses}>Addresses</a>
+		<a href={ROUTES.orders}>Orders</a>
+		<form method="post" action="/logout">
+			<button>Logout</button>
+		</form>
+	{:else}
+		<a href={ROUTES.login}>Login</a>
+		<a href={ROUTES.register}>Register</a>
+	{/if}
+</nav>
 
 {@render children()}
 
 <style>
+	nav{
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
 	.loading-bar-container {
 		position: fixed;
 		top: 0;
